@@ -1,0 +1,694 @@
+<!DOCTYPE html>
+<!--
+Licensed to the Apache Software Foundation (ASF) under one
+or more contributor license agreements.  See the NOTICE file
+distributed with this work for additional information
+regarding copyright ownership.  The ASF licenses this file
+to you under the Apache License, Version 2.0 (the
+"License"); you may not use this file except in compliance
+with the License.  You may obtain a copy of the License at
+
+http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing,
+software distributed under the License is distributed on an
+"AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+KIND, either express or implied.  See the License for the
+specific language governing permissions and limitations
+under the License.
+-->
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<meta name="format-detection" content="telephone=no" />
+		<!-- WARNING: for iOS 7, remove the width=device-width and height=device-height attributes. See https://issues.apache.org/jira/browse/CB-4323 -->
+		<meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width, height=device-height" />
+		<meta http-equiv="Access-Control-Allow-Origin" content="*">
+		<link rel="stylesheet" type="text/css" href="../vendor/jquery-mobile/ltkj.min.css" />
+		<link rel="stylesheet" type="text/css" href="../vendor/jquery-mobile/jquery.mobile.icons.min.css" />
+		<link rel="stylesheet" type="text/css" href="../vendor/jquery-mobile/jquery.mobile.structure-1.4.0.min.css" />
+		<script type="text/javascript" src="../vendor/jquery-mobile/jquery-2.0.3.min.js"></script>
+		<script type="text/javascript" src="../vendor/jquery-mobile/jquery.mobile-1.4.0.min.js"></script>
+		<script type="text/javascript" src="../util/SQLiteTool.js"></script>
+		<script type="text/javascript" src="../util/json.js"></script>
+		
+
+		<title>Hello World</title>
+		<script type="text/javascript" src="" id="getAspx"></script>
+	</head>
+
+	<body>
+		<div data-role="page" style="height:100%;" id="uploadPage" data-dom-cache="true">
+			<script type="text/javascript" src="../util/camera/LTCamera.js"></script>
+			<script type="text/javascript" src="../util/baiduLocation/baidulocation.js"></script>
+			<script type="text/javascript" src="../util/FileIO.js"></script>
+
+			<style>
+				.imgStyle {
+					width: 88px;
+					height: 88px;
+					overflow: hidden;
+					display: block;
+				}
+
+				.choseImg {
+					position: absolute;
+					height: 20px;
+					width: 20px;
+					margin-left: 78px;
+					margin-top: -10px;
+					z-index: 3;
+					display: none
+				}
+				.moveDiv {
+					position: absolute;
+					margin-bottom: 0px;
+					width: 100%;
+				}
+
+				.txt-center {
+					position: relative;
+					top: -10px;
+					left: 35%;
+					background: #f2f6f7;
+					width: 102px;
+					text-align: center;
+				}
+				.ui-page {
+					background: #f2f6f7;
+				}
+				.animClass {
+					-webkit-transform: translate3d(0, 0, 0);
+					/* more specific animation properties here */
+					-webkit-backface-visibility: hidden;
+					-webkit-perspective: 1000;
+				}
+			</style>
+
+			<script>
+				var userPicArr;
+				//用户拍照或者选取的图片数组
+                
+                var PicNum;
+                //显示的未提交的图片数目
+                
+                var lastNum;
+                var isReturn;
+
+				var lastInfo = TempCache.getItem("lastLocation");
+				//获取上一次定位信息
+
+				var screenWidth = window.innerWidth;
+				var numberInRow = Math.floor(screenWidth / 100);
+				//算出一个屏幕宽度最多能容纳多少个100width的Img
+
+				var selectImgArr = new Array();
+				//点击选中的数组
+
+				console.log("numberInRow:" + numberInRow);
+
+				var lastDate = '';
+
+				$("#picListView").css("width", numberInRow * 100);
+
+				var IOSDocPath = "";
+				//IOS下的Document路径
+
+				if (device.platform == "iOS") {
+					getIOSPath(function(docPath) {
+						IOSDocPath = docPath;
+
+					}, function() {
+
+					});
+
+				}
+
+				//initDataFormDB();
+
+				//拍照
+				function takePic() {
+
+					nativeTakePicture(function successCallBack(takeImgDic) {
+
+						//imgArr
+
+						userPicArr = takeImgDic.imgArr;
+
+                                    
+						if (userPicArr.length <= 0) {
+							console.log("没有照片");
+							return;
+						}
+                                                                            
+
+
+						getImgArrLocation();
+
+					}, function() {
+
+						console.log("failuer");
+
+					});
+
+				}
+
+				//照片选取
+				function chosePic() {
+
+					pickMultiplePhotos(function(takeImgDic) {
+
+						userPicArr = takeImgDic.imgArr;
+
+						if (userPicArr.length <= 0) {
+							console.log("没有照片");
+							return;
+						}
+                                      
+						getImgArrLocation();
+
+					}, function() {
+
+					});
+
+				}
+
+				//点击事件
+				$(document).on("tap", "ul#picListView li", function() {
+
+					var imgInfoJsonStr = $(this).attr("imgInfo");
+
+					var imgInfoJsonObject = eval("(" + imgInfoJsonStr + ")");
+
+					imgInfoJsonObject.showTime = imgInfoJsonObject.showTime.replace("@", " ");
+
+					var isDisplay = $(this).children().children(".choseImg").css("display");
+
+					if (isDisplay == 'none') {
+						//用class 可以获取全部的孩子，id只能获取第一个匹配的
+						$(this).children().children(".choseImg").css("display", "block");
+						//$(this).children().children("#checkImgID").css("display","block");
+
+						selectImgArr.push(imgInfoJsonObject);
+						//添加选中的函数
+
+					} else {
+						$(this).children().children(".choseImg").css("display", "none");
+
+						for (var i = 0; i < selectImgArr.length; i++) {
+							if (selectImgArr[i].imagePath == imgInfoJsonObject.imagePath) {
+								selectImgArr.splice(i, 1);
+								break;
+							}
+						}
+
+					}
+
+					//有勾中 //实现footDiv的显示和隐藏
+					if (selectImgArr.length > 0) {
+						$("#footDiv").css("display", "block");
+
+					} else {
+						$("#footDiv").css("display", "none");
+					}
+
+				});
+
+				//图片定位处理
+				function getImgArrLocation() {
+
+					var latitude = '';
+
+					var longitude = '';
+
+					if (lastInfo) {  //如果上次已定位过一次，则执行
+
+						var curDate = new Date();
+						var lastLocationObject = TempCache.getItem("lastLocation");
+						var lastTime = JSON.parse(lastLocationObject).locationTime;
+						lastTime = lastTime.replace(/-/g, "/");
+						var lastDate = new Date(lastTime);
+						var date3 = curDate.getTime() - lastDate.getTime();
+						//时间差的毫秒数
+
+						var lastLocationObject = TempCache.getItem("lastLocation");
+
+						latitude = JSON.parse(lastLocationObject).latitude;
+
+						longitude = JSON.parse(lastLocationObject).longitude;
+
+						//小于5分钟
+						if (date3 < (1000 * 60 * 5)) {
+							var lastLocationObject = TempCache.getItem("lastLocation");
+
+							latitude = JSON.parse(lastLocationObject).latitude;
+
+							longitude = JSON.parse(lastLocationObject).longitude;
+
+							getImgLocation(latitude, longitude);
+
+							return;
+
+						} else {
+
+						}
+
+					}
+
+					console.log("重新定位");
+
+					LTLoadStart("定位处理中……");
+
+					// ios 使用自带地图导航
+                    
+					if (device.platform == "iOS") {
+						navigator.geolocation.getCurrentPosition(function getPositionSuccess(position) {
+
+							LTStopLoading();
+                                                      
+							getImgLocation(position.coords.latitude.toFixed(8), position.coords.longitude.toFixed(8));
+
+						}, function(error) {
+
+							LTStopLoading();
+
+							navigator.notification.confirm('定位失败!', // message
+							function() {
+
+							}, // callback to invoke with index of button pressed
+							'提示', // title
+							['确定'] // buttonLabels
+							);
+
+							getImgLocation(0.00000000, 0.00000000);
+
+						}, {
+							timeout : 15000
+						});
+					} else {                //安卓使用百度地图定位
+                     
+						var noop = function() {
+						};
+						BDLocGetCurrentPosition(function(pos) {
+							LTStopLoading();
+							getImgLocation(pos.lati,pos.longi);
+							BDLocStop(noop, noop);
+						}, function(e) {
+							navigator.notification.confirm(JSON.stringify(e), // message
+							function() {
+
+							}, // callback to invoke with index of button pressed
+							'提示', // title
+							['确定'] // buttonLabels
+							);
+							getImgLocation(0.00000000, 0.00000000);
+							BDLocStop(noop, noop);
+						});
+					}
+
+				}
+
+				//设置图片经纬度
+				function getImgLocation(latitudeArg, longitudeArg) {
+
+					console.log("getImgLocation coming");
+
+					var jsonStrArr = new Array();
+					//存储json 对象的数组
+
+					insertImgData(userPicArr, latitudeArg, longitudeArg, function success() {
+
+						console.log("数据库加载图片？");
+
+						initDataFormDB();
+
+					});
+
+					//最近一次定位的信息
+					var lastLocationObject = new Object();
+					var d = new Date();
+					var YMDHMS = d.getFullYear() + "-" + (d.getMonth() + 1) + "-" + d.getDate() + " " + d.getHours() + ":" + d.getMinutes() + ":" + d.getSeconds();
+					lastLocationObject.locationTime = YMDHMS;
+					lastLocationObject.latitude = latitudeArg;
+					lastLocationObject.longitude = longitudeArg;
+                    
+
+					var lastLocationJsonStr = JSON.stringify(lastLocationObject);
+
+					lastInfo = lastLocationJsonStr;
+
+					TempCache.setItem("lastLocation", lastLocationJsonStr);
+
+				}
+
+				//插入图片信息递归方法
+				function insertImgData(arrayArgs, latitudeArg, longitudeArg, successCallBack) {
+
+					if (arrayArgs.length <= 0) {
+
+						console.log("递归结束!!!");
+						successCallBack();
+						return;
+
+					} else {
+						var imgObject = new Object();
+						imgObject.imagePath = arrayArgs[0].ImgPath;
+						imgObject.takeTime = arrayArgs[0].TakeTime;
+						imgObject.formID = "";
+						imgObject.latitude = latitudeArg;
+						imgObject.longitude = longitudeArg;
+						imgObject.showTime = arrayArgs[0].showTime;
+
+						imgObject.upLoader = TempCache.getItem("userName");
+						var db = window.sqlitePlugin.openDatabase({
+							name : "LTDB"
+						});
+
+						db.transaction(function(tx) {
+							SQLiteTool.init(tx);
+							SQLiteTool.insertImgData(db, imgObject, function() {
+
+								arrayArgs.splice(0, 1);//删除第一条数据
+								
+								insertImgData(arrayArgs, latitudeArg, longitudeArg, successCallBack);
+
+							});
+
+						});
+
+					}
+
+				}
+
+				//从数据库初始化数据
+				function initDataFormDB() {
+                    console.log("从数据库初始化数据");
+
+					$("#picListView").empty();
+                    
+                    PicNum = 0; //显示的图片数目先清零
+
+					selectImgArr.splice(0, selectImgArr.length);
+					//清空数组
+
+					var db = window.sqlitePlugin.openDatabase({
+						name : "LTDB"
+					});
+                    
+                   
+
+					SQLiteTool.getImgDataNotFile(db, function successCallBack(resultArr) {
+
+						var numberOfImg = resultArr.length;
+                         PicNum = numberOfImg;
+                         console.log("未分类的图片个数："+numberOfImg);
+
+						var today = '';
+
+						if (numberOfImg > 0) {
+							today = resultArr[0].takeTime;
+
+							var allHtml = '';
+
+							for (var i = 0; i < resultArr.length; i++) {
+								if ((i == 0) || (resultArr[i].takeTime != today)) {
+									today = resultArr[i].takeTime;
+                                    //显示拍摄时间！
+									allHtml = "<li data-icon='false' id ='lastli' style='float:left; width:98%;height:30px;margin: 20px,0px,20px,0px;padding-top:10px;padding-bottom:10px; display:block'><div style='padding-top:10px;padding-bottom:10px'><div style='height:1px;background:#ccc;width:100%'></div><div class='txt-center' style='color:#ccc'>" + resultArr[i].takeTime + "</div></div></li>" + allHtml;
+                                    
+									lastDate = today;
+                                    
+
+								}
+
+								var imgObject = new Object();
+
+								var showImgURL = "";
+
+								if (device.platform == "iOS") {
+
+									showImgURL = IOSDocPath + "/" + resultArr[i].imagePath;
+
+								} else {
+									showImgURL = resultArr[i].imagePath;
+								}
+
+								imgObject.imagePath = resultArr[i].imagePath;
+
+								imgObject.formID = resultArr[i].formID;
+
+								imgObject.latitude = resultArr[i].latitude;
+
+								imgObject.longitude = resultArr[i].longitude;
+								imgObject.takeTime = resultArr[i].takeTime;
+
+								//尼玛坑爹啊，空格传了会出问题
+								imgObject.showTime = (resultArr[i].showTime).replace(" ", "@");
+
+								imgObject.upLoader = resultArr[i].upLoader;
+
+								var jsonStr = JSON.stringify(imgObject);
+
+								allHtml = "<li  style='float:left;padding: 1px;border: 1px solid #FFFFFF;margin: 2px; width:88px; display:block' imgInfo=" + jsonStr + "><a href='#'><img class='imgStyle' src='" + showImgURL + "'><img id='checkImgID' class='choseImg' data-role='button' src='../img/choseMark.png' data-iconpos='notext'  ></a></li>" + allHtml;
+                                                 
+                               
+
+							}
+                              console.log("allHtml"+allHtml);
+                            
+							$("ul#picListView").prepend(allHtml);
+						}
+                        console.log("图片数目:"+PicNum);
+                        if(isReturn)
+                        {
+                            console.log("回来，判断提交是否有误");
+                                                 console.log("PicNum"+PicNum);
+                                                 console.log("lastNum"+lastNum);
+                                if(PicNum == lastNum)
+                                                 {
+                                                 console.log("有误！！");
+                                                 navigator.notification.confirm('提交有误，请再次提交', // message
+                                                                                function callback() {
+                                                                                
+                                                                                }, // callback to invoke with index of button pressed
+                                                                                '提示', // title
+                                                                                ['确定'] // buttonLabels
+                                                                                );
+                                                 var db = window.sqlitePlugin.openDatabase({
+                                                                                           name : "LTDB"
+                                                                                           });
+                                                 SQLiteTool.queryImageForms(db, 0, function(jsonArr) {
+                                                                            changeUnSumbitSpan(jsonArr.length);
+                                                                            });
+                                                 }
+                        }
+                                                 
+					});
+
+				}
+
+				//取消归类
+				function cancleFiling() {
+					console.log("取消归类");
+
+					$("li").children().children(".choseImg").css("display", "none");
+					selectImgArr.splice(0, selectImgArr.length);
+
+					$("#footDiv").css("display", "none");
+					console.log("cancleFiling selectImgArr.length:" + selectImgArr.length);
+				}
+
+				//归类
+				function Filing() {
+
+					if (selectImgArr.length <= 0) {
+
+						navigator.notification.confirm('当前没有选中照片', // message
+						function callback() {
+
+						}, // callback to invoke with index of button pressed
+						'提示', // title
+						['确定'] // buttonLabels
+						);
+
+						return false;
+					}
+
+					console.log("归类");
+					var arrJsonStr = JSON.stringify(selectImgArr);
+
+					TempCache.setItem("selectImgArr", arrJsonStr);
+                  
+
+					$.mobile.changePage("strucSelect.html");
+
+				}
+
+				//修改未提交的数目
+				function changeUnSumbitSpan(numberOfUnSumit) {
+
+					$("#unSumbitSpan").html(numberOfUnSumit);
+
+				}
+
+				//点击未提交
+				function clickUnSumbit() {
+					console.log("点击未提交");
+                    
+					$.mobile.changePage("formlist.html");
+
+				}
+
+                //从别的页面调回本页面
+				$("#uploadPage").on('pageshow', onPageShow);
+
+				function onPageShow(event) {
+					// setTimeout(loaded, 200);
+                    console.log("takePic!!!!");
+                    
+                    var db = window.sqlitePlugin.openDatabase({
+                                                              name : "LTDB"
+                                                              });
+					var structStr = TempCache.getItem("struct");
+
+					if (structStr && "" != structStr) {
+                        
+                        console.log("takePic!!!! if");
+						// 从分项结构选择控件中返回
+                        isReturn = 1;
+						var struct = JSON.parse(structStr);
+						console.log("有struct:" + struct.LotImgStruc_ID);
+						fil(struct); //会刷新未提交图片的显示
+                        lastNum = PicNum;
+
+
+                        //之前显示未提交数目的SQL请求有bug，现在直接读取未提交影像资料的表单数目来显示，保证关系对应
+                        SQLiteTool.queryImageForms(db, 0, function(jsonArr) {
+                                                   console.log("影像拍摄界面  表单个数："+jsonArr.length);
+                                                   changeUnSumbitSpan(jsonArr.length+1);
+                                                   });
+
+					} else {
+                         console.log("takePic!!!! else");
+                        
+                        
+                            initDataFormDB();
+                       
+                        
+                       //没有进入分项结构选择，直接删除图片信息
+                       isReturn = 0;
+						var isAfterDelete = TempCache.getItem("isAfterDelete");
+						if (isAfterDelete == "true") {
+							//initDataFormDB();
+							//重新刷新图片信息。
+							TempCache.setItem("isAfterDelete", "false");
+						}
+    
+    
+                    SQLiteTool.queryImageForms(db, 0, function(jsonArr) {
+                         changeUnSumbitSpan(jsonArr.length);
+                      });
+
+					}
+                    console.log("刷新图片信息！！！");
+                    console.log("应被删除的struct"+struct);
+					TempCache.removeItem("struct");
+                    
+  
+
+
+
+
+
+				}
+
+				function fil(struct) {
+					var db = window.sqlitePlugin.openDatabase({
+						name : "LTDB"
+					});
+					SQLiteTool.insertImgForm(db, struct.LotImgStruc_ID, struct.FullPath, selectImgArr, function() {
+						console.log("form 归档成功");
+						initDataFormDB();
+						//刷新数据
+					});
+                    $("#footDiv").css("display", "none");
+				}
+
+				//删除图片
+				function deletPicture() {
+
+					console.log("删除照片");
+
+					navigator.notification.confirm('确定要删除所选图片?', // message
+					deleteSure, // callback to invoke with index of button pressed
+					'提示', // title
+					['确定', '取消'] // buttonLabels
+					);
+
+				}
+
+				function deleteSure(buttonIndex) {
+
+					if (buttonIndex == 1) {
+
+						var db = window.sqlitePlugin.openDatabase({
+							name : "LTDB"
+						});
+
+						SQLiteTool.deletImgDataWithPaths(db, selectImgArr, function() {
+
+							console.log("成功删除多个");
+							selectImgArr.splice(0, selectImgArr.length);
+							//清空数组
+
+							initDataFormDB();
+
+						});
+
+					} else {
+						console.log("取消删除");
+					}
+
+				}
+
+			</script>
+			<div data-role="header" data-position="fixed" style="height:48px">
+				<a style="top:8px" href="#" class="ui-btn-left ui-btn ui-btn-inline ui-btn-icon-left ui-icon-carat-l ui-btn-icon-notext ui-corner-all" data-rel="back">Cancel</a>
+				<h1 style="position:relative;top:5px">影像拍摄</h1>
+
+				<a style="position:absolute;right:-1px;top:7px;background:none;color:white;border:none" data-shadow="false" onclick="clickUnSumbit()"><span  id="unSumbitSpan" class="ui-slider-inner-label" style="background:#f8614e;border-radius:10px;min-width:30px;min-height:20px;display: inline-block;vertical-align: middle;padding-top:4px;position: relative;top: -2px;left:-2px">0</span>未提交</a>
+
+			</div>
+
+			<div data-role="content" >
+
+				<div data-role="controlgroup" data-type="vertical" data-iconpos="center">
+					<a href="#" data-role="button" data-corners='false' onclick="takePic()"><span><img src='../img/camera.png' style="float:left;width:16px; height:16px;margin-left:39%;margin-top:1%"></span><span style='float:left;margin-left:1%'>拍照</span></a>
+
+					<a href="#" data-role="button" data-corners='false' onclick="chosePic()" ><span><img src='../img/photo.png' style="float:left;width:16px; height:16px;margin-left:39%;margin-top:1%"></span><span style='float:left;margin-left:1%'>照片</span></a>
+
+				</div>
+
+				<div style="margin-top:20px">
+					<ul data-role="none" data-inset="false" id="picListView" style="padding:0;margin:0 auto;display:block">
+
+					</ul>
+				</div>
+
+			</div>
+            
+            <!-- display:none,让本div一开始处于隐藏状态 -->
+
+			<div id="footDiv" data-role="footer" align="center" style="display:block;width:100%;height:35px;background:none;border:none;position:fixed;bottom:0px;z-index:100">
+                
+				<a  onclick="deletPicture()" style="padding:0px;margin:0 auto;float:left;width:32%;height:35px;border-color:#f8614e;color:#f8614e;border-width:1px;line-height:35px;border-radius:0px">删除</a>
+				<a  onclick="cancleFiling()" style="padding:0px;margin:0 auto;float:left;width:34%;height:35px;border-color:#aecee0;border-width:1px;line-height:35px;border-radius:0px">取消归类</a>
+               <a  onclick="Filing()" style="padding:0px;margin:0 auto;float:left;width:32%;height:35px;border-color:#ffbd58;color:#ffbd58;border-width:1px;line-height:35px;border-radius:0px">归类</a>
+				
+			</div>
+
+		</div>
+
+	</body>
+</html>
+

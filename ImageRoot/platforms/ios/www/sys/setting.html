@@ -1,0 +1,816 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8" />
+        <meta name="format-detection" content="telephone=no" />
+        <!-- WARNING: for iOS 7, remove the width=device-width and height=device-height attributes. See https://issues.apache.org/jira/browse/CB-4323 -->
+        <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width, height=device-height" />
+        <link rel="stylesheet" type="text/css" href="../vendor/jquery-mobile/ltkj.min.css" />
+        <link rel="stylesheet" type="text/css" href="../vendor/jquery-mobile/jquery.mobile.icons.min.css" />
+        <link rel="stylesheet" type="text/css" href="../vendor/jquery-mobile/jquery.mobile.structure-1.4.0.min.css" />
+        <script type="text/javascript" src="../vendor/jquery-mobile/jquery-2.0.3.min.js"></script>
+        <script type="text/javascript" src="../vendor/jquery-mobile/jquery.mobile-1.4.0.min.js"></script>
+       
+        </script>
+        
+    </head>
+    
+    <body>
+        <div data-role="page" id="pageone" data-dom-cache="true">
+           <style>
+               .p-location{
+               
+               position:absolute;
+               top:1.0em;
+               right:1.5em;
+               margin:0;
+               text-align:right;
+               color:#ccc;
+               font-size:12px;
+               
+               }
+            .scrollHeadDiv
+            {
+               background:#6cabcc;
+               color:#ffffff;
+               height:30px;
+               
+               
+               
+            }
+            .li-style
+            {
+               
+               min-height:40px;
+               
+            }
+            .li-a
+            {
+                vertical-align:middle;
+                color:#ffffff;
+                line-height:30px;
+                text-align:center;
+                background:#6cabcc;
+                font-size:12px;
+            
+            }
+           
+            </style>
+           
+           <script type="text/javascript">
+               
+               var  clearImgIndex = 0;
+               
+               var updateDownURL;//最新下载地址
+               
+               // 默认版本号为1.0.1
+               TempCache.setItem("Version","1.0.1");
+               // 自动获取版本号
+               wizUtils.getBundleVersion(function(version){
+                                          TempCache.setItem("Version",version);
+                                         });
+
+
+               //纪录版本号，要么要写插件，这是取巧的方法
+               //TempCache.setItem("VersionOfIOS","1.0.0");
+               //TempCache.setItem("VersionOfAndroid","1.0.1");
+               
+               if(TempCache.getItem("lotImgType")=='1')
+               {
+                   $("#lotImgType").html("承包人");
+               
+               }
+               if(TempCache.getItem("lotImgType")=='2')
+               {
+                 $("#lotImgType").html("监理");
+               
+               }
+               if(TempCache.getItem("lotImgType")=='3')
+               {
+                  $("#lotImgType").html("业主");
+               
+               }
+               if(TempCache.getItem("lotImgType")=='4')
+               {
+                  $("#lotImgType").html("其他");
+               
+               }
+           
+           
+                
+                
+              var typeArr = TempCache.getItem("type").split(",");
+              var html="";
+              for(var i = 0;i<typeArr.length;i++)
+              {
+                  
+                var value ='';
+              
+                if(typeArr[i]=='1')
+                {
+                    value="承包人";
+                
+                }
+                if(typeArr[i]=='2')
+                {
+                    
+                    value="监理";
+                }
+                if(typeArr[i]=='3')
+                {
+                    
+                    value="业主";
+                }
+                if(typeArr[i]=='4')
+                {
+                    
+                    value="其他";
+                }
+              
+              
+                 html = html+"<li><a onclick='changeType("+typeArr[i]+")'>"+value+"</a></li>";
+              
+              
+              
+              }
+              $("#changeLotImgTypeList").append(html);
+           
+           
+              function changeType(typeArgs)
+              {
+                  
+                 
+                  $("#lotImgTypeMenu").hide();
+                  TempCache.setItem("lotImgType",typeArgs);
+                  
+                  console.log("cur lotImgType:"+TempCache.getItem("lotImgType"));
+                  
+                  
+                  var value ='';
+                  
+                  if(typeArgs=='1')
+                  {
+                      value="承包人";
+                      
+                  }
+                  if(typeArgs=='2')
+                  {
+                      
+                      value="监理";
+                  }
+                  if(typeArgs=='3')
+                  {
+                      
+                      value="业主";
+                  }
+                  if(typeArgs=='4')
+                  {
+                      
+                      value="其他";
+                  }
+              
+                  $("#lotImgType").html(value);
+              }
+           
+           
+               function refreshInfo()
+               {
+                  
+                
+                  navigator.notification.confirm(
+                                                  '确定要更新标段信息?', // message
+                                                  refreshSure,            // callback to invoke with index of button pressed
+                                                  '提示',           // title
+                                                  ['确定','取消']         // buttonLabels
+                                                  );
+               }
+               function refreshSure(buttonIndex)
+               {
+                  
+              
+                if(buttonIndex==1)
+                {
+                   
+                   /*
+                   navigator.notification.confirm(
+                                                   '当前已经是最新标段', // message
+                                                    function(){
+                                                  
+                                                  },            // callback to invoke with index of button pressed
+                                                   '提示',           // title
+                                                   ['确定']         // buttonLabels
+                                                   );
+                    return false;*/
+		if ("none" == navigator.connection.type || "unknown" == navigator.connection.type) {
+			
+                   navigator.notification.confirm(
+                                                   '当前没有可用的网络连接', // message
+                                                    function(){
+                                                  
+                                                  },            // callback to invoke with index of button pressed
+                                                   '提示',           // title
+                                                   ['确定']         // buttonLabels
+                                                   );
+			return;
+		} else {
+                   getBDAndStruc();
+                  }
+                }
+                else
+                {  
+                }
+              
+             //   $('#refreshli').buttonMarkup({icon:"edit",iconpos:"right",shadow: "false"}).css("border","1px");
+              
+             // $(this).buttonMarkup({ icon: "star",iconpos: "right",shadow: "false"}).css("border","1px");
+
+              
+                  
+//                  $('#refreshli').removeClass ('ui-icon-refresh');
+//                  $('#refreshli').addClass ('ui-icon-check');
+//                  
+//                  $("#settingListview").listview("refresh");
+
+                 
+               
+               }
+               
+                function getBDAndStruc() {
+                loadStart("正在获取标段信息,请稍后...", "a", "true");
+                var updateTime = "";
+                if (TempCache.getItem("updateTime")) {
+                	updateTime = TempCache.getItem("updateTime");
+                }
+                var args = {"EmployeeId":TempCache.getItem("empid"),"UpdateTime":updateTime};
+                NetConnect.getServer(args, "ForBDStruc.ashx", function successCallBack(backJson){
+                                     if("true" == backJson.success) {
+                                     console.log("获取标段："+backJson.BD);
+                                     var bds = backJson.BD;
+                                     var strucs = backJson.LotImgStuct;
+                                     SQLiteTool.insertBD(db, bds);
+                                     SQLiteTool.insertStruc(db, strucs);
+                                     var d = new Date();
+                                     var YMDHMS = d.getFullYear() + "-" +(d.getMonth()+1) + "-" + d.getDate() + " " + d.getHours() + ":" + d.getMinutes() + ":" + d.getSeconds();
+                                     TempCache.setItem("updateTime", YMDHMS);
+                                     navigator.notification.confirm(
+                                                  '更新数据完毕', // message
+                                                  function () {},            // callback to invoke with index of button pressed
+                                                  '提示',           // title
+                                                  ['确定','取消']         // buttonLabels
+                                                  );
+                                     } else {
+                                     //shwoTip("获取标段信息失败！", "a", "true");
+                                     }
+                                     loadStop();
+                                     },function failCallBack(errorJson){
+                                     loadStop();
+                                     console.log("获取标段失败："+JSON.stringify(errorJson));
+                                     //shwoTip("获取标段信息失败！", "a", "true");
+                                     });
+            }
+              
+           
+               function clearImg(index)
+               {
+                   $("#clearMenu").hide();
+                   
+
+                   clearImgIndex = index;
+                   
+                   navigator.notification.confirm(
+                                                  '确定要删除该时间段内的影像?', // message
+                                                  clearSure,            // callback to invoke with index of button pressed
+                                                  '提示',           // title
+                                                  ['确定','取消']         // buttonLabels
+                                                  );
+                   
+               }
+                function clearSure(buttonIndex)
+                {
+                    if(buttonIndex==1)
+                    {
+                        
+                        
+                        var beginDate;
+                        var endDate;
+                        var curDate = new Date();
+                        switch(clearImgIndex){
+                            case 1:
+                            {
+                                console.log("清除一周");
+                                
+                                
+                                
+                                beginDate = getYestoday(curDate,7);
+                                
+                                endDate = getYestoday(curDate,1);
+                                
+  
+                                
+                                
+                                
+                            }
+                            break;
+                            case 2:
+                            {
+                                console.log("清除一个月");
+                                beginDate = getLastMonthYestday(curDate,1);
+                                
+                                endDate = getYestoday(curDate,1);
+                            }
+                            break;
+                            case 3:
+                            {
+                                console.log("清除三个月");
+                                beginDate = getLastMonthYestday(curDate,3);
+                                
+                                endDate = getYestoday(curDate,1);
+                            }
+                            break;
+                            default:
+                            {
+                                
+                            }
+                        }
+                        
+                        var db = window.sqlitePlugin.openDatabase({
+                                                                  name : "LTDB"
+                                                                  });
+ 
+                                                                  SQLiteTool.deletImgDataBeforeTheDate(db,beginDate,function success(){
+                                                                                                       
+                                                                                                       TempCache.setItem("isAfterDelete","true");
+                                                                                                       navigator.notification.confirm(
+                                                                                                                                      '影像清除成功!', // message
+                                                                                                                                      function(){
+                                                                                                                                      },
+                                                                                                                                      '提示',
+                                                                                                                                      ['确定']
+                                                                                                                                      );
+                                                                                                       
+                                                                                                       },function failuer()
+                                                                                                       {
+                                                                                                       
+                                                                                                       
+                                                                                                       
+                                                                                                       });
+                                                                  
+                                                                 
+
+                                                                  
+                                                                
+                                                                  
+                                                                  
+                                                                  
+                                                                 
+                                                                                        
+                                                                                        
+                                                                                        
+                    }
+                    else
+                    {
+                    
+                        console.log("点击取消删除");
+                        
+                    }
+                    
+                    
+                   
+                
+                }
+           
+                //检查版本更新
+               function checkUpDate()
+               {
+                   //getServer:function(args,serverName,successCallBack,failCallBack)
+               
+               var argsObject = {};
+               
+               
+               if(device.platform=="iOS")
+               {
+                   argsObject.phoneType = "1";
+                   argsObject.phoneVersionNo = TempCache.getItem("Version"); //版本号
+               }
+               else
+               {
+                   argsObject.phoneType = "2";
+                   argsObject.phoneVersionNo = TempCache.getItem("Version"); //版本号
+               }
+               
+               
+               
+               
+               
+               console.log("phoneVersionNo:"+argsObject.phoneVersionNo);
+               console.log("platform:"+device.platform);
+               
+               
+               NetConnect.getServer(argsObject,"ForVersionUp.ashx",function(backJson)
+                                         {
+                                    
+                                    
+                                    
+                                    
+                                            //有新版本
+                                            if((backJson.Message)=='true')
+                                            {
+                                                updateDownURL = backJson.DownloadUrl;
+                                    
+                                                
+                                    
+                                                console.log("updateDownURL:"+updateDownURL);
+                                    
+                                    
+                                                navigator.notification.confirm(
+                                                                   '有最新版本'+backJson.VersionNo+',是否前往下载？', // message
+                                                                   function goToDownLoad(buttonIndex){
+                                                                               if(buttonIndex==1){
+                                                                               
+                                                                               if(device.platform=="iOS")
+                                                                               {
+                                                                                 var ref = window.open(encodeURI(updateDownURL), '_system', 'location=no');
+                                                                               
+                                                                               }
+                                                                               else
+                                                                               {
+                                                                               navigator.app.loadUrl(updateDownURL,{openExternal:true});
+                                                                               }
+                                                                              
+                                                                               
+//                                                                                window.open(updateDownURL, "_system");
+                                                                               }
+                                                                               else{
+                                                                               
+                                            
+                                                                               }
+                                                                               
+                                                                               
+                                                                   },
+                                                                   '提示',           // title
+                                                                   ['确定','取消']         // buttonLabels
+                                                                   );
+                                    
+                                            }
+                                            else
+                                            {
+                                                navigator.notification.confirm(
+                                                                   '当前已经是最新版本了', // message
+                                                                    function(){
+                                                                               
+                                                                               },            // callback to invoke with index of button pressed
+                                                                   '提示',           // title
+                                                                   ['确定']         // buttonLabels
+                                                                   );
+                                            }
+                                    
+                                    
+                                    
+                                            console.log("ForVersionUp"+JSON.stringify(backJson));
+                                            console.log("message:"+backJson.Message);
+                                         
+                                         },function(e)
+                                         {
+                                         
+                                            navigator.notification.confirm(
+                                                                   '请求超时!', // message
+                                                                   function(){
+                                                                   },
+                                                                   '提示',
+                                                                   ['确定']
+                                                                   );
+                                         })
+               
+               }
+                function showClearMenu()
+                {
+                   
+                   
+                   
+                    $("#clearMenu").show();
+               
+                }
+           
+           
+                function showlotImgTypeMenu()
+                {
+                    $("#lotImgTypeMenu").show();
+                
+                }
+           
+                //获得n个天前的日期
+                function getYestoday(date,numberOfDay){
+                    
+                    console.log("getYestoday!!!");
+                   
+                    var yesterday_milliseconds=date.getTime()-1000*60*60*24*numberOfDay;
+                    var yesterday = new Date();
+                    yesterday.setTime(yesterday_milliseconds);
+               
+                    var strYear = yesterday.getFullYear();
+                    var strDay = yesterday.getDate();
+                    var strMonth = yesterday.getMonth()+1;
+                    if(strMonth<10)
+                    {
+                        strMonth="0"+strMonth;
+                    }
+                    if(strDay<10)
+                    {
+                        strDay="0"+strDay;
+                    }
+                    datastr = strYear+"-"+strMonth+"-"+strDay;
+                    return datastr;
+                }
+                //获得n个月在昨天这一天的日期
+                function getLastMonthYestday(date,numberOfMonth){
+                    var daysInMonth = new Array([0],[31],[28],[31],[30],[31],[30],[31],[31],[30],[31],[30],[31]);
+                    var strYear = date.getFullYear();
+                    var strDay = date.getDate();
+                    var strMonth = date.getMonth()+1;
+                    if(strYear%4 == 0 && strYear%100 != 0){
+                   daysInMonth[2] = 29;
+               }
+               if(strMonth - parseInt(numberOfMonth) == 0)
+               {
+                   strYear -= 1;
+                   strMonth = 12;
+               }
+               else
+               {
+                   strMonth -= parseInt(numberOfMonth);
+               }
+               strDay = daysInMonth[strMonth] >= strDay ? strDay : daysInMonth[strMonth];
+               if(strMonth<10)
+               {
+                   strMonth="0"+strMonth;
+               }   
+               if(strDay<10)     
+               {     
+                   strDay="0"+strDay;     
+               }   
+               datastr = strYear+"-"+strMonth+"-"+strDay;   
+               return datastr;   
+           }
+           function getLastYearYestday(date){
+               var strYear = date.getFullYear() - 1;
+               var strDay = date.getDate();
+               var strMonth = date.getMonth()+1;
+               if(strMonth<10)
+               {
+                   strMonth="0"+strMonth;
+               }
+               if(strDay<10)
+               {
+                   strDay="0"+strDay;
+               }   
+               datastr = strYear+"-"+strMonth+"-"+strDay;   
+               return datastr;   
+           }
+           
+           
+           
+           //设置更新标段
+           function settingGetUserBDInfo()
+           {
+               LTLoadStart("正在获取标段权限,请稍后...");
+               var updateTime = "";
+              
+               var args = {"EmployeeId":TempCache.getItem("empid"),"UpdateTime":updateTime};
+               
+               
+               NetConnect.getServer(args, "ForBD.ashx", function successCallBack(backJson){
+                                    if("true" == backJson.success) {
+                                    
+                                       
+                                    
+                                    //所有标段
+                                    var bds = backJson.BD;
+                                    
+                                    
+                                    if(bds.length>0)
+                                    {
+                                     
+                                    //多个标段
+                                    if(bds.length>1)
+                                    {
+                                    
+                                    var tempHtml='';
+                                    
+                                    
+                                    for(var i=0;i<bds.length;i++)
+                                    {
+                                    
+                                    tempHtml = tempHtml+"<li class='li-style' data-icon='false' ><a class='li-a' onclick = settingGetImgStruct('"+bds[i].BD_ID+"','"+""+"')>"+bds[i].Name+"</a></li>";
+                                    
+                                    
+                                    }
+                                    
+                                    $("#updateBDList").append(tempHtml);
+                                    $("#updateBDList").listview("refresh");
+                                    $('#updetePop').popup('open');
+                                    
+                                    
+                                    
+                                    }//一个标段
+                                    else
+                                    {
+                                    
+                                    
+                                    
+                                    var tempCurBD = bds[0];
+                                    
+                                    
+                                    
+                                    settingGetImgStruct(tempCurBD.BD_ID,"");
+                                    
+                                    
+                                    
+                                    
+                                    
+                                    
+                                    }
+                                    
+                                    
+                                    }
+                                    
+                                    
+                                    var d = new Date();
+                                    var YMDHMS = d.getFullYear() + "-" +(d.getMonth()+1) + "-" + d.getDate() + " " + d.getHours() + ":" + d.getMinutes() + ":" + d.getSeconds();
+                                    TempCache.setItem("updateTime", YMDHMS);
+                                    } else {
+                                    //shwoTip("获取标段信息失败！", "a", "true");
+                                    }
+                                    LTStopLoading();
+                                    },function failCallBack(errorJson){
+                                    LTStopLoading();
+                                    console.log("获取标段失败："+JSON.stringify(errorJson));
+                                    //shwoTip("获取标段信息失败！", "a", "true");
+                                    });
+                                    
+                                    
+                                    
+                                    
+           }
+           
+           //请求标段下的结构体信息
+           function settingGetImgStruct(bdID,lastUpdateTime)
+           {
+               
+               $('#updetePop').popup('close');
+               LTLoadStart("正在获取标段信息,请稍后...");
+               
+               SQLiteTool.getBDUpDateTimeWithID(db,bdID,function(res){
+                                                
+                                                
+                                                var  BdlastUpdateTime = res;
+                                                
+                                                var args = {"BdId":bdID,"UpdateTime":BdlastUpdateTime};
+                                                
+                                                
+                                                NetConnect.getServer(args, "ForImgStruc.ashx", function successCallBack(backJson){
+                                                                     if("true" == backJson.success) {
+                                                                     
+                                                                     
+                                                                     
+                                                                     console.log("标段结构信息:"+JSON.stringify(backJson));
+                                                                     
+                                                                     
+                                                                     
+                                                                     var strucs = backJson.LotImgStruc;
+                                                                     
+                                                                     SQLiteTool.insertStruc(db, strucs);
+                                                                     
+                                                                     
+                                                                     var d = new Date();
+                                                                     var YMDHMS = d.getFullYear() + "-" +(d.getMonth()+1) + "-" + d.getDate() + " " + d.getHours() + ":" + d.getMinutes() + ":" + d.getSeconds();
+                                                                     
+                                                                     
+                                                                     
+                                                                     
+                                                                     SQLiteTool.upBDTable(db,bdID,YMDHMS,function()
+                                                                                          {
+                                                                                          
+                                                                                          console.log("插入获取标段的结构最新数据");
+                                                                                          
+                                                                                          })
+                                                                     
+                                                                     
+                                                                     
+                                                                     } else {
+                                                                     //shwoTip("获取标段信息失败！", "a", "true");
+                                                                     }
+                                                                     LTStopLoading();
+                                                                     },function failCallBack(errorJson){
+                                                                     LTStopLoading();
+                                                                     console.log("获取标段失败："+JSON.stringify(errorJson));
+                                                                     //shwoTip("获取标段信息失败！", "a", "true");
+                                                                     });
+                                                
+                                                
+                                                
+                                                
+                                                
+                                                
+                                                });
+                                                
+                                                
+                                                
+                                                
+                                                
+                                                
+           }
+           
+           
+           
+           
+           
+            </script>
+           
+           
+           <div data-role="popup" id="updetePop" style="position:relative;top:-50px">
+               
+               
+               <div data-role="list-divider" data-position="fixed" style="display:block;color:#ffffff;background:#6cabcc;height:30px;line-height:30px;text-align:center">更新标段</div>
+               
+               
+               <ul data-role="listview" data-scroll="true" style="width:260px;max-height:200px;overflow:auto" id="updateBDList">
+                
+                   
+               </ul>
+               
+           </div>
+           
+          
+           
+           
+           
+           
+            <div data-role="popup" id="clearMenu">
+                <ul data-role="listview" style="min-width:200px;">
+                    <li data-role="list-divider">选择时间</li>
+                    <li>
+                        <a onclick="clearImg(1)">一周以前</a>
+                    </li>
+                    <li>
+                        <a onclick="clearImg(2)">一个月以前</a>
+                    </li>
+                    <li>
+                        <a onclick="clearImg(3)">三个月以前</a>
+                    </li>
+                </ul>
+            </div>
+            
+            
+            <div data-role="popup" id="lotImgTypeMenu">
+                <ul data-role="listview" style="min-width:200px;" id="changeLotImgTypeList">
+                    <li data-role="list-divider">选择角色</li>
+                    
+                </ul>
+            </div>
+   
+   
+   
+           
+            <div style="height:48px;" data-role="header">
+                <h1 style="position:relative;top:5px">设置</h1>
+                <a style="top:8px" href="#"  class="ui-btn-left ui-btn ui-btn-inline ui-btn-icon-left ui-icon-carat-l ui-btn-icon-notext ui-corner-all" data-rel="back" >
+                </a>
+            </div>
+            
+            <div data-role="content">
+                <ul data-role="listview" data-inset="true" id="settingListview">
+                    
+                    <li data-icon="refresh" onclick="settingGetUserBDInfo()" id="refreshli">
+                        <a href="#" >刷新标段资料</a>
+                    </li>
+                    
+                    <li data-icon="false">
+                        <a href="#clearMenu"  onclick="showClearMenu()" data-rel="popup">清除影像</a>
+                    </li>
+                    <li data-icon = "false">
+                        <a href="#lotImgTypeMenu" onclick="showlotImgTypeMenu()" data-rel="popup">角色修改</a>
+                        <p id="lotImgType" style="position:absolute;top:15px;right:1.5em;margin:0;text-align:right;color:#ccc;font-size:12px;"></p>
+                    </li>
+                    <li data-icon = "false" onclick="checkUpDate()">
+                        <a href="#" >版本更新</a>
+                        <p style="position:absolute;top:15px;right:1.5em;margin:0;text-align:right;color:#ccc;font-size:12px;"></p>
+                    </li>
+                    
+                </ul>
+                
+               <a href="about.html" data-role="button" data-transition="none" data-icon="arrow-r" data-iconpos="right" style="text-align:left;">关于</a>
+               
+               <a href="index.html" id='loginOutBtn' data-role="button"  data-transition="none" style="position:fixed;bottom:30px;background:#2281b4;color:#ffffff; width:80%; height:20px;display: block;">退出登录</a>
+               
+               
+            </div>
+        
+        
+        
+        </div>
+        
+        
+        
+        
+    </body>
+</html>

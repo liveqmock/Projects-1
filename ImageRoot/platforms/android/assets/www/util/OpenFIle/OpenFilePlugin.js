@@ -1,0 +1,1 @@
+﻿/*本地附件打开*///第一个参数是当前文件的路径，后面是包含当前文件的一个文件路径数组function openLocationFile(filePath,filePathArr){    cordova.exec(function success(){                 console.log("附件打开成功")                                  },function failure()                 {                 console.log("附件打开失败");                                  },'OpenFilePlugin','openFile',[filePath,filePathArr]);}

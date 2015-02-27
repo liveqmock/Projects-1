@@ -1,0 +1,485 @@
+<!DOCTYPE html>
+<!--
+ Licensed to the Apache Software Foundation (ASF) under one
+ or more contributor license agreements.  See the NOTICE file
+ distributed with this work for additional information
+ regarding copyright ownership.  The ASF licenses this file
+ to you under the Apache License, Version 2.0 (the
+ "License"); you may not use this file except in compliance
+ with the License.  You may obtain a copy of the License at
+ 
+ http://www.apache.org/licenses/LICENSE-2.0
+ 
+ Unless required by applicable law or agreed to in writing,
+ software distributed under the License is distributed on an
+ "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ KIND, either express or implied.  See the License for the
+ specific language governing permissions and limitations
+ under the License.
+ -->
+<html>
+    <head>
+        <meta charset="utf-8" />
+        <meta name="format-detection" content="telephone=no" />
+        <!-- WARNING: for iOS 7, remove the width=device-width and height=device-height attributes. See https://issues.apache.org/jira/browse/CB-4323 -->
+        <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width, height=device-height" />
+        <meta http-equiv="Access-Control-Allow-Origin" content="*">
+            <link rel="stylesheet" type="text/css" href="../vendor/jquery-mobile/ltkj.min.css" />
+            <link rel="stylesheet" type="text/css" href="../vendor/jquery-mobile/jquery.mobile.icons.min.css" />
+            <link rel="stylesheet" type="text/css" href="../vendor/jquery-mobile/jquery.mobile.structure-1.4.0.min.css" />
+            <script type="text/javascript" src="../vendor/jquery-mobile/jquery-2.0.3.min.js"></script>
+            <script type="text/javascript" src="../vendor/jquery-mobile/jquery.mobile-1.4.0.min.js"></script>
+            <script type="text/javascript" src="../util/SQLiteTool.js"></script>
+            <script type="text/javascript" src="../util/json.js"></script>
+            <script type="text/javascript" src="../util/NetConnect.js"></script>
+            
+            <title>Hello World</title>
+            <script type="text/javascript" src="" id="getAspx"></script>
+            </head>
+    
+    <body>
+        <div id="imgForm" data-role="page" style="height:100%;">
+            <style type="text/css">
+                .divHead {
+                    position: static;
+                    top: 0px;
+                    width: 100%
+                }
+            .divBody {
+                position: relative;
+                top: 20px;
+                width: 100%
+            }
+            
+                </style>
+            
+            <script type="text/javascript" src="../util/upload/LTUploadPlugin.js"></script>
+            <script>
+                /* http://pg99.net/memo/jquery/jquery-mobile-api/jquery-mobile-event-swipe/
+                 swipe，是指在一秒内，水平方向拖拽大于30px，or 垂直方向拖拽小于20px时触发的事件。多长时间拖拽多少px可以配置。
+                 可以通过下面是个4个配置文件来直到那个swipe时间的触发时机。
+                 scrollSupressionThreshold : 抑制滚动px。默认10px。水平方向拖拽大于这个值，将不触发
+                 durationThreshold ： 超过这个时间，就不触发事件。默认1000ms
+                 horizontalDistanceThreshold ： 水平方向滑动超过这个值才会触发事件。默认30px
+                 verticalDistanceThreshold ： 垂直方向，滑动小于这个数字才会触发事件。默认75px
+                 */
+            
+            $.event.special.swipe.scrollSupressionThreshold = 10;
+            $.event.special.swipe.durationThreshold = 1000;
+            $.event.special.swipe.horizontalDistanceThreshold = 70;
+            $.event.special.swipe.verticalDistanceThreshold = 70;
+            
+            var  IOSDocPath ="";//IOS下的Document路径
+            
+            if(device.platform=="iOS")
+            {
+                getIOSPath(function(docPath){
+                           
+                           IOSDocPath = docPath;
+                           
+                           },function(){
+                           
+                           
+                           
+                           
+                           });
+            }
+            
+            
+            var db;
+            var curImgIndex = 0;
+            var formJson;
+            var imgArr;
+            
+            var curImg = "";
+            var formId = TempCache.getItem("formId");
+            TempCache.removeItem("formId");
+            
+            var gFileSystem = {};
+            window.requestFileSystem(LocalFileSystem.PERSISTENT, 0, function(fileSystem) {
+                                     gFileSystem = fileSystem;
+                                     
+                                     }, function(error) {
+                                     
+                                     alert("请求文件目录失败!");
+                                     });
+                                     
+                                     // 图像加载完成之后，调整图片大小
+                                     
+                                     
+                                     $(function() {
+                                       console.log("here????");
+                                       
+                                       $('#showImg').load(function() {
+                                                          adjustImgSize($(this), $(this).parent().width(), $(this).parent().height());
+                                                          //创建div的时候，默认的长宽比是1
+                                                          
+                                                          });
+                                       
+                                       
+                                       $("#submitBtn").css("display","none");
+                                       if (formId) {
+                                       
+                                       db = window.sqlitePlugin.openDatabase({
+                                                                             name : "LTDB"
+                                                                             });
+                                       
+                                       SQLiteTool.queryImages(db, formId, function(json) {
+                                                              console.log("表单数据：" + JSON.stringify(json));
+                                                              formJson = json;
+                                                              imgArr = json.images;
+                                                              curImg = imgArr[curImgIndex];
+                                                              
+                                                              var showImgPath = "";
+                                                              
+                                                              if(device.platform=="iOS"){
+                                                              
+                                                              showImgPath = IOSDocPath+"/"+curImg.imagePath;
+                                                              }
+                                                              else
+                                                              {
+                                                              showImgPath = curImg.imagePath;
+                                                              }
+                                                              //                                showImgPath = curImg.imagePath;
+                                                              
+                                                              $("#showImg").attr("src", showImgPath);
+                                                              if (1 == formJson.uploadState) {
+                                                              $("#submitBtn").css("display","none");
+                                                              } else {
+                                                              $("#submitBtn").css("display","block");
+                                                              }
+                                                              loadImgInfo();
+                                                              whetherHasArrow(curImgIndex, imgArr.length);
+                                                              });
+                                       } else {
+                                       console.log("ERROE: formId=null;");
+                                       }
+                                       
+                                       
+                                       });
+                                       
+                                       //loadImgInfo(beginImgfileid);
+                                       
+                                       function loadImgInfo() {
+                                           $("#imgInfolistview").empty();
+                                           //清空
+                                           
+                                           var li = "<li data-icon='false' style='white-space:normal;color:#6baacd'>" + formJson.imgStrucFullPath + "</li>" + "<li data-icon='false' style='white-space:normal;color:#6baacd' id='takeTimeLi'>拍摄时间:" + curImg.showTime + "</li>"+"<li data-icon='false' style='white-space:normal;color:#6baacd'>拍摄人员:" + curImg.upLoader + "</li>";
+                                           
+                                           $("#imgInfolistview").append(li);
+                                           $("#imgInfolistview").listview("refresh");
+                                           
+                                       }
+            
+            //左滑
+            $("#imgForm").on("swipeleft", function() {
+                             
+                             if (curImgIndex < (imgArr.length - 1)) {
+                             
+                             curImgIndex = parseInt(curImgIndex) + parseInt(1);
+                             
+                             
+                             
+                             curImg = imgArr[curImgIndex];
+                             
+                             var showImgPath = "";
+                             
+                             if(device.platform=="iOS"){
+                             
+                             showImgPath = IOSDocPath+"/"+curImg.imagePath;
+                             }else
+                             {
+                             showImgPath = curImg.imagePath;
+                             }
+                             
+                             
+                             $("#showImg").attr("src", showImgPath);
+                             
+                             $('#showImg').load(function() {
+                                                adjustImgSize($(this), $(this).parent().width(), $(this).parent().height());
+                                                
+                                                });
+                             
+                             $("#takeTimeLi").html("拍摄时间:"+curImg.showTime);
+                             
+                             } else {
+                             navigator.notification.confirm('当前已经是最后一张了', // message
+                                                            function callback() {
+                                                            
+                                                            }, // callback to invoke with index of button pressed
+                                                            '提示', // title
+                                                            ['确定'] // buttonLabels
+                                                            );
+                             }
+                             whetherHasArrow(curImgIndex, imgArr.length);
+                             
+                             });
+                             
+                             //右滑
+                             $("#imgForm").on("swiperight", function() {
+                                              
+                                              console.log("curImgIndex:" + curImgIndex + "length:" + imgArr.length);
+                                              
+                                              if (curImgIndex > 0) {
+                                              
+                                              curImgIndex = parseInt(curImgIndex) - parseInt(1);
+                                              
+                                              curImg = imgArr[curImgIndex];
+                                              
+                                              var showImgPath = "";
+                                              
+                                              if(device.platform=="iOS"){
+                                              
+                                              showImgPath = IOSDocPath+"/"+curImg.imagePath;
+                                              }else
+                                              {
+                                              showImgPath = curImg.imagePath;
+                                              }
+                                              
+                                              
+                                              $("#showImg").attr("src", showImgPath);
+                                              $('#showImg').load(function() {
+                                                                 adjustImgSize($(this), $(this).parent().width(), $(this).parent().height());
+                                                                 
+                                                                 });
+                                              $("#takeTimeLi").html("拍摄时间:"+curImg.showTime);
+                                              
+                                              } else {
+                                              navigator.notification.confirm('当前已经是第一张了', // message
+                                                                             function callback() {
+                                                                             
+                                                                             }, // callback to invoke with index of button pressed
+                                                                             '提示', // title
+                                                                             ['确定'] // buttonLabels
+                                                                             );
+                                              }
+                                              whetherHasArrow(curImgIndex, imgArr.length);
+                                              });
+                                              
+                                              
+                                              //点击左箭头按键
+                                              function formLeftButtonClick()
+                                              {
+                                                  console.log("formLeftButtonClick Runing!!!!!!!");
+                                                  if (curImgIndex > 0) {
+                                                      
+                                                      curImgIndex = parseInt(curImgIndex) - parseInt(1);
+                                                      
+                                                      curImg = imgArr[curImgIndex];
+                                                      
+                                                      var showImgPath = "";
+                                                      
+                                                      if(device.platform=="iOS"){
+                                                          
+                                                          showImgPath = IOSDocPath+"/"+curImg.imagePath;
+                                                      }else
+                                                      {
+                                                          showImgPath = curImg.imagePath;
+                                                      }
+                                                      
+                                                      
+                                                      $("#showImg").attr("src", showImgPath);
+                                                      $('#showImg').load(function() {
+                                                                         adjustImgSize($(this), $(this).parent().width(), $(this).parent().height());
+                                                                         });
+                                                                         
+                                                                         
+                                                                         $("#takeTimeLi").html("拍摄时间:"+curImg.showTime);
+                                                                         console.log("左箭头");
+                                                                         
+                                                  }
+                                                  whetherHasArrow(curImgIndex, imgArr.length);
+                                              }
+            
+            //点击右箭头按键
+            function formRightButtonClick()
+            {
+                console.log("formRightButtonClick Runing!!!!");
+                if (curImgIndex < (imgArr.length - 1)) {
+                    
+                    curImgIndex = parseInt(curImgIndex) + parseInt(1);
+                    
+                    
+                    
+                    curImg = imgArr[curImgIndex];
+                    
+                    var showImgPath = "";
+                    
+                    if(device.platform=="iOS"){
+                        
+                        showImgPath = IOSDocPath+"/"+curImg.imagePath;
+                    }else
+                    {
+                        showImgPath = curImg.imagePath;
+                    }
+                    
+                    
+                    $("#showImg").attr("src", showImgPath);
+                    
+                    $('#showImg').load(function() {
+                                       adjustImgSize($(this), $(this).parent().width(), $(this).parent().height());
+                                       });
+                                       
+                                       
+                                       $("#takeTimeLi").html("拍摄时间:"+curImg.showTime);
+                                       
+                }
+                whetherHasArrow(curImgIndex, imgArr.length);
+            }
+            
+            
+            
+            //判断是否显示指示箭头
+            function whetherHasArrow(index, allNumber) {
+                
+                console.log("index:" + index + "allNumber:" + allNumber);
+                
+                //最后一张
+                if (parseInt(index) >= parseInt(allNumber - 1)) {
+                    $("#formRightDir").css("display", "none");
+                    
+                } else {
+                    $("#formRightDir").css("display", "block");
+                }
+                //第一张
+                if (parseInt(index) <= 0) {
+                    
+                    $("#formLeftDir").css("display", "none");
+                    
+                } else {
+                    $("#formLeftDir").css("display", "block");
+                }
+            }
+            
+            function deleted() {
+                console.log("删除！");
+                db = window.sqlitePlugin.openDatabase({
+                                                          name : "LTDB"
+                                                          });
+                 SQLiteTool.deleteImages(db, formId);
+                 navigator.notification.confirm('删除成功', // message
+                                                function() {
+                                                
+                                                }, // callback to invoke with index of button pressed
+                                                '提示', // title
+                                                ['确定'] // buttonLabels
+                                                );
+                                                history.go(-1);
+                                                
+                                                
+                 
+            }
+            
+            
+            function submit() {
+                //var sFileJsonStr = TempCache.getItem("selectImgArr");
+                if (!checkAppConnection()) {
+                    navigator.notification.confirm('网络连接失败，请稍后再试。', // message
+                                                   function callback() {
+                                                   
+                                                   }, // callback to invoke with index of button pressed
+                                                   '提示', // title
+                                                   ['确定'] // buttonLabels
+                                                   );
+                                                   return;
+                }
+                if (imgArr && 0 < imgArr.length) {
+                    var images = [];
+                    for (var i = 0; i < imgArr.length; i++) {
+                        var image = imgArr[i];
+                        images[i] = image.imagePath;
+                    }
+                    
+                    
+                    
+                    var json = {
+                        "lotImgStrucId" : formJson.imgStrucId,
+                        "latitude" : imgArr[0].latitude + "",
+                        "longitude" : "" + imgArr[0].longitude,
+                        "photoCount" : imgArr.length + "",
+                        "upUserId" : TempCache.getItem("empid"),
+                        "lotimgUper" : TempCache.getItem("userName"),
+                        "lotImgType":TempCache.getItem("lotImgType"),
+                        "lotImgPhotoTime" : imgArr[0].showTime,
+                        "cameraType" : device.model,
+                        "images" : images
+                    };
+                    
+                    
+                    console.log();
+                    console.log();
+                    console.log("提交时经纬度：：：");
+                    console.log("latitude:"+json.latitude);
+                    console.log("longitude"+json.longitude);
+                    console.log();
+                    console.log();
+                    
+                    LTLoadStart("图片上传中……");
+                    var success = function(json) {
+                        console.log("附件:"+json);
+                        
+                        if (json.success || "true" == json.success) {
+                            navigator.notification.confirm('上传成功', // message
+                                                           function() {
+                                                           
+                                                           }, // callback to invoke with index of button pressed
+                                                           '提示', // title
+                                                           ['确定'] // buttonLabels
+                                                           );
+                                                           LTStopLoading();
+                                                           SQLiteTool.updateImageForm(db, formId, function() { //修改未提交的数目，会反馈到上一个界面
+                                                                                      window.history.back();
+                                                                                      });
+                        } else {
+                            navigator.notification.confirm('上传失败', // message
+                                                           function() {
+                                                           
+                                                           }, // callback to invoke with index of button pressed
+                                                           '提示', // title
+                                                           ['确定'] // buttonLabels
+                                                           );
+                                                           LTStopLoading();
+                        }
+                        console.log("Success:" + json.msg);
+                    };
+                    var error = function(message) {
+                        navigator.notification.confirm('上传失败', // message
+                                                       function() {
+                                                       
+                                                       }, // callback to invoke with index of button pressed
+                                                       '提示', // title
+                                                       ['确定'] // buttonLabels
+                                                       );
+                                                       LTStopLoading();
+                                                       console.log("Oopsie! " + message);
+                    };
+                    
+                    LTUploadPlugin.createEvent(json, success, error);
+                }
+            }
+            
+            
+                </script>
+            <div data-role="header" data-position="fixed" style="height:48px">
+                <a style="top:8px" href="#" class="ui-btn-left ui-btn ui-btn-inline ui-btn-icon-left ui-icon-carat-l ui-btn-icon-notext ui-corner-all" data-rel="back">Cancel</a>
+                <h1  style="position:relative;top:5px">影像资料详情</h1>
+                <a id="submitBtn" style="position:absolute;right:-1px;top:10.5px;background:none;color:white;border:none" data-shadow="false" data-role ="none" onclick="submit();" style="position:absolute;right:10px;background:#6baacd;color:white;border:0px">提交</a>
+                <a id="deleteBtn" style="position:absolute;right:35px;top:5px;background:none;color:white;border:none" data-shadow="false" data-role ="none" onclick="deleted();" style="position:absolute;right:10px;background:#6baacd;color:white;border:0px">删除</a>
+            </div>
+            
+            <div data-role="content" id ="contentDiv" >
+                <!--div style="margin:0 auto;width:250px;height:10px;background:green"><div style="margin:0 auto;width:10px;height:10px;background:red;z-index:5"></div></div-->
+                <div  id = "imgDiv" alt="详情" style="margin: 0 auto; display:block; width:250px; height:300px;" style="background:green">
+                    <img id = "showImg" src="">
+                        </div>
+                <a data-role="button" onclick="formLeftButtonClick()" id="formLeftDir" data-icon="arrow-l" data-iconpos="notext" style="position:fixed;top:150px;left:5px;border:0px"></a>
+                <a data-role="button" onclick="formRightButtonClick()" id="formRightDir" data-icon="arrow-r" data-iconpos="notext" style="position:fixed;top:150px;right:5px;border:0px"></a>
+                <ul data-role="listview" data-inset="true" id="imgInfolistview">
+                    
+                </ul>
+                
+            </div>
+        </div>
+    </body>
+</html>
+

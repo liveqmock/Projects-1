@@ -1,0 +1,779 @@
+<!DOCTYPE html>
+<!--
+ Licensed to the Apache Software Foundation (ASF) under one
+ or more contributor license agreements.  See the NOTICE file
+ distributed with this work for additional information
+ regarding copyright ownership.  The ASF licenses this file
+ to you under the Apache License, Version 2.0 (the
+ "License"); you may not use this file except in compliance
+ with the License.  You may obtain a copy of the License at
+ 
+ http://www.apache.org/licenses/LICENSE-2.0
+ 
+ Unless required by applicable law or agreed to in writing,
+ software distributed under the License is distributed on an
+ "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ KIND, either express or implied.  See the License for the
+ specific language governing permissions and limitations
+ under the License.
+ -->
+<html>
+    <head>
+        <meta charset="utf-8" />
+        <meta name="format-detection" content="telephone=no" />
+        <!-- WARNING: for iOS 7, remove the width=device-width and height=device-height attributes. See https://issues.apache.org/jira/browse/CB-4323 -->
+        <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width, height=device-height" />
+        <!--meta http-equiv="Access-Control-Allow-Origin" content="*"-->
+        <link rel="stylesheet" type="text/css" href="../vendor/jquery-mobile/ltkj.min.css" />
+        <link rel="stylesheet" type="text/css" href="../vendor/jquery-mobile/jquery.mobile.icons.min.css" />
+        <link rel="stylesheet" type="text/css" href="../vendor/jquery-mobile/jquery.mobile.structure-1.4.0.min.css" />
+        <script type="text/javascript" src="../vendor/jquery-mobile/jquery-2.0.3.min.js"></script>
+        <script type="text/javascript" src="../vendor/jquery-mobile/jquery.mobile-1.4.0.min.js"></script>
+        <script type="text/javascript" src="../util/SQLiteTool.js"></script>
+        <script type="text/javascript" src="../util/json.js"></script>
+        <script type="text/javascript" src="../util/NetConnect.js"></script>
+        <title>Hello World</title>
+        <script type="text/javascript" src="" id="getAspx">
+            </script>
+    </head>
+    
+    <body>
+		<div data-role="page" style="height:100%;" data-dom-cache="true" id="imageViewPage">
+          
+            <style type="text/css">
+                .imgPosition{
+                
+                
+                width:100px;
+                height:100px;
+               
+    
+                }
+                #imgListview {
+                min-height : 100%;
+                height     : 100%;
+                margin     : 0;
+                padding    : 0;
+                }
+                #imgListview .ui-li {
+                height : 20%;
+                }
+          
+               
+                .imgStyle
+                {
+                    width:88px;
+                    height:88px;
+                    overflow: hidden;
+                    display: block;
+                
+                }
+                .scrollDiv
+                {
+                
+                
+                
+                }
+                .imgDiv
+                {
+                
+                
+                }
+                .theImg
+                {
+                
+                
+                }
+                .imgDivClass
+                {
+                    float:left;
+                    padding: 1px;
+                    border: 1px solid #FFFFFF;
+                    margin: 2px;
+                
+                }
+                .rightImgDir
+                {
+                    
+                
+                }
+                .leftImgDir
+                {
+                
+                
+                }
+            </style>
+          
+          
+          
+            <script type="text/javascript">
+            
+            $.event.special.swipe.scrollSupressionThreshold = 10;
+            $.event.special.swipe.durationThreshold = 1000;
+            $.event.special.swipe.horizontalDistanceThreshold = 70;
+            $.event.special.swipe.verticalDistanceThreshold = 70;
+            
+           
+           var  allArr;
+           var eachPageNum = 3;
+           var  DisplayPageNum = eachPageNum; //初始化
+            
+            function checkImgInfoFunctionTest(passObject)
+            {
+                
+                
+                console.log("index passObject"+passObject.index);
+                
+                
+                console.log("ArrIndex:"+passObject.ArrIndex);
+                
+                var curArrIndex = passObject.ArrIndex;
+                
+                var cacheArr = allArr[curArrIndex].Urllists;
+                
+                var  arrJsonStr = JSON.stringify(cacheArr);
+                
+                TempCache.setItem("imgArr",arrJsonStr);
+                
+             
+                TempCache.setItem("index",passObject.index);
+                $.mobile.changePage("imageInfo.html");
+                
+              
+                
+                     
+            }
+            
+           
+            
+            
+            function loadImgData()
+            {
+                
+                
+                $("#imgListview").html("");
+                //$("#imgListview").empty();
+                
+                
+                LTLoadStart("请求照片地址中……");
+                
+              
+                var struct = TempCache.getItem("struct");
+                TempCache.removeItem("struct");
+                console.log("struct:"+struct);
+              
+              
+                var gBDID = JSON.parse(struct).BD_ID;
+              
+                var gLotImgStrucID = JSON.parse(struct).LotImgStruc_ID;
+              
+              
+              
+              
+              
+                var args = new Object();
+                
+                args.EmployId = TempCache.getItem("empid");
+                
+                console.log("args.EmployId："+args.EmployId);
+                
+                args.BDId = gBDID;
+                args.StructureId = gLotImgStrucID
+                
+                args.BeginTime ="";
+                args.EndTime ="";
+                args.TakePerson ="";
+                args.KeyWord ="";
+
+                console.log("args.BDId："+args.BDId);
+                console.log("args.StructureId："+args.StructureId);
+                NetConnect.getServer(args,"ForImgView.ashx",function successCallBack(backJson){
+                                     
+                                     
+                                     console.log("backJson:"+backJson);
+                                     
+                                    
+                                     
+                                     LTStopLoading();
+                                     
+                                     if(eval(backJson).success=='true')
+                                     {
+                                     
+                                     $("#imgListview").empty();
+                                     $("#noticeLab").css("display","none");
+                                    
+                                     
+                                     
+                                     var imglistview = $("#imgListview");
+                                     
+                                     
+                                     var imgArr = backJson.lists;
+                                     
+                                     
+                                     
+                                     if(imgArr==null)
+                                     {
+                                        console.log("没有图片");
+                                        $("#noticeLab").css("display","block");
+                                     
+                                     
+                                        return;
+                                     
+                                     }
+                                     
+                                     
+                                     var allNumber = imgArr.length;
+                                     
+                                     
+                                     
+                                     
+                                     
+                                     
+                                     
+                                     if(allNumber<=0)
+                                     {
+                                     
+                                        console.log("没有图片");
+                                        $("#noticeLab").css("display","block");
+                                     
+                                     
+                                        return;
+                                     }
+                                     else
+                                     {
+                                     
+                                        
+                                     
+                                     
+                                     allArr = backJson.lists;
+                                     
+                                     var tempUrlArr = new Array();
+                                     
+                                     console.log("displayImage().......");
+                                     
+                                     displayImage();
+                                    // displayImage();
+                                     
+                                     /*
+                                      
+                                       把displayImage()的实现部分移出去成为一个函数
+                                      
+                                      */
+                                     
+                                     }
+                                     
+                                     
+                                     
+                                     }
+                                     else
+                                     {
+                                     
+                                     navigator.notification.confirm(
+                                                                    '数据异常!', // message
+                                                                    function(){
+                                                                    },
+                                                                    '提示',
+                                                                    ['确定']
+                                                                    );
+                                     }
+                                     
+                                     
+                                     },function failCallBack(errorJson){
+                                     
+                                     
+                                     LTStopLoading();
+                                     
+                                     
+                                     
+                                     
+                                     console.log("responseText:"+errorJson.responseText);
+                                     
+                                     
+                                     
+                                     
+                                     
+                                     
+                                     
+                                     console.log("影响查看errorJson:"+JSON.stringify(errorJson));
+                                     
+                                     navigator.notification.confirm(
+                                                                    '请求超时!', // message
+                                                                    function(){
+                                                                    },
+                                                                    '提示',
+                                                                    ['确定']
+                                                                    );
+                                     
+                                     
+                                     });
+                                     
+                                     
+                                     
+
+                        }
+            
+            
+            var  screenWidth  = window.innerWidth;
+            
+            var  numberInRow = Math.floor(screenWidth/100);//算出一个屏幕宽度最多能容纳多少个100width的Img
+            
+            console.log("numberInRow"+numberInRow);
+            
+            
+            
+            
+            $("#imgListview").css("width",numberInRow*100);
+           
+           
+         
+           //左滑屏
+           $("#imageViewPage").on("swipeleft","div.scrollDiv", function() {
+                          
+                          var index = $(this).attr("divIndex");
+                                  
+                          var  templastIndex = $(this).attr("lastIndex");
+                                  
+                          var childrenImgArr = $(this).find(".theImg");
+                           
+                                  
+                                  
+                                  
+                                  
+                                  
+                         if((templastIndex)>=(allArr[index].Urllists.length-1))
+                         {
+                                  
+                                  return;
+                                  
+                         }
+                         
+                                  
+                         
+                                  
+                                  
+                         for(var i = 0;i<childrenImgArr.length;i++)
+                         {
+                                  
+                              if((i>templastIndex)&&i<=(parseInt(templastIndex)+6))
+                             {
+                                // $(childrenImgArr[i]).css("display","block");
+                                 $(childrenImgArr[i]).parent().parent(".imgDiv").show();
+                                 $(this).attr("lastIndex",i);
+                             }
+                             else
+                             {
+                                  $(childrenImgArr[i]).parent().parent(".imgDiv").hide();
+                                 // $(childrenImgArr[i]).css("display","none");
+                             }
+                                  
+                         }
+                         var  upDatelastIndex = $(this).attr("lastIndex");
+                                  
+                                if(upDatelastIndex<=5)
+                                  {
+                                  
+                                    $(this).find(".leftImgDir").css("display","none");
+                                    $(this).find(".rightImgDir").css("display","block");
+                                  }
+                                  
+                                  if(upDatelastIndex>5&&upDatelastIndex<(allArr[index].Urllists.length-1))
+                                  {
+                                  
+                                    $(this).find(".leftImgDir").css("display","block");
+                                    $(this).find(".rightImgDir").css("display","block");
+                                  
+                                  }
+                                  if(upDatelastIndex==(allArr[index].Urllists.length-1))
+                                  {
+                                  
+                                    $(this).find(".leftImgDir").css("   ","block");
+                                    $(this).find(".rightImgDir").css("display","none");
+                                  }
+                                 
+                                 
+                                  
+                                  console.log("upDatelastIndex:"+upDatelastIndex);
+                                  
+                                  
+                                  if((parseInt(upDatelastIndex)+1)%6!=0)
+                                  {
+                                  $(this).find(".leftImgDir").css("top","50px");
+                                  $(this).find(".rightImgDir").css("top","50px");
+                                  console.log("50进来");
+                                  }
+                                  else
+                                  {
+                                  console.log("88进来");
+                                  
+                                  $(this).find(".leftImgDir").css("top","88px");
+                                  $(this).find(".rightImgDir").css("top","88px");
+                                  }
+                          
+                          });
+                          
+                          
+            //右滑屏
+            $("#imageViewPage").on("swiperight","div.scrollDiv", function() {
+                           
+                            var index = $(this).attr("divIndex");
+                                   console.log("滑屏index:" + index);
+                                   
+                            var  templastIndex = $(this).attr("lastIndex");
+                                   console.log("滑屏templastIndex:" + templastIndex);
+                            if(templastIndex<=5){
+                              return;
+                              
+                            }
+                            var childrenImgArr = $(this).find(".theImg");
+                                   
+                            var curPage = parseInt(templastIndex/6)+parseInt(1);
+                                   
+                            console.log("curPage:"+curPage);
+                            
+                                   
+                            
+                           
+                            for(var i = 0;i<childrenImgArr.length;i++)
+                            {
+                                   
+                                   
+                                   if((i>=(curPage-2)*6)&&(i<parseInt((curPage-1)*6)))
+                                   {
+                                   // $(childrenImgArr[i]).css("display","block");
+                                   $(childrenImgArr[i]).parent().parent(".imgDiv").show();
+                                   $(this).attr("lastIndex",i);
+                                   }
+                                   else
+                                   {
+                                   $(childrenImgArr[i]).parent().parent(".imgDiv").hide();
+                                   // $(childrenImgArr[i]).css("display","none");
+                                   }
+                                   
+                            }
+                             
+                                   
+                             var  upDatelastIndex = $(this).attr("lastIndex");
+                                   
+                                   if(upDatelastIndex<=5)
+                                   {
+                                   
+                                   $(this).find(".leftImgDir").css("display","none");
+                                   $(this).find(".rightImgDir").css("display","block");
+                                   }
+                                   
+                                   if(upDatelastIndex>5&&upDatelastIndex<(allArr[index].Urllists.length-1))
+                                   {
+                                   
+                                   $(this).find(".leftImgDir").css("display","block");
+                                   $(this).find(".rightImgDir").css("display","block");
+                                   
+                                   }
+                                   if(upDatelastIndex==(allArr[index].Urllists.length-1))
+                                   {
+                                   
+                                   $(this).find(".leftImgDir").css("display","block");
+                                   $(this).find(".rightImgDir").css("display","none");
+                                   }
+                                   
+                                   console.log("upDatelastIndex:"+upDatelastIndex);
+                                   
+                                   
+                                   if((parseInt(upDatelastIndex)+1)%6!=0)
+                                   {
+                                   $(this).find(".leftImgDir").css("top","50px");
+                                   $(this).find(".rightImgDir").css("top","50px");
+                                   console.log("50进来");
+                                   }
+                                   else
+                                   {
+                                   console.log("88进来");
+                                   
+                                   $(this).find(".leftImgDir").css("top","88px");
+                                   $(this).find(".rightImgDir").css("top","88px");
+                                   }
+                                   
+                           });
+                          
+           
+           
+           $("#imageViewPage").on('pageshow', function()
+                               {
+                               
+                                  var isReload = TempCache.getItem("isReload");
+                                  
+                                  if(isReload=="1")
+                                  {
+                                  
+                                    loadImgData();
+                                  }
+                                  else
+                                  {
+                                  
+                                  }
+                                  
+                               
+                               
+                               });
+           
+           
+           
+           //显示内容
+           function displayImage()
+           {
+
+
+                var allHtml = '';
+                
+               var displayNumForLoop = DisplayPageNum;
+               
+               
+               
+               if(DisplayPageNum >= (allArr.length))  //是否显示按钮
+               {
+                   $("#imoreButton").css("display","none");
+               }
+               else
+               {
+                   $("#imoreButton").css("display","block");
+
+               }
+               
+               
+                if(allArr.length <= eachPageNum) //不需要分页
+                {
+                    $("#imoreButton").css("display","none");
+                    displayNumForLoop -= DisplayPageNum; //bug!!!!! 不能是数字
+                    DisplayPageNum = allArr.length;
+                }
+                else
+                {
+                    if(DisplayPageNum > allArr.length) //防止数组下标越界
+                    {
+                        displayNumForLoop -= eachPageNum ;
+                        DisplayPageNum = allArr.length;
+                    }
+                    else
+                    {
+                        displayNumForLoop -= eachPageNum ;
+                    }
+                }
+                console.log("allArr.length = "+allArr.length);
+                console.log("displayNumForLoop = "+displayNumForLoop);
+                console.log("DisplayPageNum = "+DisplayPageNum);
+                //console.log("displayNumForLoop = " + displayNumForLoop);
+                
+                
+                
+                for(var i=displayNumForLoop;i<DisplayPageNum;i++) //每页显示多少个单元,
+                {
+    
+
+    
+                    var urlArr = allArr[i].Urllists;
+    
+    
+                    var lastIndex;//纪录最后一个图片的Index
+    
+                    if(urlArr.length>=6)
+                    {
+                        lastIndex = 5;
+                    }
+                    else
+                    {
+                        lastIndex = urlArr.length-1;
+                    }
+                    
+                    //有多个
+                    allHtml = allHtml+"<div style='position:relative;'  class='scrollDiv' divIndex="+i+" lastIndex="+lastIndex+"><div  style='float:left;width:96%'>"+allArr[i].FullPath+"&nbsp;"+allArr[i].StructCount+"张</div>";
+                    //console.log(allHtml);
+    
+                    //神一样的bug 没有tempHtml 会有问题
+                    var tempHtml ='';
+                    var imgObject = new Object();
+    
+                    for(var k = 0;k<urlArr.length;k++) //每个个单元中显示的图片数
+                    {
+        
+                    imgObject.url = urlArr[k].url;
+                    imgObject.imgfileid = urlArr[k].imgfileid;
+                    imgObject.index = k;//纪录是在数组的那个位置
+                    imgObject.ArrIndex = i;//记录是那个数组
+                    var  jsonStr = JSON.stringify(imgObject);
+        
+                    if(k<6)
+                    {
+                        tempHtml = tempHtml+ "<div  class='imgDiv imgDivClass'><a href='#' onclick=checkImgInfoFunctionTest("+jsonStr+")><img class='theImg imgStyle' src='"+urlArr[k].url+"'></a></div>";
+                    }
+                    else
+                    {
+            
+                        tempHtml = tempHtml+ "<div  class='imgDiv imgDivClass' style='display:none'><a href='#' onclick=checkImgInfoFunctionTest("+jsonStr+")><img class='theImg imgStyle' src='"+urlArr[k].url+"'></a></div>";
+            
+                        //大于6张的话，只显示前六张 display:none
+            
+                    }
+        
+        
+                    }
+    
+                    //添加左右滑动的指示  动态添加的html 不能写data-icon="search" 之类的，要写成对应的class 如class="ui-icon-carat-l"
+                    if(urlArr.length>6)
+                    {
+        
+        
+        
+        
+                        //动态实现左右指示按键可按
+                        //id不能取"rightDir",在imageInfo.html中有该ID，会产生影响
+        
+                        tempHtml = tempHtml +'<div class="leftImgDir" style="float:left;position:absolute;top:88px;left:-10px;display:none" ><a onclick="leftButtonClick()"  class="ui-btn ui-icon-carat-l ui-btn-icon-notext ui-corner-all"  ></a></div>'+'<div class="rightImgDir" style="float:left;position:absolute;top:88px;right:0px" ><a onclick="rightButtonClick()" class="ui-btn ui-icon-carat-r ui-btn-icon-notext ui-corner-all" style="z-index:10"></a></div>';
+                       
+
+
+        
+                    }
+    
+    
+    
+                    allHtml = allHtml+tempHtml+"<div style='clear:both'></div></div>";
+    
+                    //console.log("imgListview html:"+$("#imgListview").html());
+    
+    
+                }
+                if(DisplayPageNum == allArr.length) //还原成初始值
+                {
+                    DisplayPageNum = eachPageNum;
+                }
+
+                $("#imgListview").append(allHtml);
+
+            }
+            
+            
+            
+            function listNumIncrese() //点击按键的时候增加显示下一批图片
+            {
+                DisplayPageNum += eachPageNum;
+                
+                displayImage();
+            }
+            
+            //左按键
+            function leftButtonClick()
+            {
+                
+            }
+            
+            //右按键
+            function rightButtonClick()
+            {
+//                var index = $("div.scrollDiv").attr("divIndex");
+//                
+//                var  templastIndex = $("div.scrollDiv").attr("lastIndex");
+//                
+//                var childrenImgArr = $("div.scrollDiv").find(".theImg");
+//                
+//                
+//                
+//                
+//                
+//                
+//                if((templastIndex)>=(allArr[index].Urllists.length-1))
+//                {
+//                    
+//                    return;
+//                    
+//                }
+//                
+//                
+//                
+//                
+//                
+//                for(var i = 0;i<childrenImgArr.length;i++)
+//                {
+//                    
+//                    if((i>templastIndex)&&i<=(parseInt(templastIndex)+6))
+//                    {
+//                        // $(childrenImgArr[i]).css("display","block");
+//                        $(childrenImgArr[i]).parent().parent(".imgDiv").show();
+//                        $("div.scrollDiv").attr("lastIndex",i);
+//                    }
+//                    else
+//                    {
+//                        $(childrenImgArr[i]).parent().parent(".imgDiv").hide();
+//                        // $(childrenImgArr[i]).css("display","none");
+//                    }
+//                    
+//                }
+//                var  upDatelastIndex = $(this).attr("lastIndex");
+//                
+//                if(upDatelastIndex<=5)
+//                {
+//                    
+//                    $("div.scrollDiv").find(".leftImgDir").css("display","none");
+//                    $("div.scrollDiv").find(".rightImgDir").css("display","block");
+//                }
+//                
+//                if(upDatelastIndex>5&&upDatelastIndex<(allArr[index].Urllists.length-1))
+//                {
+//                    
+//                    $("div.scrollDiv").find(".leftImgDir").css("display","block");
+//                    $("div.scrollDiv").find(".rightImgDir").css("display","block");
+//                    
+//                }
+//                if(upDatelastIndex==(allArr[index].Urllists.length-1))
+//                {
+//                    
+//                    $("div.scrollDiv").find(".leftImgDir").css("   ","block");
+//                    $("div.scrollDiv").find(".rightImgDir").css("display","none");
+//                }
+//                
+//                
+//                
+//                console.log("upDatelastIndex:"+upDatelastIndex);
+//                
+//                
+//                if((parseInt(upDatelastIndex)+1)%6!=0)
+//                {
+//                    $("div.scrollDiv").find(".leftImgDir").css("top","50px");
+//                    $("div.scrollDiv").find(".rightImgDir").css("top","50px");
+//                    console.log("50进来");
+//                }
+//                else
+//                {
+//                    console.log("88进来");
+//                    
+//                    $("div.scrollDiv").find(".leftImgDir").css("top","88px");
+//                    $("div.scrollDiv").find(".rightImgDir").css("top","88px");
+//                }
+
+
+            }
+
+
+
+            </script>
+			<div data-role="header" data-position="fixed" style="height:48px">
+                <a style="top:8px" href="#" class="ui-btn-left ui-btn ui-btn-inline ui-btn-icon-left ui-icon-carat-l ui-btn-icon-notext ui-corner-all" data-rel="back">Cancel</a>
+                <h1 style="position:relative;top:5px">影像查看</h1>
+            </div>
+            <div data-role="content" id ="contentDiv">
+            
+                <div id="imgListview">
+               
+                </div>
+                
+                <button onclick="listNumIncrese()" id="imoreButton" style="display:none">
+                加载更多
+                </button>
+                <a id ="noticeLab"  style="position:fixed;top:50%;display:none;margin:0 auto;width:90%;text-align: center">当前分项结构没有上传图片!</a>
+            
+           
+           
+           
+            </div>
+		</div>
+       
+       </body>
+</html>

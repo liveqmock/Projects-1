@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<!--
+ Licensed to the Apache Software Foundation (ASF) under one
+ or more contributor license agreements.  See the NOTICE file
+ distributed with this work for additional information
+ regarding copyright ownership.  The ASF licenses this file
+ to you under the Apache License, Version 2.0 (the
+ "License"); you may not use this file except in compliance
+ with the License.  You may obtain a copy of the License at
+ 
+ http://www.apache.org/licenses/LICENSE-2.0
+ 
+ Unless required by applicable law or agreed to in writing,
+ software distributed under the License is distributed on an
+ "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ KIND, either express or implied.  See the License for the
+ specific language governing permissions and limitations
+ under the License.
+ -->
+<html>
+    <head>
+        <meta charset="utf-8" />
+        <meta name="format-detection" content="telephone=no" />
+        <!-- WARNING: for iOS 7, remove the width=device-width and height=device-height attributes. See https://issues.apache.org/jira/browse/CB-4323 -->
+         <meta http-equiv="Access-Control-Allow-Origin" content="*">
+        <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1" />
+        <link rel="stylesheet" type="text/css" href="../vendor/jquery-mobile/ltkj.min.css">
+        <link rel="stylesheet" type="text/css" href="../vendor/jquery-mobile/jquery.mobile.icons.min.css" />
+        <link rel="stylesheet" type="text/css" href="../vendor/jquery-mobile/jquery.mobile.structure-1.4.0.min.css" />
+        <script type="text/javascript" src="../vendor/jquery-mobile/jquery-2.0.3.min.js"></script>
+        <script type="text/javascript" src="../vendor/jquery-mobile/jquery.mobile-1.4.0.min.js"></script>
+        <script type="text/javascript" src="../util/SQLiteTool.js"></script>
+        <script type="text/javascript" src="../util/NetConnect.js"></script>
+        <script type="text/javascript" src="../util/json.js"></script>
+        <title>Hello World</title>
+    </head>
+    
+    <body>
+		<div data-role="page" style="height:100%;" data-dom-cache="true">
+			<style type="text/css">
+				ul li input {background:none; border:none; border-style:none; height:100%; width:100%;}
+				/*
+                .ui-icon-custom:after {
+                    background-image: url("../vendor/jquery-mobile/images/icons-png/carat-d-white.png");
+                    background-position: 3px 3px;
+                    background-size: 70%;
+                }*/
+                .button-wrap {
+                	margin-left: 0px;
+                	margin-right: 0px;
+                }
+            </style>
+			<img src="../img/LogoImg.png" alt="litong" style="margin: 0 auto; display:block; width:100%;height:134px" />
+			<div data-role="content">
+				
+                <ul data-role="listview" data-inset="true" data-split-theme="a">
+                	<li data-icon="custom">
+                        <!-- 
+                        <a href="#"><input type="text" name="userid" id="userid" value="chenxiu" data-role="none"/placeholder="输入用户名"></a>
+                        <a href="#popupMenu" data-rel="popup" data-position-to="window" data-transition="pop"></a>
+                        -->
+                        <input type="text" name="userid" id="userid" value="" data-role="none" placeholder="输入用户名" />
+                    </li>
+                	<li>
+                		<input type="password" name="pwd" id="pwd" value="" autocomplete="off" data-role="none" placeholder="输入密码"/>
+                	</li>
+                </ul>
+                
+                <div data-role="popup" id="popupMenu" data-theme="a" data-overlay-theme="b" class="ui-content ui-corner-all" style="max-width:340px; padding-bottom:2em;">
+                    <ul id="userlist" data-role="listview" style="min-width:210px;" data-split-icon="delete">
+                        <li data-role="list-divider">选择用户</li>
+                    </ul>
+                </div>
+                <div class="ui-grib-a" style="width:100%">
+                	<div class="ui-block-a" style="width:50%;">
+                		<label for="chkRememberPwd">记住密码</label>
+                		<input type="checkbox" id="chkRememberPwd" />
+                	</div>
+                	<div class="ui-block-b" style="width:50%;">
+                		<label for="autoLogin">自动登录</label>
+                		<input type="checkbox" id="autoLogin" />
+                	</div>
+                </div>
+                
+                <div style="position:relative;top:20px">
+                    <button class="ui-btn ui-btn-c ui-corner-all" id="btn_login" style="background:#2281b4; color:#ffffff;">
+                        登&nbsp;&nbsp;&nbsp;&nbsp;录
+                    </button>
+                </div>
+               
+                
+                
+                
+            </div>
+            <div style="position:absolute;bottom:20px;text-align:center;width:100%">
+                <div><a><img src="../img/companyLogo.png" style="width: 20px; height: 15px;" width="20" height="15">&nbsp;广东利通信息科技投资有限公司</a><div>
+            </div>
+
+		</div>
+        <script type="text/javascript" src="../cordova.js"></script>
+        <script type="text/javascript" src="index.js"></script>
+        <script type="text/javascript">
+			app.initialize();
+        </script>
+        
+    </body>
+</html>

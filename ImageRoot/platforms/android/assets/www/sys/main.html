@@ -1,0 +1,501 @@
+<!DOCTYPE html>
+<!--
+ Licensed to the Apache Software Foundation (ASF) under one
+ or more contributor license agreements.  See the NOTICE file
+ distributed with this work for additional information
+ regarding copyright ownership.  The ASF licenses this file
+ to you under the Apache License, Version 2.0 (the
+ "License"); you may not use this file except in compliance
+ with the License.  You may obtain a copy of the License at
+ 
+ http://www.apache.org/licenses/LICENSE-2.0
+ 
+ Unless required by applicable law or agreed to in writing,
+ software distributed under the License is distributed on an
+ "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ KIND, either express or implied.  See the License for the
+ specific language governing permissions and limitations
+ under the License.
+ -->
+<html>
+    <head>
+        <meta charset="utf-8" />
+        <meta name="format-detection" content="telephone=no" />
+        <!-- WARNING: for iOS 7, remove the width=device-width and height=device-height attributes. See https://issues.apache.org/jira/browse/CB-4323 -->
+        <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width, height=device-height" />
+        <meta http-equiv="Access-Control-Allow-Origin" content="*">
+        <link rel="stylesheet" type="text/css" href="../vendor/jquery-mobile/ltkj.min.css" />
+        <link rel="stylesheet" type="text/css" href="../vendor/jquery-mobile/jquery.mobile.icons.min.css" />
+        <link rel="stylesheet" type="text/css" href="../vendor/jquery-mobile/jquery.mobile.structure-1.4.0.min.css" />
+        <script type="text/javascript" src="../vendor/jquery-mobile/jquery-2.0.3.min.js"></script>
+        
+        
+        <script type="text/javascript" src="../vendor/jquery-mobile/jquery.mobile-1.4.0.min.js"></script>
+        <script type="text/javascript" src="../util/SQLiteTool.js"></script>
+        <script type="text/javascript" src="../util/json.js"></script>
+        <script type="text/javascript" src="../util/NetConnect.js"></script>
+        <title>Hello World</title>
+        <script type="text/javascript" src="" id="getAspx">
+            </script>
+    </head>
+    
+    <body>
+		<div data-role="page" style="height:100%;" id="LTMainPage" data-dom-cache="true">
+            <style type="text/css">
+            .ltui-main-block {
+                float : left;
+                display : block;
+                text-decoration : none;
+                text-align : center;
+                margin : 30px;
+            }
+            .ltui-main-block * {
+                display : block;
+            }
+            .ltui-main-block img {
+                width : 80px;
+                height : 80px;
+            }
+            .span-style
+            {
+                color:#676767;
+                margin-top:10px;
+            }
+            
+            .li-style
+            {
+                min-height:40px;
+            }
+            .scrollHeadDiv
+            {
+                background:#6cabcc;
+                color:#ffffff;
+                height:30px;
+                
+                
+                
+            }
+            </style>
+            <script>
+                
+                
+           
+                
+            $("#nameTitle").html(TempCache.getItem("userName"));
+            
+            function checkConnection() {
+                var networkState = navigator.connection.type;
+                
+                var states = {};
+                states[Connection.UNKNOWN]  = 'Unknown connection';
+                states[Connection.ETHERNET] = 'Ethernet connection';
+                states[Connection.WIFI]     = 'WiFi connection';
+                states[Connection.CELL_2G]  = 'Cell 2G connection';
+                states[Connection.CELL_3G]  = 'Cell 3G connection';
+                states[Connection.CELL_4G]  = 'Cell 4G connection';
+                states[Connection.CELL]     = 'Cell generic connection';
+                states[Connection.NONE]     = 'No network connection';
+                
+                       
+                
+                return states[networkState];
+            }
+            $("#LTMainPage").on('pageshow', onPageShow);
+            //document.addEventListener('deviceready', onDeviceReady, false);
+            var db;
+            function onPageShow() {
+                
+                
+                
+                
+                db = window.sqlitePlugin.openDatabase({
+                                                      name : "LTDB"
+                                                      });
+                
+                var tempLastUpDate = TempCache.getItem("updateTime");
+                
+                
+                
+           
+                
+                
+                if(tempLastUpDate==""||tempLastUpDate==null) //updateTime为空，说明是第一次进入，下载标段
+                {
+                
+                     getUserBDInfo();
+                
+                }
+                
+                
+                
+               
+                
+                
+                
+                
+                
+                
+                
+                
+                                                      /*
+                                                      SQLiteTool.queryBD(db, function(jsonArr){
+                                                                         
+                                                                         if (0 >= jsonArr.length) {
+                                                                         console.log("不存在标段分项结构信息！,从接口中获得...");
+                                                                         getBDAndStruc();
+                                                                         } else {
+                                                                         console.log("已存在标段分项结构信息！");
+                                                                         }
+                                                                         });
+              
+               */
+                                                                         
+            }
+            function getBDAndStruc() {
+                LTLoadStart("正在获取标段信息,请稍后...");
+                var updateTime = "";
+                if (TempCache.getItem("updateTime")) {
+                	updateTime = TempCache.getItem("updateTime");
+                }
+                var args = {"EmployeeId":TempCache.getItem("empid"),"UpdateTime":updateTime};
+                
+                
+             
+                
+                NetConnect.getServer(args, "ForBDStruc.ashx", function successCallBack(backJson){
+                                     if("true" == backJson.success) {
+                                     
+                                     
+                                     
+                                     console.log("backJson 标段信息:"+JSON.stringify(backJson));
+                                     
+                                     
+                                     console.log("获取标段："+backJson.BD);
+                                     var bds = backJson.BD;
+                                     var strucs = backJson.LotImgStuct;
+                                     SQLiteTool.insertBD(db, bds);
+                                     SQLiteTool.insertStruc(db, strucs);
+									 var d = new Date();
+                                     var YMDHMS = d.getFullYear() + "-" +(d.getMonth()+1) + "-" + d.getDate() + " " + d.getHours() + ":" + d.getMinutes() + ":" + d.getSeconds();
+                                     TempCache.setItem("updateTime", YMDHMS);
+                                     } else {
+                                     //shwoTip("获取标段信息失败！", "a", "true");
+                                     }
+                                     LTStopLoading();
+                                     },function failCallBack(errorJson){
+                                     LTStopLoading();
+                                     console.log("获取标段失败："+JSON.stringify(errorJson));
+                                     //shwoTip("获取标段信息失败！", "a", "true");
+                                     });
+            }
+            
+            
+            //获取用户标段权限
+            function getUserBDInfo()
+            {
+                LTLoadStart("正在获取标段权限,请稍后...");
+                var updateTime = "";
+                if (TempCache.getItem("updateTime")) {
+                	updateTime = TempCache.getItem("updateTime");
+                }
+                var args = {"EmployeeId":TempCache.getItem("empid"),"UpdateTime":updateTime};
+                
+      
+                
+                NetConnect.getServer(args, "ForBD.ashx", function successCallBack(backJson){
+                                     
+                                     console.log("backJson.success"+backJson.success);
+                                     
+                                     if("true" == backJson.success) {
+                                     
+                                     console.log("用户权限标段信息:"+JSON.stringify(backJson));
+                                     
+                                     //所有标段
+                                     var bds = backJson.BD;
+                                     console.log("backJson.BD:"+bds);
+
+                                     
+                                     if(bds.length>0)
+                                     {
+                                     
+                                     SQLiteTool.insertBD(db, bds);
+                                     
+                                     
+                                   
+                                     
+                                     
+                                     for(var index=0;index<bds.length;index++)
+                                     {
+                                      SQLiteTool.upBDTable(db,bds[index].BD_ID,"",function(){
+                                      
+                                      console.log("所有标段123");
+                                      
+                                      });
+                                     
+                                     }
+                                    
+                                     
+                                     
+                                     //多个标段
+                                     if(bds.length>1)
+                                     {
+                                     
+                                        var tempHtml='';
+                                     
+                                     
+                                        for(var i=0;i<bds.length;i++)
+                                        {
+                                     
+                                            tempHtml = tempHtml+"<li class='li-style' data-icon='false'><a onclick = getImgStruct('"+bds[i].BD_ID+"','"+""+"')>"+bds[i].Name+"</a></li>";
+                                        }
+                                     
+                                       $("#BDMenuList").append(tempHtml); //在表单后面动态加入表项
+                                       $("#BDMenuList").listview("refresh");
+                                       $('#BDMenu').popup('open');
+                                     
+                                     
+                                     
+                                     }//一个标段
+                                     else
+                                     {
+                                     
+                                     
+                                     
+                                     var tempCurBD = bds[0];
+                                     
+                                     
+                                     
+                                     getImgStruct(tempCurBD.BD_ID,"");
+                                                                         
+                                     }
+
+                                     
+                                     }
+                                     
+                                     
+									 var d = new Date();
+                                     var YMDHMS = d.getFullYear() + "-" +(d.getMonth()+1) + "-" + d.getDate() + " " + d.getHours() + ":" + d.getMinutes() + ":" + d.getSeconds();
+                                     TempCache.setItem("updateTime", YMDHMS);
+                                     } else {
+                                     //shwoTip("获取标段信息失败！", "a", "true");
+                                     LTStopLoading();
+                                     }
+                                     
+  
+                                     },function failCallBack(errorJson){
+                                     LTStopLoading();
+                                     console.log("8888888888")
+                                     console.log("获取标段失败："+JSON.stringify(errorJson));
+                                     //shwoTip("获取标段信息失败！", "a", "true");
+                                     });
+                
+                
+                
+            
+            }
+            
+            //请求标段下的结构体信息
+			function getImgStruct(bdID,lastUpdateTime)
+            {
+                $('#BDMenu').popup('close');
+                LTLoadStart("正在初始化信息,请稍后...");
+                
+                console.log();
+                console.log("请求标段下的结构体信息!!!!!!!!!!");
+                console.log();
+                
+                SQLiteTool.getBDUpDateTimeWithID(db,bdID,function(res){
+                                                                 
+						 var  BdlastUpdateTime = res;
+						 
+						 var args = {"BdId":bdID,"UpdateTime":BdlastUpdateTime};
+						 TempCache.setItem("BdId", bdID);
+						 SQLiteTool.insertCIM_LotImgStruc(db, function(result) {
+							console.log("backJson.success" + result);
+							if(result == 'over756'){
+									console.log("over756:" + result);
+							}
+
+						});
+          
+                });
+                                                 
+                                                 
+                                                 
+                                                 
+                                                 
+                                                 
+            }
+            /*function getImgStruct(bdID,lastUpdateTime)
+            {
+                $('#BDMenu').popup('close');
+                LTLoadStart("正在获取标段信息,请稍后...");
+                
+                console.log();
+                console.log("请求标段下的结构体信息!!!!!!!!!!");
+                console.log();
+                
+                SQLiteTool.getBDUpDateTimeWithID(db,bdID,function(res){
+                                                 
+                                                 
+                                                 var  BdlastUpdateTime = res;
+                  
+                                                var args = {"BdId":bdID,"UpdateTime":BdlastUpdateTime};
+                                                                      
+                                                console.log("main bdID:"+bdID);                      
+                                                NetConnect.getServer(args, "ForImgStruc.ashx", function successCallBack(backJson){
+                                                                     
+                                                                      if("true" == backJson.success) {
+           
+                                                                      console.log("标段结构信息:"+JSON.stringify(backJson));
+                                                        
+                                                                      
+                                                                      var strucs = backJson.LotImgStruc;
+                                                                      console.log("标段结构信息:"+JSON.stringify(strucs.length));
+                                                                      SQLiteTool.insertStruc(db, strucs);
+                                                                      
+                                                                      
+                                                                      var d = new Date();
+                                                                      var YMDHMS = d.getFullYear() + "-" +(d.getMonth()+1) + "-" + d.getDate() + " " + d.getHours() + ":" + d.getMinutes() + ":" + d.getSeconds();
+  
+                                                                      SQLiteTool.upBDTable(db,bdID,YMDHMS,function()
+                                                                                           {
+                                                                                           
+                                                                                           console.log("插入获取标段的结构最新数据");
+                                                                                           LTStopLoading();
+                                                                                           
+                                                                                           });
+                                                                      
+                                                                      
+                                                                      
+                                                                      } else {
+                                                                      //shwoTip("获取标段信息失败！", "a", "true");
+                                                                      console.log("获取标段信息失败！！！！！！！！！");
+                                                                     LTStopLoading();
+                                                                      }
+                                                                      },function failCallBack(errorJson){
+                                                                      LTStopLoading();
+                                                                      
+                                                                      toast("请求超时",1000);
+                                                                      console.log("获取标段失败："+JSON.stringify(errorJson));
+                                                                      //shwoTip("获取标段信息失败！", "a", "true");
+                                                                      });
+
+                                                 
+                                                 
+                                                 
+                                                 
+                                                 
+                                                 });
+                
+                
+                
+                
+                
+                
+            }*/
+            
+            
+            function changeViewImg()
+            {
+            
+                var networkState =  checkConnection();
+            
+                if(networkState=='No network connection')
+                {
+                    navigator.notification.confirm(
+                                                   '当前没有可用网络', // message
+                                                   function callback()
+                                                   {
+                                                   
+                                                   },            // callback to invoke with index of button pressed
+                                                   '提示',           // title
+                                                   ['确定']         // buttonLabels
+                                                   );
+                
+                    return false;
+                }
+                else
+                {
+                   
+                    
+                    $.mobile.changePage("viewImgStrucSelect.html");
+                    
+                    /*
+                    $.mobile.changePage("imageView.html", {
+                                        transition : "slide"
+                                        });
+                     */
+                }
+            
+            
+            
+            
+            }
+            
+            
+            function upLoadImg()
+            {
+            
+            $.mobile.changePage("takePic.html");
+            
+            
+            }
+            
+            
+            </script>
+            
+            
+
+            <div data-role="popup" id="BDMenu" overflow-y:"scroll">
+                <div data-role="list-divider" data-position="fixed" style="display:block;color:#ffffff;background:#6cabcc;height:30px;line-height:30px;text-align:center">标段数据下载</div>
+                <ul data-role="listview" data-scroll="true" style="width:260px;max-height:200px;overflow:auto" id="BDMenuList">
+                    
+                </ul>
+                
+            </div>
+            
+            
+            
+			<div data-role="header" style="height:48px">
+
+                <h1>影像管理系统<p style="font-size:12px;margin-top:-2px" id="nameTitle"></p></h1>
+                
+            </div>
+			<div data-role="content">
+			<!--
+                <div class="ltui-main-content">
+                    <a href="#" class= "ltui-main-block" onclick="upLoadImg()">
+                        <img src="../img/upLoadImg.png" data-transition="slide" alt="" />
+                        <span class='span-style'>影像上传</span>
+                    </a>
+                    <a  data-transition="slide" class= "ltui-main-block" onclick="changeViewImg()">
+                        <img src="../img/viewImg.png" alt="" />
+                        <span class='span-style'>影像查看</span>
+                    </a>
+                </div>
+                <div class="ltui-main-content">
+                    
+                    a href="#" class= "ltui-main-block" onclick="ajaxTest()">
+                        <img src="../img/pushNotice.png" data-transition="slide" alt="" />
+                        <span class='span-style'>推送管理</span>
+                    </a
+                    <a href="setting.html" data-transition="slide" class= "ltui-main-block">
+                        <img src="../img/setting.png" alt="" />
+                        <span class='span-style'>系统设置</span>
+                    </a>
+                </div> -->
+				<table border="0" cellpadding="0" cellspacing="0" width="100%" align="center">
+					<tr>
+						<td align="center"><a href="#" class= "ltui-main-block" onclick="upLoadImg()"> <img src="../img/upLoadImg.png" data-transition="slide" alt="" /> <span class='span-style'>影像上传</span> </a></td>
+						<td align="center"><a  data-transition="slide" class= "ltui-main-block" onclick="changeViewImg()"> <img src="../img/viewImg.png" alt="" /> <span class='span-style'>影像查看</span> </a></td>
+					</tr>
+					<tr>
+						<td align="center"><a href="setting.html" data-transition="slide" class= "ltui-main-block"> <img src="../img/setting.png" alt="" /> <span class='span-style'>系统设置</span> </a></td>
+					</tr>
+				</table>
+            </div>
+		</div>
+     
+       </body>
+</html>

@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <!--meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+         <link rel="stylesheet" type="text/css" href="../vendor/jquery-mobile/jquery.mobile-1.4.0.min.css" />
+         <script type="text/javascript" src="../vendor/jquery-mobile/jquery-2.0.3.min.js"></script>
+         <script type="text/javascript" src="../vendor/jquery-mobile/jquery.mobile-1.4.0.min.js"></script>
+         <script type="text/javascript" src="../cordova.js"></script>
+         <script type="text/javascript" src="../util/SQLiteTool.js"></script-->
+        
+        <meta charset="utf-8" />
+        <meta name="format-detection" content="telephone=no" />
+        <!-- WARNING: for iOS 7, remove the width=device-width and height=device-height attributes. See https://issues.apache.org/jira/browse/CB-4323 -->
+        <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width, height=device-height" />
+        <link rel="stylesheet" type="text/css" href="../vendor/jquery-mobile/ltkj.min.css" />
+        <link rel="stylesheet" type="text/css" href="../vendor/jquery-mobile/jquery.mobile.icons.min.css" />
+        <link rel="stylesheet" type="text/css" href="../vendor/jquery-mobile/jquery.mobile.structure-1.4.0.min.css" />
+        <script type="text/javascript" src="../vendor/jquery-mobile/jquery-2.0.3.min.js"></script>
+        <script type="text/javascript" src="../vendor/jquery-mobile/jquery.mobile-1.4.0.min.js"></script>
+        <script type="text/javascript" src="../util/SQLiteTool.js"></script>
+    </head>
+    
+    <style type="text/css">
+        .ui-overlay-a {
+            background-color: #444444;
+            
+        }
+    .ui-dialog-background {
+        opacity: 0.5;
+        display: block !important;
+        -webkit-transition: opacity 0.5s ease-in;
+    }
+    
+    .ui-dialog-background.pop.in {
+        opacity: 1;
+        -webkit-transition: opacity 0.5s ease-in;
+    }
+    
+    .ui-dialog {
+        min-height: 100% !important;
+        background: transparent !important;
+    }
+    </style>
+    
+    <script>
+        
+        var deletli;
+        function passIp()
+        {
+            
+            var valuetest = $("#IpAddress").val();
+            $("#IpAddress").val("");//置空
+            
+            var  li,ipListview,lastli,serverID;
+            
+            /*同样的代码有时候不行？*/
+            ipListview = document.getElementById('ipListview');
+            
+            
+            serverID = $(ipListview).children("li").length;
+            
+            
+            li = "<li myID =\""+serverID+"\"><a>"+valuetest+"</a></li>";
+            
+            li = "<li data-icon=\"false\">"+"<div style=\"float:right \"><a data-role=\"button\" data-icon=\"add\" data-iconpos=\"notext\" ></a></div>"+"<div style=\"float:right\"><a data-role=\"button\" data-icon=\"delete\" data-iconpos=\"notext\"></a></div>"+"<a>你好</a></li>";
+            
+            
+            
+            $(li).insertBefore("#lastli");
+            $("#ipListview").listview("refresh");
+            
+            /*尾部添加一个li*/
+            /*
+             $("#lastli").remove();
+             li = "<li><a>"+valuetest+"</a></li>";
+             $("#ipListview").append(li);
+             li = "<li id =\"lastli\"><a href=\"#download\">"+"添加新服务器"+"</a></li>";
+             $("#ipListview").append(li);
+             $("#ipListview").listview("refresh");
+             */
+            
+            var server = new Object();
+            server.serverName = "forbd.ashx";
+            server.serverIP = valuetest;
+            server.encryptLogin = false;
+            
+            var db = window.sqlitePlugin.openDatabase({name :"LTDB"});
+            db.transaction(function(tx)
+                           {
+                           SQLiteTool.insertServer(db,server);
+                           
+                           });
+                           
+        }
+    
+    
+    
+    $(document).on("pageshow","#pageone",function(){
+                   
+                   $("a").unbind();//这就是关键核心 解除之前的绑定，swipleft是可以多次绑定的
+                   $("a[name!='lasta']").on("swipeleft",function(){
+                                            deletli = $(this).parent(); //要加$
+                                            $.mobile.changePage('#alert','pop',false,true);
+                                            
+                                            });
+                   $("li").unbind();
+                   $("li[id!='lastli']").on("tap",function(){
+                                            
+                                            var seletctLi = $(this);
+                                            
+                                            console.log("data-icon"+seletctLi.attr("data-icon"));
+                                            
+                                            seletctLi.attr("data-icon","check");
+                                            $("#ipListview").listview("refresh");
+                                            
+                                            });
+                   
+                   
+                   });
+                   
+                   function deletIP()
+                   {
+                       
+                       
+                       var iDToDelete = deletli.attr("myID");
+                       
+                       console.log("iDToDelete:"+iDToDelete);
+                       
+                       //数据库删除服务器
+                       var db = window.sqlitePlugin.openDatabase({name :"LTDB"});
+                       db.transaction(function(tx){
+                                      
+                                      SQLiteTool.deleteServer(db,iDToDelete);
+                                      
+                                      
+                                      
+                                      });
+                                      
+                                      
+                                      deletli.remove();
+                                      $("#ipListview").listview("refresh");
+                                      
+                                      
+                   }
+    
+    
+    
+    document.addEventListener("deviceready", onDeviceReady, false);
+    
+    // device APIs are available
+    // 要设备初始化之后 phonegap才能调用plugin
+    function onDeviceReady() {
+        //获取数据库服务器列表
+        var db = window.sqlitePlugin.openDatabase({name :"LTDB"});
+        db.transaction(function(tx){
+                       
+                       SQLiteTool.queryServers(db,function(json){
+                                               
+                                               var li = "";
+                                               
+                                               for (var i = 0; i < json.length; i++) {
+                                               
+                                               li = li+"<li data-icon=\"false\" myID =\""+json[i]._ID+"\"><a>"+json[i].serverIP+"</a></li>";
+                                               }
+                                               
+                                               $(li).insertBefore("#lastli");
+                                               $("#ipListview").listview("refresh");
+                                               
+                                               
+                                               $("a[name!='lasta']").on("swipeleft",function(){
+                                                                        deletli = $(this).parent(); //要加$
+                                                                        $.mobile.changePage('#alert','pop',false,true)
+                                                                        
+                                                                        });
+                                               
+                                               $("li[id!='lastli']").on("tap",function(){
+                                                                        
+                                                                        var seletctLi = $(this);
+                                                                        
+                                                                        console.log("data-icon"+seletctLi.attr("data-icon"));
+                                                                        
+                                                                        seletctLi.children
+                                                                        
+                                                                        seletctLi.removeClass('false');
+                                                                        
+                                                                        
+                                                                        
+                                                                        seletctLi.attr("data-icon","check");
+                                                                        $("#ipListview").listview("refresh");
+                                                                        
+                                                                        
+                                                                        
+                                                                        
+                                                                        
+                                                                        });
+                                               
+                                               
+                                               });
+                       
+                       
+                       });
+                       
+    }
+    
+        </script>
+    
+    
+    <body>
+        <div data-role="page" id="pageone" data-dom-cache="true">
+            
+            <div data-role="header">
+                <h1 id = "DeviceID">服务器设置</h1>
+                <a data-role="button" onclick="clickBack()" class="ui-btn-left ui-btn ui-btn-inline ui-btn-icon-left ui-icon-carat-l ui-btn-icon-notext ui-corner-all" data-rel="back"></a>
+                 <a data-role="button" onclick="clickEdit()" class="ui-btn-right ui-btn ui-btn-inline ui-btn-icon-left ui-icon-gear ui-btn-icon-notext ui-corner-all"></a>
+            </div>
+            <div data-role="content">
+                
+                <ul data-role="listview" id="ipListview">
+                    <li data-role="divider" data-icon="plus">服务器列表(左滑IP地址删除)</li>
+                    <li id = "lastli" data-icon="plus">
+                        <a href="#download" name="lasta" data-transition="pop" data-position-to="window">添加新服务器</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        
+        
+        
+        <div data-role="page" id="download" data-dom-cache="true" >
+            <div data-role="header"></div>
+            <div data-role="content">
+                <label for="IpAddress">请输入新服务器IP地址</label>
+                <input type="text" name="ipAddress" id="IpAddress">
+                    <a href="#" data-role="button" data-rel="back" data-icon="check" data-inline="true" data-mini="true" onclick="passIp();" id = "btn">确定</a>
+                    <a href="#" data-role="button" data-rel="back" data-icon="delete" data-inline="true" data-mini="true">取消</a>
+                    </div>
+        </div>
+        
+        
+        
+        
+        
+        
+        <div data-role="dialog" id="alert" class="ui-overlay-a" data-dom-cache="true">
+            <div data-role="content">
+                <h3>确定要删除此服务器地址？<h3>
+                    <a href="#" data-role="button" data-rel="back" data-icon="check" data-inline="true" data-mini="true" onclick="deletIP();" id = "btn">确定</a>
+                    <a href="#" data-role="button" data-rel="back" data-icon="delete" data-inline="true" data-mini="true">取消</a>
+                    </div>
+        </div>
+        <script type="text/javascript" src="../cordova.js"></script>
+        <script type="text/javascript" src="index.js"></script>
+        <script type="text/javascript">
+			app.initialize();
+            </script>
+    </body>
+</html>

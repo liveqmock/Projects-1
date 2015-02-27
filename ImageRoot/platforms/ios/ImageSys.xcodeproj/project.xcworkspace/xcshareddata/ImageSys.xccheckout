@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>IDESourceControlProjectFavoriteDictionaryKey</key>
+	<false/>
+	<key>IDESourceControlProjectIdentifier</key>
+	<string>E3BF8FDD-259B-42D2-BD9B-7EEC9F697F23</string>
+	<key>IDESourceControlProjectName</key>
+	<string>ImageSys</string>
+	<key>IDESourceControlProjectOriginsDictionary</key>
+	<dict>
+		<key>6be66ec4-b649-a043-b3da-0bf715985222++5210</key>
+		<string>http://128.8.51.81/svn/MADP/ImageSys</string>
+	</dict>
+	<key>IDESourceControlProjectPath</key>
+	<string>platforms/ios/ImageSys.xcodeproj</string>
+	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
+	<dict>
+		<key>6be66ec4-b649-a043-b3da-0bf715985222++5210</key>
+		<string>../../../..</string>
+	</dict>
+	<key>IDESourceControlProjectRepositoryRootDictionary</key>
+	<dict>
+		<key>6be66ec4-b649-a043-b3da-0bf715985222++5210</key>
+		<string>http://128.8.51.81/svn/MADP</string>
+	</dict>
+	<key>IDESourceControlProjectURL</key>
+	<string>http://128.8.51.81/svn/MADP/ImageSys/platforms/ios/ImageSys.xcodeproj</string>
+	<key>IDESourceControlProjectVersion</key>
+	<integer>111</integer>
+	<key>IDESourceControlProjectWCCIdentifier</key>
+	<string>6be66ec4-b649-a043-b3da-0bf715985222++5210</string>
+	<key>IDESourceControlProjectWCConfigurations</key>
+	<array>
+		<dict>
+			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
+			<string>public.vcs.subversion</string>
+			<key>IDESourceControlWCCIdentifierKey</key>
+			<string>6be66ec4-b649-a043-b3da-0bf715985222++5210</string>
+			<key>IDESourceControlWCCName</key>
+			<string>ImageSys</string>
+		</dict>
+	</array>
+</dict>
+</plist>

@@ -1,0 +1,6 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">质量影像</string>
+    <string name="titlebarstring">请选择图片</string>
+    <string name="btn_ok">确定</string>
+</resources>

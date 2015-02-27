@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<!--
+ Licensed to the Apache Software Foundation (ASF) under one
+ or more contributor license agreements.  See the NOTICE file
+ distributed with this work for additional information
+ regarding copyright ownership.  The ASF licenses this file
+ to you under the Apache License, Version 2.0 (the
+ "License"); you may not use this file except in compliance
+ with the License.  You may obtain a copy of the License at
+ 
+ http://www.apache.org/licenses/LICENSE-2.0
+ 
+ Unless required by applicable law or agreed to in writing,
+ software distributed under the License is distributed on an
+ "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ KIND, either express or implied.  See the License for the
+ specific language governing permissions and limitations
+ under the License.
+ -->
+<html>
+    <head>
+        <meta charset="utf-8" />
+        <meta name="format-detection" content="telephone=no" />
+        <!-- WARNING: for iOS 7, remove the width=device-width and height=device-height attributes. See https://issues.apache.org/jira/browse/CB-4323 -->
+        <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width, height=device-height" />
+        <meta http-equiv="Access-Control-Allow-Origin" content="*">
+            <link rel="stylesheet" type="text/css" href="../vendor/jquery-mobile/ltkj.min.css" />
+            <link rel="stylesheet" type="text/css" href="../vendor/jquery-mobile/jquery.mobile.icons.min.css" />
+            <link rel="stylesheet" type="text/css" href="../vendor/jquery-mobile/jquery.mobile.structure-1.4.0.min.css" />
+            <script type="text/javascript" src="../vendor/jquery-mobile/jquery-2.0.3.min.js"></script>
+            <script type="text/javascript" src="../vendor/jquery-mobile/jquery.mobile-1.4.0.min.js"></script>
+            <script type="text/javascript" src="../util/SQLiteTool.js"></script>
+            <script type="text/javascript" src="../util/json.js"></script>
+            <script type="text/javascript" src="../util/jquery.rotate.js"></script>
+            <script type="text/javascript" src="../util/NetConnect.js"></script>
+            
+            <title>Hello World</title>
+            <script type="text/javascript" src="" id="getAspx">
+                </script>
+            </head>
+    
+    <body>
+		<div data-role="page" style="height:100%;" id="imgInfoPage">
+            <style type="text/css">
+                .divHead{
+                    position:static;
+                    top:0px;
+                    width:100%
+                    
+                    
+                }
+            .divBody{
+                position:relative;
+                top:20px;
+                width:100%
+                
+                
+            }
+            
+                </style>
+            
+            
+            <script>
+                
+                /* http://pg99.net/memo/jquery/jquery-mobile-api/jquery-mobile-event-swipe/
+                 swipe，是指在一秒内，水平方向拖拽大于30px，or 垂直方向拖拽小于20px时触发的事件。多长时间拖拽多少px可以配置。
+                 可以通过下面是个4个配置文件来直到那个swipe时间的触发时机。
+                 scrollSupressionThreshold : 抑制滚动px。默认10px。水平方向拖拽大于这个值，将不触发
+                 durationThreshold ： 超过这个时间，就不触发事件。默认1000ms
+                 horizontalDistanceThreshold ： 水平方向滑动超过这个值才会触发事件。默认30px
+                 verticalDistanceThreshold ： 垂直方向，滑动小于这个数字才会触发事件。默认75px
+                 */
+            
+           
+            
+            
+            var curBigImgIndex = TempCache.getItem("index");
+            var BigimgArr =  JSON.parse(TempCache.getItem("imgArr"));
+            
+            var  curBigImg =  BigimgArr[curImgIndex];
+            
+//            var beginImgfileid = curImg.imgfileid;
+
+            $("#showBigImg").attr("src",curBigImg.bigurl); //大图
+            
+            
+            $(function() {
+              
+              });
+              
+              window.onload = function()
+              {
+                  
+                  if(document.getElementById('showBigImg').fileSize>0)
+                  {
+                      console.log("加载成功");
+                  }
+                  else
+                  {
+                      console.log("加载失败");
+                      
+                  }
+                  
+              }
+            
+            
+
+      
+            
+            
+            
+                </script>
+			<div data-role="header" data-position="fixed" style="height:48px">
+                <a style="top:8px" href="#" class="ui-btn-left ui-btn ui-btn-inline ui-btn-icon-left ui-icon-carat-l ui-btn-icon-notext ui-corner-all" data-rel="back">Cancel</a>
+                <h1 id="bigImageViewTitle" style="position:relative;top:5px">查看大图</h1>
+            </div>
+            
+            <div data-role="content" id ="contentDiv" >
+                
+                
+                <div  id = "imgDiv" alt="详情" style="margin: 0 auto; display:block;">
+                    <img id = "showBigImg" src="" style=" width:100%; height:90%">
+                        </div>
+
+                
+            </div>
+		</div>
+    </body>
+</html>
+
+
+

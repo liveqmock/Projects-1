@@ -1,0 +1,626 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<meta name="format-detection" content="telephone=no" />
+		<!-- WARNING: for iOS 7, remove the width=device-width and height=device-height attributes. See https://issues.apache.org/jira/browse/CB-4323 -->
+		<meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width, height=device-height" />
+		<link rel="stylesheet" type="text/css" href="../vendor/jquery-mobile/ltkj.min.css" />
+		<link rel="stylesheet" type="text/css" href="../vendor/jquery-mobile/jquery.mobile.icons.min.css" />
+		<link rel="stylesheet" type="text/css" href="../vendor/jquery-mobile/jquery.mobile.structure-1.4.0.min.css" />
+		<script type="text/javascript" src="../vendor/jquery-mobile/jquery-2.0.3.min.js"></script>
+		<script type="text/javascript" src="../vendor/jquery-mobile/jquery.mobile-1.4.0.min.js"></script>
+		<script type="text/javascript" src="../util/SQLiteTool.js"></script>
+		<script type="text/javascript" src="../util/NetConnect.js"></script>
+        
+	</head>
+    
+	<body>
+		<div data-role="page" data-dom-cache="false" id="viewImgStrucSelectPage">
+			<style type="text/css">
+				.ltui-menu-left {
+					position: relative;
+					float: left;
+					margin: 30px 0 0 0;
+					padding: 0;
+					border: 0;
+				}
+            .ltui-menu-right {
+                position: relative;
+                float: right;
+                margin: 30px 0 0 0;
+                padding: 0;
+                border: 0;
+            }
+            #fullpath {
+                background: #444444;
+                color: #ffffff;
+                display: block;
+                margin: -15px;
+                padding: 7px;
+            }
+            .controlgroup-textinput {
+                padding-top: .22em;
+                padding-bottom: .22em;
+            }
+            .stuctImg{
+                height: 20px;
+                width: 20px;
+                z-index:3;
+                position: absolute;
+                right: 10px;
+                top: 10px;
+                display:none
+                
+            }
+            
+                </style>
+			<script type="text/javascript">
+				var bds, filterStructs, structs;
+				var selectedBd, selectedBdName = "", selectedBdTemp, selectedBdNameTemp = "";
+                var lastSelectLiID = "";//上次选中li的ID
+                var rightlistNum = 6; //右边列表的数目，初始化为6
+                var listNum = 6; //每次按下more按键的时候，增加listNum个单元
+                var leftfirstName ="";
+                var rightlistTotalNum;
+                
+                
+				// 当前选中的标段、标段名
+				var curDir;
+				// 当前目录，用于显示和保存当前路径
+				var selectedStruct='';
+				// 选中的分项结构
+				var parentStack = new Array();
+				document.addEventListener('deviceready', onDeviceReady, false);
+                
+				function onDeviceReady() {
+					// setTimeout(loaded, 200);
+					showBD();
+				}
+            
+            
+            
+            function showList() {
+                var el, li, i;
+                var json;
+                var isleftNone = false;
+                var isrightNone = false;
+                
+                $("#leftlist").empty(); //每次有更新动作时，都会先清空列表
+                $("#rightlist").empty();
+                console.log("selectedBd:" + selectedBd);
+                var name = "";
+                if (!selectedBd || "" == selectedBd) {
+                    
+                    var allHtml ="";
+                    var name = "";
+                    for ( i = 0; i < bds.length; i++) {
+                        json = bds[i];
+                        allHtml = allHtml+ "<li><a style='white-space:pre-wrap;' href='javascript:selectBD(\"" + json.BD_ID + "\",\"" + json.Name + "\")' >" + json.Name + "</a></li>";
+						
+                        console.log("aaaaaaaaaaaaaaaa"+allHtml);//////////////////////////
+                        
+                    }
+                    $("ul#leftlist").append(allHtml);
+                    
+                    
+                    
+                } else {
+                    //组织左边列表
+                    
+                    
+                    
+                    var backLi = "<li><a onclick='returnParent()'>返回</a></li>";
+                    $("ul#leftlist").append(backLi);
+                    var leftHtml ="";
+                    
+                    
+                    for ( i = 0; i < filterStructs.length; i++) {
+                        json = filterStructs[i];
+                        leftHtml = leftHtml+"<li><a style='white-space:pre-wrap;' href='javascript:selectStruct(\"" + json.LotImgStruc_ID + "\",\"" + json.LotImgStrucName + "\",\"" + json.SortCode + "\")' >" + json.LotImgStrucName + "</a></li>";;
+                        
+                        if(i==0)
+                        {
+                            name = json.LotImgStrucName;
+                            console.log("LLLLLLLL"+name);
+                            
+                        }
+                        
+                        
+                    }
+                    
+                    console.log("LLLLLLLL"+leftHtml);// 显示左边信息列表，每点击一次就会重新更新
+                    
+                    //如果左边没有内容了，就只显示返回,
+                    if(leftHtml == "")
+                    {
+                        
+                        $("#leftlist").listview("refresh"); //这里必须刷新一下表格，否则加载更多按钮会有时候不能正常隐藏
+                        //原因:影响到下面对左边列表的及时更新判断
+                        $("#moreButton").css("display", "none");
+                        isleftNone = true;
+                        console.log("此时应该左边是没有内容的，只显示返回？");
+                        
+                    }
+                    else{
+                        isleftNone = false;
+                    }
+                    
+                    $("ul#leftlist").append(leftHtml);
+                    
+                    
+                    
+                }
+                rightlistTotalNum = structs.length;
+                var m=1;
+                //组织右边列表
+                console.log("leftfirstName"+leftfirstName);
+                if(name != leftfirstName) //当左边的列表更新时，右边列表数目还原
+                {
+                    rightlistNum = listNum;
+                    leftfirstName = name;
+                    if(!isleftNone) //而且左边列表不为空，把加载更多显示
+                    {
+                        $("#moreButton").css("display", "block");
+                    }
+                    else
+                    {
+                        m=0; //把上一节点的数据显示出来
+                        $("#moreButton").css("display", "none");
+                    }
+                    if(rightlistTotalNum<rightlistNum) //右边列表总数目不到6个，直接显示总数目，且隐藏按键
+                    {
+                        rightlistNum = rightlistTotalNum;
+                        $("#moreButton").css("display", "none");
+                    }
+                    
+                    
+                }
+                
+                el = document.getElementById('rightlist');
+                
+                
+                var rightTempHtml ="";
+                
+                console.log("右边信息数目："+rightlistNum);
+                for ( i = m; i < rightlistNum; i++) { //由于数据源第一条信息并不是符合规格的，故i=1开始，
+                    // console.log("right:" + i);
+                    json = structs[i];
+                    li = document.createElement('li');
+                    
+                    var liID = "section"+json.LotImgStruc_ID;
+                    
+                    var curTitle = curDir.replace(selectedBdName, "");
+                    var showTitle = ("/" + json.FullPath).replace(curTitle, "");
+                    if ("" == showTitle || " " == showTitle) {
+                        showTitle = json.LotImgStrucName;
+                    }
+                    
+                    
+                    
+                    rightTempHtml = rightTempHtml+ "<li><a style='background:#f2f6f7;border:0px;min-height:0em;padding-left:5px;white-space:pre-wrap;'  id="+liID+" href='javascript:select(\"" + json.LotImgStruc_ID + "\",\"" + json.LotImgStrucName + "\",\"" + json.FullPath + "\",\"" + json.BD_ID +"\")' >" + showTitle + "</a><img  class='stuctImg'  src='../img/choseMark.png'></li>";
+                    
+                    console.log("RIGHT:"+json.FullPath);
+                    //
+                }
+                console.log("structs.length:::"+structs.length);
+                
+                if(structs.length<=6) //再判断一次，隐藏按钮
+                {
+                    $("#moreButton").css("display", "none");
+                    
+                }
+                
+                console.log("RRRRRRRRRRRRRnumber"+structs.length); //显示右边的元素个数
+                //                    if(rightTempHtml == "") //右边没有内容显示
+                //                    {
+                //                        $("#moreButton").css("display", "none");
+                //                       //$("#rightlist").listview("refresh");
+                //
+                //                    }
+                
+                $("#rightlist").append(rightTempHtml); //添加新元素
+                
+                
+                $("#rightlist").listview("refresh");
+                $("#leftlist").listview("refresh");
+                
+            }
+            
+            function rightlistNumIncrese(){  //more按钮
+                
+                rightlistNum += listNum;
+                if(rightlistNum>=rightlistTotalNum)
+                {
+                    rightlistNum = rightlistTotalNum; //若显示的数目大于数据数目，则等于总数据数目
+                    $("#moreButton").css("display", "none");
+                    
+                    
+                }
+                console.log("rightlistNum："+rightlistNum);
+                showList();
+                
+                
+            }
+            
+            //返回按钮，
+            function returnParent() {
+                selectedStruct = null;
+                
+                if (0 < parentStack.length) {
+                    // 存在上一层分项结构
+                    
+                    var parent = parentStack.pop();
+                    curDir = parent[2];
+                    document.getElementById("fullpath").innerText = curDir;
+                    load(parent[0], parent[1]);
+                } else if (selectedBd) {
+                    // 返回根
+                    
+                    filterStructs.splice(0, filterStructs.length);
+                    showBD();
+                }
+                $("#moreButton").css("display", "block"); //把“加载更多”显示出来
+            }
+            
+            function select(structid, structname, fullpath, bdid) {
+                
+                console.log("进入select");
+                
+                var curLiID = "#section"+structid;
+                
+                if(curLiID==lastSelectLiID)
+                {
+                    $(curLiID).css({background: '#6baacc',color:'white'});
+                    $(curLiID).siblings(".stuctImg").css("display","block");
+                }
+                else
+                {
+                    
+                    if(lastSelectLiID=="")
+                    {
+                        
+                    }
+                    else
+                    {
+                        $(lastSelectLiID).css({background: '#f2f6f7',color:'#6baacc'});
+                        //$(lastSelectLiID).parent().children(".stuctImg").css("display","none");
+                        
+                        $(lastSelectLiID).siblings(".stuctImg").css("display","none");
+                        
+                    }
+                    
+                    
+                    
+                    $(curLiID).css({background: '#6baacc',color:'white'});
+                    $(curLiID).siblings(".stuctImg").css("display","block");
+                    
+                    //$(curLiID).parent().children(".stuctImg").css("display","block");
+                    
+                    
+                    lastSelectLiID = curLiID;
+                }
+                
+                
+                
+                
+                console.log("curLiID"+curLiID);
+                console.log("!!!!!!!!!"+document.getElementById("fullpath").innerText);
+                console.log("structname:"+structname);
+                
+                selectedStruct = structid;
+                
+                var showBdName = selectedBdName;
+                if (!selectedBd || "" == selectedBd) {
+                    selectedBdTemp = bdid;
+                    for (var i = 0; i < bds.length; i++) {
+                        var json = bds[i];
+                        if(json.BD_ID = bdid) {
+                            showBdName = json.Name;
+                            selectedBdNameTemp = showBdName;
+                            console.log("沒有选中标段，找到标段:" + showBdName);
+                            break;
+                        }
+                    }
+                }
+                document.getElementById("fullpath").innerText = showBdName + "/" + fullpath;
+                //document.getElementById("fullpath").innerText = curDir + "/" + structname;
+            }
+            
+            function selectStruct(structid, structname, sortCode) {
+                
+                var path = curDir;
+                //var path = selectedBdName + "/" + structfullname;
+                if (filterStructs && 0 < filterStructs.length) {
+                    // 当前是分项结构
+                    var json = filterStructs[0];
+                    // 得到父id
+                    var parentId = json.LotImgStruc_ID_Parent;
+                    
+                    // 得到父sortCode
+                    var splSort = sortCode.split(".");
+                    var parentSortCode = "";
+                    if (1 < splSort.length) {
+                        var last = splSort[splSort.length - 2];
+                        parentSortCode = sortCode.substr(0, sortCode.length - last.length - 1);
+                    }
+                    console.log("org sortCode:" + sortCode + "---parent sortCode:" + parentSortCode);
+                    
+                    // 得到中文路径
+                    parentStack.push([parentId, parentSortCode, path]);
+                }
+                curDir = path + "/" + structname;
+                document.getElementById("fullpath").innerText = curDir;
+                load(structid, sortCode);
+            }
+            
+            function load(structid, sortCode) {
+                
+                var db = window.sqlitePlugin.openDatabase({
+                                                          name : "LTDB"
+                                                          });
+                                                          SQLiteTool.queryStrucByBDAndParent(db, selectedBd, structid, function(result) {
+                                                                                             //console.log("struc : " + JSON.stringify(result));
+                                                                                             filterStructs = result;
+                                                                                             SQLiteTool.queryStrucBySortCode(db, selectedBd, sortCode, function(result) {
+                                                                                                                             structs = result;
+                                                                                                                             showList();
+                                                                                                                             });
+                                                                                             });
+            }
+            
+            function selectBD(bdid, bdname) {
+                selectedBd = bdid;
+                selectedBdName = bdname;
+                curDir = bdname;
+                document.getElementById("fullpath").innerText = bdname;
+                var db = window.sqlitePlugin.openDatabase({
+                                                          name : "LTDB"
+                                                          });
+                                                          SQLiteTool.queryStrucByBDAndParent(db, bdid, "", function(result) {
+                                                                                             //console.log("struc : " + JSON.stringify(result));
+                                                                                             filterStructs = result;
+                                                                                             SQLiteTool.queryStrucBySortCode(db, bdid, null, function(result) {
+                                                                                                                             structs = result;
+                                                                                                                             showList();
+                                                                                                                             });
+                                                                                             });
+            }
+            
+            function showBD() {
+                
+                console.log("数据库数据查看时间测试开始时间");
+                
+                // 清空已选信息
+                selectedBd = "";
+                curDir = "";
+                document.getElementById("fullpath").innerText = "/"; //显示目录路径
+                var db = window.sqlitePlugin.openDatabase({
+                                                          name : "LTDB"
+                                                          });
+                                                          SQLiteTool.queryBD(db, function(jsonArr) {
+                                                                             
+                                                                             bds = jsonArr;
+                                                                             
+                                                                             console.log("bds : " + JSON.stringify(bds));
+                                                                             
+                                                                             
+                                                                             
+                                                                             
+                                                                             SQLiteTool.getBDsWhichUpTimeNoEmpty(db,function(arr){
+                                                                                                                 
+                                                                                                                 console.log("有更新时间的标段"+JSON.stringify(arr));
+                                                                                                                 var tempBDID ='';
+                                                                                                                 for(var i =0;i<bds.length;i++)
+                                                                                                                 {
+                                                                                                                 
+                                                                                                                 tempBDID = bds[i].BD_ID;
+                                                                                                                 
+                                                                                                                 
+                                                                                                                 for(var k =0;k<arr.length;k++){
+                                                                                                                 
+                                                                                                                 
+                                                                                                                 
+                                                                                                                 if(tempBDID!=arr[k].BD_ID)
+                                                                                                                 {
+                                                                                                                 if(k==(arr.length-1))
+                                                                                                                 {
+                                                                                                                 bds.splice(i,1);
+                                                                                                                 i=i-1;
+                                                                                                                 break;
+                                                                                                                 }
+                                                                                                                 
+                                                                                                                 
+                                                                                                                 
+                                                                                                                 }
+                                                                                                                 else
+                                                                                                                 {
+                                                                                                                 break;
+                                                                                                                 }
+                                                                                                                 
+                                                                                                                 
+                                                                                                                 }
+                                                                                                                 
+                                                                                                                 }
+                                                                                                                 
+                                                                                                                 
+                                                                                                                 SQLiteTool.queryStrucBySortCode(db, null, null, function(result) {
+                                                                                                                                                 //console.log("struc : " + JSON.stringify(result));
+                                                                                                                                                 console.log("数据库数据查看时间测试结束");
+                                                                                                                                                 
+                                                                                                                                                 structs = result;
+                                                                                                                                                 showList();
+                                                                                                                                                 });
+                                                                                                                 
+                                                                                                                 
+                                                                                                                 
+                                                                                                                 
+                                                                                                                 
+                                                                                                                 });
+                                                                             
+                                                                             
+                                                                             
+                                                                             
+                                                                             
+                                                                             
+                                                                             
+                                                                             
+                                                                             });
+            }
+            
+            function switchMode(mode) {
+                if (0 == mode) {
+                    document.getElementById("strucSearch").style.display = "block";
+                    document.getElementById("strucTree").style.display = "none";
+                } else {
+                    document.getElementById("strucSearch").style.display = "none";
+                    document.getElementById("strucTree").style.display = "block";
+                }
+            }
+            
+            function search() {
+                var string = document.getElementById("queryInput").value;
+                if (string && "" != string) {
+                    var db = window.sqlitePlugin.openDatabase({
+                                                              name : "LTDB"
+                                                              });
+                                                              SQLiteTool.queryStrucByString(db, string, function(jsonArr) {
+                                                                                            
+                                                                                            var el, li, i;
+                                                                                            //组织右边列表
+                                                                                            $("#searchlist").empty();
+                                                                                            el = document.getElementById('searchlist');
+                                                                                            for ( i = 0; i < jsonArr.length; i++) {
+                                                                                            // console.log("right:" + i);
+                                                                                            json = jsonArr[i];
+                                                                                            li = document.createElement('li');
+                                                                                            
+                                                                                            
+                                                                                            
+                                                                                            li.innerHTML = "<a style='white-space:pre-wrap;' href='javascript:searchConfirm(\"" + json.LotImgStruc_ID + "\",\"" + json.LotImgStrucName + "\",\"" + json.FullPath + "\",\"" + json.BD_ID + "\")' >" + json.FullPath + "</a>";
+                                                                                            
+                                                                                            
+                                                                                            
+                                                                                            el.appendChild(li);
+                                                                                            }
+                                                                                            $("#searchlist").listview("refresh");
+                                                                                            });
+                } else {
+                    
+                    
+                    navigator.notification.confirm(
+                                                   '请输入搜索条件!', // message
+                                                   function(){
+                                                   },
+                                                   '提示',
+                                                   ['确定']
+                                                   );
+                }
+            }
+            //不同的js文件 同名函数冲突
+            function imgConfirm() {
+                if (selectedStruct && "" != selectedStruct) {
+                    var retBd = selectedBd;
+                    var retBdName = selectedBdName;
+                    if(!selectedBd || "" == selectedBd) {
+                        retBd = selectedBdTemp;
+                        retBdName = selectedBdNameTemp;
+                    }
+                    
+                    
+                    console.log("retBd:   "+retBd);
+                    
+                    console.log("selectedStruct:   "+selectedStruct);
+                    
+                    var ret = {
+                        "BD_ID" : retBd,
+                        "BD_NAME" : retBdName,
+                        "LotImgStruc_ID" : selectedStruct,
+                        "FullPath" : document.getElementById("fullpath").innerText
+                    };
+                    TempCache.setItem("struct", JSON.stringify(ret));
+                    //跳转到影像查看视图
+                    $.mobile.changePage("imageView.html");
+                } else {
+                    navigator.notification.confirm(
+                                                   '您没有选择分项结构!', // message
+                                                   function(){
+                                                   },
+                                                   '提示',
+                                                   ['确定']
+                                                   );
+                }
+            }
+            
+            function searchConfirm(structid, structname, fullpath, bdid) {
+                select(structid, structname, fullpath, bdid);
+                imgConfirm();
+            }
+            //设置一个变量用来判断是否重新请求影像查看的URL
+            $("#viewImgStrucSelectPage").on('pageshow', function()
+                                            {
+                                            
+                                            
+                                            TempCache.setItem("isReload","1");
+                                            
+                                            });
+                                            
+                                            
+                </script>
+			<div data-role="header" data-position="inline" data-tap-toggle="false" data-fullscreen="false">
+				<h1>影像结构选取</h1>
+				<a href="#"  class="ui-btn-left ui-btn ui-btn-inline ui-icon-carat-l ui-btn-icon-notext ui-corner-all" data-rel="back" > </a>
+                
+				<a href="javascript:imgConfirm();"  class="ui-btn-right ui-btn ui-btn-inline ui-btn-icon-notext ui-icon-check ui-corner-all" style="float:left;position:absolute;right:50px;"><a style="position: absolute;top:-4px;right:0px;background:none;color:white;border:none;font-size:15px" onclick="imgConfirm()" data-shadow="false">确定</a></a>
+                
+                
+                
+                
+				<div data-role="navbar" height="48px">
+					<ul>
+						<li>
+							<a href="javascript:switchMode(0);" data-icon="search">搜索</a>
+						</li>
+						<li>
+							<a href="javascript:switchMode(1);" data-icon="grid">结构树</a>
+						</li>
+					</ul>
+				</div>
+			</div>
+            
+			<div data-role="content">
+				<div id="strucSearch" style="display: block;">
+					<fieldset class="ui-grid-a">
+						<div class="ui-block-a" style="width: 75%;">
+							<input id="queryInput" type="search" data-wrapper-class="controlgroup-textinput ui-btn" placeholder="请输入搜索条件..." />
+						</div>
+						<div class="ui-block-b" style="width: 25%;">
+							<button onclick="search()">
+								搜索
+							</button>
+						</div>
+					</fieldset>
+					<ul data-role="listview" data-inset="true" data-icon="false" id="searchlist">
+					</ul>
+				</div>
+				<div id="strucTree" style="display: none;">
+					<span id="fullpath" style="height: 80%"></span>
+					<div class="ltui-menu-left" style="width: 30%;">
+						<ul data-role="listview" id="leftlist" data-icon="false"></ul>
+					</div>
+					<div class="ltui-menu-right" style="width: 60%;">
+						<ul data-role="listview" id="rightlist" data-icon="false"></ul>
+                        
+                    </div>
+                    <div class="ltui-menu-right" style="width: 60%" id="moreButton">
+                        <button onclick="rightlistNumIncrese()">
+                            加载更多
+                        </button>
+                    </div>
+				</div>
+			</div>
+            
+		</div>
+        
+	</body>
+</html>

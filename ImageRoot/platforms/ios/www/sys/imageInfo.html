@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<!--
+ Licensed to the Apache Software Foundation (ASF) under one
+ or more contributor license agreements.  See the NOTICE file
+ distributed with this work for additional information
+ regarding copyright ownership.  The ASF licenses this file
+ to you under the Apache License, Version 2.0 (the
+ "License"); you may not use this file except in compliance
+ with the License.  You may obtain a copy of the License at
+ 
+ http://www.apache.org/licenses/LICENSE-2.0
+ 
+ Unless required by applicable law or agreed to in writing,
+ software distributed under the License is distributed on an
+ "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ KIND, either express or implied.  See the License for the
+ specific language governing permissions and limitations
+ under the License.
+ -->
+<html>
+    <head>
+        <meta charset="utf-8" />
+        <meta name="format-detection" content="telephone=no" />
+        <!-- WARNING: for iOS 7, remove the width=device-width and height=device-height attributes. See https://issues.apache.org/jira/browse/CB-4323 -->
+        <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width, height=device-height" />
+        <meta http-equiv="Access-Control-Allow-Origin" content="*">
+        <link rel="stylesheet" type="text/css" href="../vendor/jquery-mobile/ltkj.min.css" />
+        <link rel="stylesheet" type="text/css" href="../vendor/jquery-mobile/jquery.mobile.icons.min.css" />
+        <link rel="stylesheet" type="text/css" href="../vendor/jquery-mobile/jquery.mobile.structure-1.4.0.min.css" />
+        <script type="text/javascript" src="../vendor/jquery-mobile/jquery-2.0.3.min.js"></script>
+        <script type="text/javascript" src="../vendor/jquery-mobile/jquery.mobile-1.4.0.min.js"></script>
+        <script type="text/javascript" src="../util/SQLiteTool.js"></script>
+        <script type="text/javascript" src="../util/json.js"></script>
+        <script type="text/javascript" src="../util/jquery.rotate.js"></script>
+        <script type="text/javascript" src="../util/NetConnect.js"></script>
+       
+        <title>Hello World</title>
+        <script type="text/javascript" src="" id="getAspx">
+            </script>
+    </head>
+    
+    <body>
+		<div data-role="page" style="height:100%;" id="imgInfoPage">
+            <style type="text/css">
+            .divHead{
+                    position:static;
+                    top:0px;
+                    width:100%
+                
+                
+            }
+            .divBody{
+                position:relative;
+                top:20px;
+                width:100%
+                
+                
+            }
+            
+            </style>
+            
+    
+            <script>
+            
+            /* http://pg99.net/memo/jquery/jquery-mobile-api/jquery-mobile-event-swipe/
+            swipe，是指在一秒内，水平方向拖拽大于30px，or 垂直方向拖拽小于20px时触发的事件。多长时间拖拽多少px可以配置。
+            可以通过下面是个4个配置文件来直到那个swipe时间的触发时机。
+            scrollSupressionThreshold : 抑制滚动px。默认10px。水平方向拖拽大于这个值，将不触发
+            durationThreshold ： 超过这个时间，就不触发事件。默认1000ms
+            horizontalDistanceThreshold ： 水平方向滑动超过这个值才会触发事件。默认30px
+            verticalDistanceThreshold ： 垂直方向，滑动小于这个数字才会触发事件。默认75px
+            */
+            
+            $.event.special.swipe.scrollSupressionThreshold = 10;
+            $.event.special.swipe.durationThreshold = 1000;
+            $.event.special.swipe.horizontalDistanceThreshold = 70;
+            $.event.special.swipe.verticalDistanceThreshold = 70;
+           
+        
+            var curImgIndex = TempCache.getItem("index");
+            var imgArr =  JSON.parse(TempCache.getItem("imgArr"));
+            
+            var  curImg =  imgArr[curImgIndex];
+            
+            var beginImgfileid = curImg.imgfileid;
+
+            
+            $("#showImg").attr("src",curImg.url); //小图
+//            $("#showImg").attr("src",curImg.bigurl);
+
+
+
+            $(function() {
+              // 图像加载完成之后，调整图片大小
+              console.log("第一次？图像加载完成之后，调整图片大小");
+              
+              $('#showImg').load(function() {
+                              adjustImgSize($(this), $(this).parent().width(), $(this).parent().height());
+
+                              });  
+              });
+            
+            window.onload = function()
+            {
+                
+                if(document.getElementById('showImg').fileSize>0)
+                {
+                    console.log("加载成功");
+                                    }
+                else
+                {
+                    console.log("加载失败");
+                
+                }
+                
+            }
+            
+  
+        
+            loadImgInfo(beginImgfileid);
+            
+            whetherHasArrow(curImgIndex,imgArr.length);
+            
+            
+            function loadImgInfo(beginImgfileid)
+            {
+                
+            
+                console.log("请求中图片信息!!!");
+                
+                //LTLoadStart("请求图片信息中……");
+                
+                
+                
+                var args = new Object();
+                args.LotImgFileID = beginImgfileid;
+                
+                var PhotoPositionArr;
+                
+                NetConnect.getServer(args,"ForImgDetail.ashx",function successCallBack(backJson){
+                                     
+                                     LTStopLoading();
+                                     $("#imgInfolistview").empty();//清空
+                                     
+                                     
+                                     console.log("ForImgDetail"+JSON.stringify(backJson));
+                                     
+                                     console.log("backJson"+eval(backJson).LotImgFile[0]);
+                                     
+                                     var imgInfoDic = eval(backJson).LotImgFile[0];
+                                     var li;
+                                     
+                                     imgInfoDic.PhotoTime = (imgInfoDic.PhotoTime.split(":"))[0]+":"+(imgInfoDic.PhotoTime.split(":"))[1];
+//
+//                                     console.log("PhotoTime:"+imgInfoDic.PhotoTime);
+                                     
+                                     
+                                     li = "<li data-icon='false' style='white-space:normal;color:#6baacd'>"+imgInfoDic.LotImgTitle+"</li>"+"<li data-icon='false' style='white-space:normal;color:#6baacd'>"+imgInfoDic.PhotoPosition+"</li>"+"<li data-icon='false' style='white-space:normal;color:#6baacd'>拍摄设备:"+imgInfoDic.CameraType+"</li>"+"<li data-icon='false' style='white-space:normal;color:#6baacd'>拍摄时间:"+imgInfoDic.PhotoTime+"</li>"+"<li data-icon='false' style='white-space:normal;color:#6baacd'>拍摄人员:"+imgInfoDic.LotImgUper+"</li>";
+                                     
+                                     
+                                     
+                                     $("#imgInfolistview").append(li);
+                                     $("#imgInfolistview").listview("refresh");
+                                     
+                                     PhotoPositionArr = imgInfoDic.PhotoPosition.split("/");
+                                     
+                                     var title = PhotoPositionArr.pop();
+                                     
+                                    
+                                     console.log("LotImgTitle:"+title);
+                                     
+                                     $("#LotImgInfoTitle").html(title);
+                                     
+                                     
+                                     },function failCallBack(errorJson)
+                                     {
+                                     
+                                        //LTStopLoading();
+                                        navigator.notification.confirm(
+                                                                    '网络异常', // message
+                                                                    function callback()
+                                                                    {
+                                                                    
+                                                                    },            // callback to invoke with index of button pressed
+                                                                    '提示',           // title
+                                                                    ['确定']         // buttonLabels
+                                                                    );
+                                     
+                                     });
+            
+            
+            }
+            
+            //判断是否显示指示箭头
+            function whetherHasArrow(index,allNumber)
+            {
+                
+                console.log("index:"+index+"allNumber:"+allNumber);
+                
+                //最后一张
+                if(parseInt(index)>=parseInt(allNumber-1))
+                {
+                    $("#rightDir").css("display","none");
+                    console.log("display:none");
+                }
+                else
+                {
+                    $("#rightDir").css("display","block");
+                    console.log("display:block");
+                }
+                //第一张
+                if(parseInt(index)<=0)
+                {
+                    
+                    $("#leftDir").css("display","none");
+                
+                }
+                else
+                {
+                    $("#leftDir").css("display","block");
+                }
+            }
+        
+
+            //整个左滑 ＃showImg
+            $("#imgInfoPage").on("swipeleft",function(){
+                            
+                             console.log("curImgIndex:"+curImgIndex+"length:"+imgArr.length);
+                           
+                           
+                             
+                             if(curImgIndex<(imgArr.length-1)){
+                             
+                             curImgIndex = parseInt(curImgIndex)+parseInt(1);
+                             
+                             //curImgIndex = eval(curImgIndex+1); 有时发神经
+                             
+                             curImg =  imgArr[curImgIndex];
+                             beginImgfileid = curImg.imgfileid;
+                             $("#showImg").attr("src",curImg.url);
+                             
+                             $('#showImg').load(function() {
+                                                adjustImgSize($(this), $(this).parent().width(), $(this).parent().height());
+                                            
+                                                });
+                             
+                             
+                             loadImgInfo(beginImgfileid);
+                             
+                             }else
+                             {
+                             navigator.notification.confirm(
+                                                            '当前已经是最后一张了', // message
+                                                            function callback()
+                                                            {
+                                                            
+                                                            },            // callback to invoke with index of button pressed
+                                                            '提示',           // title
+                                                            ['确定']         // buttonLabels
+                                                            );
+                             }
+                             
+                             whetherHasArrow(curImgIndex,imgArr.length);
+                             
+                                     
+                                     });
+            //页面右滑 ＃showImg
+            $("#imgInfoPage").on("swiperight",function(){
+                           
+                            
+                           
+                             console.log("curImgIndex:"+curImgIndex+"length:"+imgArr.length);
+                             
+                             
+                                 
+                             if(curImgIndex>0)
+                             {
+                             
+                             curImgIndex = parseInt(curImgIndex)-parseInt(1);
+                             
+    
+                             curImg =  imgArr[curImgIndex];
+                             beginImgfileid = curImg.imgfileid;
+                             $("#showImg").attr("src",curImg.url);
+                             $('#showImg').load(function() {
+                                                adjustImgSize($(this), $(this).parent().width(), $(this).parent().height());
+                                              
+                                                });
+                             loadImgInfo(beginImgfileid);
+                             
+                             }else
+                             {
+                             navigator.notification.confirm(
+                                                            '当前已经是第一张了', // message
+                                                            function callback()
+                                                            {
+                                                            
+                                                            },            // callback to invoke with index of button pressed
+                                                            '提示',           // title
+                                                            ['确定']         // buttonLabels
+                                                            );
+                             }
+                             whetherHasArrow(curImgIndex,imgArr.length);
+
+                      });
+                      
+                      //点击左箭头按键
+                      function formLeftButtonClick()
+                      {
+                          console.log("formLeftButtonClick Runing!!!!!!!");
+                          if(curImgIndex>0)
+                          {
+                              
+                              curImgIndex = parseInt(curImgIndex)-parseInt(1);
+                              
+                              
+                              curImg =  imgArr[curImgIndex];
+                              beginImgfileid = curImg.imgfileid;
+                              $("#showImg").attr("src",curImg.url);
+                              $('#showImg').load(function() {
+                                                 adjustImgSize($(this), $(this).parent().width(), $(this).parent().height());
+                                            
+                                                 });
+                                                 loadImgInfo(beginImgfileid);
+                                                 
+                          }else
+                          {
+                              navigator.notification.confirm(
+                                                             '当前已经是第一张了', // message
+                                                             function callback()
+                                                             {
+                                                             
+                                                             },            // callback to invoke with index of button pressed
+                                                             '提示',           // title
+                                                             ['确定']         // buttonLabels
+                                                             );
+                          }
+                          whetherHasArrow(curImgIndex, imgArr.length);
+                      }
+            
+            //点击右箭头按键
+            function formRightButtonClick()
+            {
+                console.log("formRightButtonClick Runing!!!!");
+
+                
+                if(curImgIndex<(imgArr.length-1)){
+                    
+                    curImgIndex = parseInt(curImgIndex)+parseInt(1);
+                    
+                    //curImgIndex = eval(curImgIndex+1); 有时发神经
+                    
+                    curImg =  imgArr[curImgIndex];
+                    beginImgfileid = curImg.imgfileid;
+                    $("#showImg").attr("src",curImg.url);
+                    
+                    $('#showImg').load(function() {
+                                       adjustImgSize($(this), $(this).parent().width(), $(this).parent().height());
+
+                                       });
+                                       
+                                       
+                                       loadImgInfo(beginImgfileid);
+                                       
+                }else
+                {
+                    navigator.notification.confirm(
+                                                   '当前已经是最后一张了', // message
+                                                   function callback()
+                                                   {
+                                                   
+                                                   },            // callback to invoke with index of button pressed
+                                                   '提示',           // title
+                                                   ['确定']         // buttonLabels
+                                                   );
+                }
+
+
+                whetherHasArrow(curImgIndex, imgArr.length);
+            }
+            
+            
+
+                      
+                      
+            //设置一个变量用来判断是否重新请求影像查看的URL
+            $("#imgInfoPage").on('pageshow', function()
+                                   {
+                                        
+                                 
+                                    TempCache.setItem("isReload","0");
+                                 
+                                   });
+                                   
+                                   //进入大图模式
+                                   function showBigImage()
+                                   {
+                                      
+                                              $.mobile.changePage("bigImageView.html");
+                                              console.log("点击了大图界面");
+                                   }
+
+           
+            
+            </script>
+			<div data-role="header" data-position="fixed" style="height:48px">
+                <a style="top:8px" href="#" class="ui-btn-left ui-btn ui-btn-inline ui-btn-icon-left ui-icon-carat-l ui-btn-icon-notext ui-corner-all" data-rel="back">Cancel</a>
+                <h1 id="LotImgInfoTitle" style="position:relative;top:5px">影像详情</h1>
+            </div>
+	           
+            <div data-role="content" id ="contentDiv" >
+                <!--div style="margin:0 auto;width:250px;height:10px;background:green"><div style="margin:0 auto;width:10px;height:10px;background:red;z-index:5"></div></div-->
+                
+   
+                
+                <div  id = "imgDiv" alt="详情" style="margin: 0 auto; display:block; width:285px; height:285px">
+                    <img id = "showImg" src="" style="position:relative height:285px" onclick="showBigImage()">
+                </div>
+                <a data-role="button" id="leftDir" onclick="formLeftButtonClick()" data-icon="arrow-l" data-iconpos="notext" style="position:fixed;top:150px;left:5px;border:0px"></a>
+                <a data-role="button" id="rightDir" onclick="formRightButtonClick()"  data-icon="arrow-r" data-iconpos="notext" style="position:fixed;top:150px;right:5px;border:0px"></a>
+            <ul data-role="listview" data-inset="true" id="imgInfolistview" style="margin-top:10px">
+            
+            </ul>
+            
+            
+            </div>
+		</div>
+        </body>
+</html>
+
+
+

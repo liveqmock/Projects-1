@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<!--
+Licensed to the Apache Software Foundation (ASF) under one
+or more contributor license agreements.  See the NOTICE file
+distributed with this work for additional information
+regarding copyright ownership.  The ASF licenses this file
+to you under the Apache License, Version 2.0 (the
+"License"); you may not use this file except in compliance
+with the License.  You may obtain a copy of the License at
+
+http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing,
+software distributed under the License is distributed on an
+"AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+KIND, either express or implied.  See the License for the
+specific language governing permissions and limitations
+under the License.
+-->
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<meta name="format-detection" content="telephone=no" />
+		<!-- WARNING: for iOS 7, remove the width=device-width and height=device-height attributes. See https://issues.apache.org/jira/browse/CB-4323 -->
+		<meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width, height=device-height" />
+		<meta http-equiv="Access-Control-Allow-Origin" content="*">
+		<link rel="stylesheet" type="text/css" href="../vendor/jquery-mobile/ltkj.min.css" />
+		<link rel="stylesheet" type="text/css" href="../vendor/jquery-mobile/jquery.mobile.icons.min.css" />
+		<link rel="stylesheet" type="text/css" href="../vendor/jquery-mobile/jquery.mobile.structure-1.4.0.min.css" />
+		<script type="text/javascript" src="../vendor/jquery-mobile/jquery-2.0.3.min.js"></script>
+		<script type="text/javascript" src="../vendor/jquery-mobile/jquery.mobile-1.4.0.min.js"></script>
+		<script type="text/javascript" src="../util/SQLiteTool.js"></script>
+		<script type="text/javascript" src="../util/json.js"></script>
+
+		<title>Hello World</title>
+	</head>
+    
+	<body>
+		<div data-role="page" style="height:100%;" id="formlistPage" data-dom-cache="false">
+            <style>
+                
+                .ui-page{
+                    background:#eee;
+                }
+                .zxx_text_overflow{
+                    width:27em;
+                    white-space:nowrap;
+                    overflow:visible;
+                }
+            
+            
+           
+                
+            </style>
+			<script type="text/javascript">
+				document.addEventListener('deviceready', onDeviceReady, false);
+				var db;
+                
+                var  IOSDocPath ="";//IOS下的Document路径
+                
+                if(device.platform=="iOS")
+                {
+                    getIOSPath(function(docPath){
+                               IOSDocPath = docPath;
+                               
+                               },function(){
+                               
+                               
+                               
+                               
+                               });
+                }
+                
+               
+                
+				function onDeviceReady() {
+					load(0);
+				}
+				
+				function load(mode) {
+
+					db = window.sqlitePlugin.openDatabase({
+						name : "LTDB"
+					});
+
+					SQLiteTool.queryImageForms(db, mode, function(jsonArr) {
+						console.log("表单列表：" + JSON.stringify(jsonArr));
+						var el, li, i;
+                        var lastElement;
+						//组织右边列表
+						$("#formlist").empty();
+						el = document.getElementById('formlist');
+                        console.log("表单列表个数:"+jsonArr.length);
+						for ( i = 0; i < jsonArr.length; i++) {
+                            
+                                               
+                                               
+							// console.log("right:" + i);
+							json = jsonArr[i];
+							li = document.createElement('li');
+                            
+                            if(device.platform=="iOS"){
+                                json.imagePath = IOSDocPath+"/"+json.imagePath;
+                                               
+                            }
+                            
+                            
+							li.innerHTML = "<a  href=\"#\" onclick=\"toForm(" + json._ID + ");\"><img src=\"" + json.imagePath + "\"><h2  style=\"white-space:pre-wrap;\">" + json.imgStrucFullPath + "</h2><p>" + json.time + "</p></a>";
+                                               
+                                               
+                            //倒序排列
+                            if(i==0)
+                            {
+                                el.appendChild(li); //向元素添加新的子节点，
+                               lastElement = li;
+                                               
+                            }
+                            else
+                            {
+                                el.insertBefore(li,lastElement); //每次都插到上一个元素之前，降序排
+                                lastElement = li;
+                                
+                            }
+                                               
+//							 el.appendChild(li); //向元素添加新的子节点
+						}
+                                            
+                        $("#formlist").listview("refresh");
+                                               console.log("OK");
+                                               
+
+					});
+				}
+
+				function toForm(fid) {
+					TempCache.setItem("formId", fid);
+					$.mobile.changePage('imgForm.html');
+				}
+				
+				function switchMode(m) {
+					
+                    if(m==1)
+                    {
+                        $("#formListTitle").html("已提交影像资料");
+                    }
+                    else
+                    {
+                        $("#formListTitle").html("未提交影像资料");
+                    }
+                    load(m);
+				}
+			</script>
+			<div data-role="header" data-position="fixed" style="height:90px;border:none">
+				<a style="top:8px" href="#" class="ui-btn-left ui-btn ui-btn-inline ui-btn-icon-left ui-icon-carat-l ui-btn-icon-notext ui-corner-all" data-rel="back">Cancel</a>
+				<h1 id="formListTitle" style="position:relative;top:5px">未提交影像资料</h1>
+				<div data-role="navbar" style="position:relative;top:5px">
+					<ul>
+						<li>
+							<a href="javascript:switchMode(0);" style="height:26.5px;border-width:1px;border-color:#aecee0;line-height:26.5px;link-color:red">未提交</a>
+						</li>
+						<li>
+							<a href="javascript:switchMode(1);" style="height:26.5px;border-width:1px;border-color:#aecee0;border-left:0px;line-height:26.5px">已提交</a>
+						</li>
+					</ul>
+				</div>
+			</div>
+
+			<div data-role="content" >
+				<ul id="formlist" data-role="listview" data-inset="true">
+
+				</ul>
+			</div>
+
+		</div>
+
+	</body>
+</html>
+
