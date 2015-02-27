@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6250" systemVersion="13F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6244"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="DirvingRouteDetailMapVC">
+            <connections>
+                <outlet property="mapView" destination="xMB-hL-6GR" id="xgG-ux-wWM"/>
+                <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="i5M-Pr-FkT">
+            <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <view contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="xMB-hL-6GR" customClass="BMKMapView">
+                    <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                </view>
+                <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ekP-e2-HnQ">
+                    <rect key="frame" x="12" y="286" width="38" height="38"/>
+                    <state key="normal" backgroundImage="zoom_in.png">
+                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                    </state>
+                    <connections>
+                        <action selector="zoomIn:" destination="-1" eventType="touchUpInside" id="RXh-Z3-Uqc"/>
+                    </connections>
+                </button>
+                <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Vix-c4-77J">
+                    <rect key="frame" x="12" y="349" width="38" height="38"/>
+                    <state key="normal" backgroundImage="zoom_out.png">
+                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                    </state>
+                    <connections>
+                        <action selector="zoomOut:" destination="-1" eventType="touchUpInside" id="tGZ-Du-IuX"/>
+                    </connections>
+                </button>
+            </subviews>
+            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+            <constraints>
+                <constraint firstAttribute="trailing" secondItem="xMB-hL-6GR" secondAttribute="trailing" id="5Qd-Bc-ZxP"/>
+                <constraint firstAttribute="bottom" secondItem="xMB-hL-6GR" secondAttribute="bottom" id="L6d-Cl-OIW"/>
+                <constraint firstItem="xMB-hL-6GR" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" constant="64" id="dLx-NT-D9J"/>
+                <constraint firstAttribute="bottom" secondItem="xMB-hL-6GR" secondAttribute="bottom" id="jck-Tg-YqT"/>
+                <constraint firstItem="xMB-hL-6GR" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="kNc-PO-2Md"/>
+            </constraints>
+            <point key="canvasLocation" x="140" y="155"/>
+        </view>
+    </objects>
+    <resources>
+        <image name="zoom_in.png" width="36" height="36"/>
+        <image name="zoom_out.png" width="36" height="36"/>
+    </resources>
+</document>

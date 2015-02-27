@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6250" systemVersion="13F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6244"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="HighwayLifeVC">
+            <connections>
+                <outlet property="discountsBtn" destination="nwW-lz-0Ca" id="aKI-67-GlO"/>
+                <outlet property="eatBtn" destination="HfC-bi-jo4" id="WKa-rY-nUW"/>
+                <outlet property="funBtn" destination="ucW-H7-YzT" id="q7J-34-o1h"/>
+                <outlet property="lawBtn" destination="aG1-jT-pGa" id="77S-Ez-KeN"/>
+                <outlet property="liveBtn" destination="vQN-Xq-DJm" id="6LW-2P-9fh"/>
+                <outlet property="newsBtn" destination="cDO-WC-CyC" id="gPh-Q3-1OQ"/>
+                <outlet property="view" destination="sCc-8g-8Im" id="nCd-Cj-sfU"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="sCc-8g-8Im">
+            <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <subviews>
+                <view clearsContextBeforeDrawing="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="i5M-Pr-FkT">
+                    <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                    <subviews>
+                        <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="HfC-bi-jo4" userLabel="eat">
+                            <rect key="frame" x="125" y="188" width="149" height="106"/>
+                            <color key="backgroundColor" red="0.53333333329999999" green="0.78039215689999997" blue="0.63921568630000003" alpha="1" colorSpace="calibratedRGB"/>
+                            <state key="normal">
+                                <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                            </state>
+                            <connections>
+                                <action selector="clickEat:" destination="-1" eventType="touchUpInside" id="Vga-k0-6yw"/>
+                            </connections>
+                        </button>
+                        <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="vQN-Xq-DJm" userLabel="live">
+                            <rect key="frame" x="342" y="182" width="149" height="106"/>
+                            <color key="backgroundColor" red="0.53333333329999999" green="0.78039215689999997" blue="0.63921568630000003" alpha="1" colorSpace="calibratedRGB"/>
+                            <state key="normal">
+                                <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                            </state>
+                            <connections>
+                                <action selector="clickLive:" destination="-1" eventType="touchUpInside" id="Em4-d8-K6S"/>
+                            </connections>
+                        </button>
+                        <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="aG1-jT-pGa" userLabel="law">
+                            <rect key="frame" x="179" y="320" width="305" height="100"/>
+                            <color key="backgroundColor" red="0.53333333329999999" green="0.78039215689999997" blue="0.63921568630000003" alpha="1" colorSpace="calibratedRGB"/>
+                            <state key="normal">
+                                <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                            </state>
+                            <connections>
+                                <action selector="clickLaw:" destination="-1" eventType="touchUpInside" id="QzB-EM-jMB"/>
+                            </connections>
+                        </button>
+                        <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="nwW-lz-0Ca" userLabel="discounts">
+                            <rect key="frame" x="348" y="465" width="149" height="106"/>
+                            <color key="backgroundColor" red="0.53333333329999999" green="0.78039215689999997" blue="0.63921568630000003" alpha="1" colorSpace="calibratedRGB"/>
+                            <state key="normal">
+                                <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                            </state>
+                            <connections>
+                                <action selector="clickDiscounts:" destination="-1" eventType="touchUpInside" id="6ON-HM-yMU"/>
+                            </connections>
+                        </button>
+                        <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="cDO-WC-CyC" userLabel="news">
+                            <rect key="frame" x="192" y="44" width="216" height="106"/>
+                            <color key="backgroundColor" red="0.53333333329999999" green="0.78039215689999997" blue="0.63921568630000003" alpha="1" colorSpace="calibratedRGB"/>
+                            <state key="normal">
+                                <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                            </state>
+                            <connections>
+                                <action selector="clickNews:" destination="-1" eventType="touchUpInside" id="m72-9h-oZu"/>
+                            </connections>
+                        </button>
+                        <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ucW-H7-YzT" userLabel="fun">
+                            <rect key="frame" x="130" y="465" width="149" height="106"/>
+                            <color key="backgroundColor" red="0.53333333329999999" green="0.78039215689999997" blue="0.63921568630000003" alpha="1" colorSpace="calibratedRGB"/>
+                            <state key="normal">
+                                <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                            </state>
+                            <connections>
+                                <action selector="clickFun:" destination="-1" eventType="touchUpInside" id="QXS-mX-fxh"/>
+                            </connections>
+                        </button>
+                    </subviews>
+                    <color key="backgroundColor" red="0.92549019610000005" green="0.96078431369999995" blue="0.94509803920000002" alpha="1" colorSpace="calibratedRGB"/>
+                    <constraints>
+                        <constraint firstItem="vQN-Xq-DJm" firstAttribute="leading" secondItem="HfC-bi-jo4" secondAttribute="trailing" constant="7" id="06r-U7-e88"/>
+                        <constraint firstItem="nwW-lz-0Ca" firstAttribute="leading" secondItem="ucW-H7-YzT" secondAttribute="trailing" constant="7" id="DZF-UI-zl8"/>
+                        <constraint firstItem="HfC-bi-jo4" firstAttribute="top" secondItem="cDO-WC-CyC" secondAttribute="bottom" constant="10" id="G4P-Jd-Ntl"/>
+                        <constraint firstItem="aG1-jT-pGa" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="7" id="IIb-Q9-0TJ"/>
+                        <constraint firstItem="nwW-lz-0Ca" firstAttribute="top" secondItem="aG1-jT-pGa" secondAttribute="bottom" constant="10" id="JxW-Rf-Hfi"/>
+                        <constraint firstItem="ucW-H7-YzT" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="7" id="Pn6-7T-4Mg"/>
+                        <constraint firstItem="cDO-WC-CyC" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" constant="74" id="TJW-SE-4yi"/>
+                        <constraint firstItem="HfC-bi-jo4" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="7" id="a8b-ND-1Wo"/>
+                        <constraint firstItem="ucW-H7-YzT" firstAttribute="top" secondItem="aG1-jT-pGa" secondAttribute="bottom" constant="10" id="iJA-V2-YT0"/>
+                        <constraint firstItem="cDO-WC-CyC" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="7" id="vK7-dT-Sgz"/>
+                        <constraint firstItem="vQN-Xq-DJm" firstAttribute="top" secondItem="cDO-WC-CyC" secondAttribute="bottom" constant="10" id="vVV-1K-TOA"/>
+                        <constraint firstItem="aG1-jT-pGa" firstAttribute="top" secondItem="HfC-bi-jo4" secondAttribute="bottom" constant="10" id="zWo-OT-oRm"/>
+                    </constraints>
+                </view>
+            </subviews>
+            <color key="backgroundColor" red="0.92549019610000005" green="0.96078431369999995" blue="0.94509803920000002" alpha="1" colorSpace="calibratedRGB"/>
+            <constraints>
+                <constraint firstItem="i5M-Pr-FkT" firstAttribute="leading" secondItem="sCc-8g-8Im" secondAttribute="leading" id="Fyb-HP-pJO"/>
+                <constraint firstAttribute="bottom" secondItem="i5M-Pr-FkT" secondAttribute="bottom" id="Roe-bt-SxD"/>
+                <constraint firstAttribute="trailing" secondItem="i5M-Pr-FkT" secondAttribute="trailing" id="crO-gO-zF8"/>
+                <constraint firstItem="i5M-Pr-FkT" firstAttribute="top" secondItem="sCc-8g-8Im" secondAttribute="top" id="rNk-W0-f8c"/>
+            </constraints>
+        </view>
+    </objects>
+</document>

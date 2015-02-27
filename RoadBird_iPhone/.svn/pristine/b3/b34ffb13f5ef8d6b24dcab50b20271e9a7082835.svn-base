@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6250" systemVersion="13F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6244"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="RealTimeTrafficVC">
+            <connections>
+                <outlet property="mapView" destination="pGf-Yo-zmV" id="UqU-SH-0RJ"/>
+                <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="i5M-Pr-FkT">
+            <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <view contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="pGf-Yo-zmV" customClass="BMKMapView">
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                </view>
+                <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="asv-3M-CAH">
+                    <rect key="frame" x="12" y="286" width="38" height="38"/>
+                    <state key="normal" backgroundImage="zoom_in.png">
+                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                    </state>
+                    <connections>
+                        <action selector="ZoomIn:" destination="-1" eventType="touchUpInside" id="E58-hr-Xi4"/>
+                    </connections>
+                </button>
+                <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="7ze-Ty-kjL">
+                    <rect key="frame" x="12" y="349" width="38" height="38"/>
+                    <state key="normal" backgroundImage="zoom_out.png">
+                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                    </state>
+                    <connections>
+                        <action selector="ZoomOut:" destination="-1" eventType="touchUpInside" id="qnO-U3-0uE"/>
+                    </connections>
+                </button>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="kVy-7t-fAk">
+                    <rect key="frame" x="12" y="482" width="36" height="36"/>
+                    <state key="normal" backgroundImage="location.png">
+                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                    </state>
+                    <connections>
+                        <action selector="locateCurrentPosition:" destination="-1" eventType="touchDown" id="8OE-hg-CuK"/>
+                    </connections>
+                </button>
+            </subviews>
+            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+            <constraints>
+                <constraint firstAttribute="bottom" secondItem="kVy-7t-fAk" secondAttribute="bottom" constant="82" id="484-rB-BHW"/>
+                <constraint firstAttribute="bottom" secondItem="7ze-Ty-kjL" secondAttribute="bottom" constant="181" id="6to-Fl-Wjh"/>
+                <constraint firstItem="pGf-Yo-zmV" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="Cni-0h-FXC"/>
+                <constraint firstAttribute="bottom" secondItem="asv-3M-CAH" secondAttribute="bottom" constant="244" id="QMK-md-9Nk"/>
+                <constraint firstItem="7ze-Ty-kjL" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="12" id="VB7-q8-dLi"/>
+                <constraint firstItem="kVy-7t-fAk" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="12" id="h7R-bK-lMC"/>
+                <constraint firstAttribute="bottom" secondItem="pGf-Yo-zmV" secondAttribute="bottom" id="mLb-tJ-lur"/>
+                <constraint firstItem="asv-3M-CAH" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="12" id="o21-C2-80G"/>
+                <constraint firstItem="pGf-Yo-zmV" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="qMg-tj-Pot"/>
+                <constraint firstAttribute="trailing" secondItem="pGf-Yo-zmV" secondAttribute="trailing" id="vXl-H8-pAM"/>
+            </constraints>
+            <nil key="simulatedStatusBarMetrics"/>
+            <point key="canvasLocation" x="311" y="156"/>
+        </view>
+        <swipeGestureRecognizer direction="up" id="f10-Kp-Pxg">
+            <connections>
+                <action selector="handleSwipeFrom:" destination="-1" id="ktU-qR-n4n"/>
+            </connections>
+        </swipeGestureRecognizer>
+    </objects>
+    <resources>
+        <image name="location.png" width="36" height="36"/>
+        <image name="zoom_in.png" width="36" height="36"/>
+        <image name="zoom_out.png" width="36" height="36"/>
+    </resources>
+</document>

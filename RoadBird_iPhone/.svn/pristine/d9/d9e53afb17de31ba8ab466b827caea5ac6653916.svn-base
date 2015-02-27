@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6250" systemVersion="13F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6244"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="HighwayInfoVC">
+            <connections>
+                <outlet property="tableView" destination="aX4-H0-dUd" id="WqH-UC-bn0"/>
+                <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="i5M-Pr-FkT">
+            <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" image="Road-Bg.png" translatesAutoresizingMaskIntoConstraints="NO" id="XgC-Ks-LMV">
+                    <rect key="frame" x="180" y="236" width="240" height="128"/>
+                </imageView>
+                <tableView clipsSubviews="YES" contentMode="scaleToFill" misplaced="YES" alwaysBounceVertical="YES" style="plain" separatorStyle="none" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="aX4-H0-dUd">
+                    <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                    <connections>
+                        <outlet property="dataSource" destination="-1" id="xHN-Ih-RUe"/>
+                        <outlet property="delegate" destination="-1" id="zX7-tj-g9w"/>
+                    </connections>
+                </tableView>
+            </subviews>
+            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+            <constraints>
+                <constraint firstItem="XgC-Ks-LMV" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="4JO-hd-kCO"/>
+                <constraint firstAttribute="bottom" secondItem="aX4-H0-dUd" secondAttribute="bottom" id="LDl-5N-tdU"/>
+                <constraint firstItem="aX4-H0-dUd" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" constant="64" id="N8q-ce-hjK"/>
+                <constraint firstAttribute="bottom" secondItem="XgC-Ks-LMV" secondAttribute="bottom" id="f4U-Dh-wPb"/>
+                <constraint firstAttribute="trailing" secondItem="XgC-Ks-LMV" secondAttribute="trailing" id="ft9-gH-LNg"/>
+                <constraint firstItem="XgC-Ks-LMV" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="g8h-zt-FFN"/>
+                <constraint firstItem="aX4-H0-dUd" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="hNR-uO-lKF"/>
+                <constraint firstAttribute="trailing" secondItem="aX4-H0-dUd" secondAttribute="trailing" id="lDh-ft-Kk4"/>
+            </constraints>
+            <point key="canvasLocation" x="353" y="333"/>
+        </view>
+    </objects>
+    <resources>
+        <image name="Road-Bg.png" width="320" height="1"/>
+    </resources>
+</document>

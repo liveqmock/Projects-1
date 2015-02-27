@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6250" systemVersion="13F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6244"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="DisclaimerVC">
+            <connections>
+                <outlet property="textView" destination="p1q-Ib-2Jf" id="ctj-M0-E3L"/>
+                <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="i5M-Pr-FkT">
+            <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" misplaced="YES" usesAttributedText="YES" translatesAutoresizingMaskIntoConstraints="NO" id="p1q-Ib-2Jf">
+                    <rect key="frame" x="0.0" y="0.0" width="600" height="618"/>
+                    <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
+                    <attributedString key="attributedText">
+                        <fragment>
+                            <string key="content">广东高速行服务条款
+</string>
+                            <attributes>
+                                <color key="NSColor" red="0.40000000000000002" green="0.40000000000000002" blue="0.40000000000000002" alpha="1" colorSpace="calibratedRGB"/>
+                                <font key="NSFont" size="16" name="STHeitiSC-Medium"/>
+                                <paragraphStyle key="NSParagraphStyle" alignment="center" lineBreakMode="wordWrapping" baseWritingDirection="natural" lineHeightMultiple="2"/>
+                            </attributes>
+                        </fragment>
+                        <fragment>
+                            <string key="content" base64-UTF8="YES">
+Cg
+</string>
+                            <attributes>
+                                <color key="NSColor" red="0.40000000000000002" green="0.40000000000000002" blue="0.40000000000000002" alpha="1" colorSpace="calibratedRGB"/>
+                                <font key="NSFont" size="16" name="STHeitiSC-Medium"/>
+                                <paragraphStyle key="NSParagraphStyle" alignment="center" lineBreakMode="wordWrapping" baseWritingDirection="natural"/>
+                            </attributes>
+                        </fragment>
+                        <fragment>
+                            <string key="content">在使用广东高速行前，请您务必仔细阅读并透彻理解本服务条款。一旦您选择使用广东高速行，即表示您认可并接受本服务条款现有内容以及其可能随时更新的内容：
+
+1、利通科技尊重并保护所有使用“广东高速行”（下简称高速行）用户的个人隐私权，您注册的用户名、电子邮件地址等个人资料，除非经您亲自许可，或根据相关法律、法规的强制性规定须披露外，利通科技不会主动地泄露、转让、提供给第三方。但您在使用地图搜索引擎时输入的关键字将不被认为是您的个人隐私资料。
+
+2、包括移动运营商和您在高速行平台上决定使用的非高速行的其他应用程序在内的第三方会同时提供相关产品和服务，使用第三方的产品和服务代表您认可并同意第三方的服务条款，请您仔细查阅第三方相关政策，对第三方提供的产品和服务，利通科技不承担任何责任。
+
+3、您应该对使用利通科技搜索引擎的结果自行承担风险。利通科技不做任何形式的保证：不保证搜索结果满足您的要求，不保证搜索服务不中断，不保证搜索结果的安全性、正确性、及时性、合法性。因网络状况、通讯线路、第三方网站或服务商等任何原因而导致您不能正常使用高速行，利通科技不承担任何法律责任。除非特别说明，高速行向您提供的服务均为免费。某些服务需要电话、数据访问或短信功能支持，您可能需要支付给第三方相应费用。利通科技不会主动收集您的个人身份信息，除非这些信息是您自己主动提供的，或搜索引擎基于服务必要性而获得，并为向您提供更便捷、更好的服务而收集。
+
+4、当您使用高速行的定位服务时，您会向高速行发送您当前的位置信息，高速行会尽最大可能保护该信息。除非经您亲自许可（如：您要共享这个位置给您的好友），或根据相关法律、法规的强制性规定须披露外，利通科技不会将您的真实位置暴露或直接提供给任意第三方。利通科技会根据您的个性化信息来处理您的请求，例如选项中的某些设置。同时也会使用这些信息进行必要的数据分析，并以此为基础，开发新功能或改进百度产品和服务的整体质量，以期为您提供更好的服务或定制服务。
+
+5、由于您的自身行为或不可抗力等情形，导致上述可能涉及您隐私或您认为是私人信息的内容发生被泄露、披露，或被第三方获取、使用、转让等情形的，均由您自行承担不利后果，利通科技对此不承担任何责任。
+
+</string>
+                            <attributes>
+                                <color key="NSColor" red="0.40000000000000002" green="0.40000000000000002" blue="0.40000000000000002" alpha="1" colorSpace="calibratedRGB"/>
+                                <font key="NSFont" size="13" name="STHeitiSC-Light"/>
+                                <paragraphStyle key="NSParagraphStyle" alignment="justified" lineBreakMode="wordWrapping" baseWritingDirection="natural"/>
+                            </attributes>
+                        </fragment>
+                        <fragment content="6、利通科技拥有对上述条款的最终解释权。">
+                            <attributes>
+                                <color key="NSColor" red="0.40000000000000002" green="0.40000000000000002" blue="0.40000000000000002" alpha="1" colorSpace="calibratedRGB"/>
+                                <font key="NSFont" size="13" name="STHeitiSC-Light"/>
+                                <paragraphStyle key="NSParagraphStyle" alignment="justified" lineBreakMode="wordWrapping" baseWritingDirection="natural" lineSpacing="2"/>
+                            </attributes>
+                        </fragment>
+                    </attributedString>
+                    <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                </textView>
+            </subviews>
+            <color key="backgroundColor" red="0.93725490199999995" green="0.93725490199999995" blue="0.95686274510000002" alpha="1" colorSpace="calibratedRGB"/>
+            <constraints>
+                <constraint firstAttribute="bottom" secondItem="p1q-Ib-2Jf" secondAttribute="bottom" id="Dj9-tD-qYk"/>
+                <constraint firstItem="p1q-Ib-2Jf" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="10" id="UYw-Bz-DI7"/>
+                <constraint firstItem="p1q-Ib-2Jf" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="Ww4-B6-oFO"/>
+                <constraint firstAttribute="trailing" secondItem="p1q-Ib-2Jf" secondAttribute="trailing" constant="10" id="aOp-Cp-r98"/>
+            </constraints>
+        </view>
+    </objects>
+</document>

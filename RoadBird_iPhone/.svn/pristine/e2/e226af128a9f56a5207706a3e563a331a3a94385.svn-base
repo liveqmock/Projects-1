@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6250" systemVersion="13F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6244"/>
+        <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="UserInfoVC">
+            <connections>
+                <outlet property="clearHeadImage" destination="Ye7-e8-8pf" id="qAM-0F-Cyz"/>
+                <outlet property="headBg" destination="59A-n6-glO" id="HSw-hQ-USo"/>
+                <outlet property="headImage" destination="Ld9-0T-4yz" id="kdP-tH-Qlg"/>
+                <outlet property="headImageTap" destination="8b4-ef-mQk" id="znI-t6-IBx"/>
+                <outlet property="largeHeadImage" destination="2aQ-iG-bua" id="Cv5-Zn-zY4"/>
+                <outlet property="largeHeadImageView" destination="tpj-Jj-b92" id="0nc-8D-sap"/>
+                <outlet property="logoutBtn" destination="BDJ-AR-yZm" id="TWC-4g-3cc"/>
+                <outlet property="tableView" destination="uhy-ZL-Eav" id="k3o-Bl-DCy"/>
+                <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="i5M-Pr-FkT">
+            <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <view contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="59A-n6-glO">
+                    <rect key="frame" x="247" y="64" width="106" height="106"/>
+                    <subviews>
+                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" image="head-default.png" translatesAutoresizingMaskIntoConstraints="NO" id="Ld9-0T-4yz">
+                            <rect key="frame" x="28" y="28" width="50" height="50"/>
+                        </imageView>
+                    </subviews>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    <constraints>
+                        <constraint firstItem="Ld9-0T-4yz" firstAttribute="leading" secondItem="59A-n6-glO" secondAttribute="leading" constant="3" id="1D8-SC-PVP"/>
+                        <constraint firstAttribute="width" constant="106" id="45W-gw-chH"/>
+                        <constraint firstItem="Ld9-0T-4yz" firstAttribute="top" secondItem="59A-n6-glO" secondAttribute="top" constant="3" id="DgV-an-U9X"/>
+                        <constraint firstAttribute="height" constant="106" id="bWo-yD-fXi"/>
+                        <constraint firstAttribute="trailing" secondItem="Ld9-0T-4yz" secondAttribute="trailing" constant="3" id="s1s-5O-bfP"/>
+                        <constraint firstAttribute="bottom" secondItem="Ld9-0T-4yz" secondAttribute="bottom" constant="3" id="wqu-EH-Qx4"/>
+                    </constraints>
+                </view>
+                <tableView clipsSubviews="YES" contentMode="scaleToFill" misplaced="YES" alwaysBounceVertical="YES" style="grouped" separatorStyle="default" rowHeight="44" sectionHeaderHeight="10" sectionFooterHeight="10" translatesAutoresizingMaskIntoConstraints="NO" id="uhy-ZL-Eav">
+                    <rect key="frame" x="0.0" y="204" width="600" height="300"/>
+                    <color key="backgroundColor" red="0.92549019610000005" green="0.96078431369999995" blue="0.94509803920000002" alpha="1" colorSpace="calibratedRGB"/>
+                    <color key="separatorColor" red="0.8980392157" green="0.8980392157" blue="0.8980392157" alpha="1" colorSpace="calibratedRGB"/>
+                    <connections>
+                        <outlet property="dataSource" destination="-1" id="zGW-6J-7fX"/>
+                        <outlet property="delegate" destination="-1" id="7gU-EF-deE"/>
+                    </connections>
+                </tableView>
+                <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5CJ-iG-p4V">
+                    <rect key="frame" x="377" y="161" width="60" height="30"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                    <state key="normal" title="更改头像">
+                        <color key="titleColor" red="0.54509803921568623" green="0.54509803921568623" blue="0.54509803921568623" alpha="1" colorSpace="calibratedRGB"/>
+                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                    </state>
+                    <connections>
+                        <action selector="changeHeadImage:" destination="-1" eventType="touchUpInside" id="1od-W6-zh7"/>
+                    </connections>
+                </button>
+                <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="BDJ-AR-yZm">
+                    <rect key="frame" x="252" y="554" width="96" height="30"/>
+                    <color key="backgroundColor" red="1" green="0.91372549020000005" blue="0.91372549020000005" alpha="1" colorSpace="calibratedRGB"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="40" id="k24-UP-ACs"/>
+                    </constraints>
+                    <state key="normal" title="注销登录">
+                        <color key="titleColor" red="0.99607843137254903" green="0.26666666666666666" blue="0.25882352941176467" alpha="1" colorSpace="calibratedRGB"/>
+                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                    </state>
+                    <connections>
+                        <action selector="clicklLgout:" destination="-1" eventType="touchUpInside" id="1u8-VV-sRu"/>
+                    </connections>
+                </button>
+            </subviews>
+            <color key="backgroundColor" red="0.92549019610000005" green="0.96078431369999995" blue="0.94509803920000002" alpha="1" colorSpace="calibratedRGB"/>
+            <constraints>
+                <constraint firstItem="59A-n6-glO" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" constant="84" id="0Kg-1r-Lcb"/>
+                <constraint firstAttribute="centerX" secondItem="59A-n6-glO" secondAttribute="centerX" id="4WK-Im-nLX"/>
+                <constraint firstAttribute="trailing" secondItem="uhy-ZL-Eav" secondAttribute="trailing" id="C7b-w8-hCm"/>
+                <constraint firstItem="5CJ-iG-p4V" firstAttribute="leading" secondItem="59A-n6-glO" secondAttribute="trailing" constant="14" id="EKN-7K-8T5"/>
+                <constraint firstItem="uhy-ZL-Eav" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="PRR-F3-VPP"/>
+                <constraint firstItem="BDJ-AR-yZm" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="20" id="XOc-hX-aHB"/>
+                <constraint firstAttribute="bottom" secondItem="BDJ-AR-yZm" secondAttribute="bottom" constant="20" id="dqt-nh-wrW"/>
+                <constraint firstItem="BDJ-AR-yZm" firstAttribute="top" secondItem="uhy-ZL-Eav" secondAttribute="bottom" constant="10" id="pkr-Su-vdo"/>
+                <constraint firstItem="uhy-ZL-Eav" firstAttribute="top" secondItem="59A-n6-glO" secondAttribute="bottom" constant="14" id="rGA-YP-Z6S"/>
+                <constraint firstItem="5CJ-iG-p4V" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" constant="165" id="udy-S0-FHj"/>
+                <constraint firstAttribute="trailing" secondItem="BDJ-AR-yZm" secondAttribute="trailing" constant="20" id="voB-aR-ZEb"/>
+            </constraints>
+        </view>
+        <view alpha="0.0" contentMode="scaleToFill" id="tpj-Jj-b92" userLabel="largeHeadImage">
+            <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <subviews>
+                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="2aQ-iG-bua">
+                    <rect key="frame" x="0.0" y="79" width="600" height="417"/>
+                    <constraints>
+                        <constraint firstAttribute="width" secondItem="2aQ-iG-bua" secondAttribute="height" multiplier="1:1" id="8bM-G4-P4w"/>
+                    </constraints>
+                </imageView>
+            </subviews>
+            <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+            <constraints>
+                <constraint firstAttribute="trailing" secondItem="2aQ-iG-bua" secondAttribute="trailing" id="LeG-i9-DdB"/>
+                <constraint firstItem="2aQ-iG-bua" firstAttribute="leading" secondItem="tpj-Jj-b92" secondAttribute="leading" id="ayn-QO-VFe"/>
+                <constraint firstAttribute="centerY" secondItem="2aQ-iG-bua" secondAttribute="centerY" id="oBg-Ha-1hO"/>
+            </constraints>
+        </view>
+        <tapGestureRecognizer id="8b4-ef-mQk" userLabel="Tap headImage">
+            <connections>
+                <action selector="clickHeadImage:" destination="-1" id="oBl-hK-Nsj"/>
+                <outlet property="delegate" destination="-1" id="UiT-uL-Mua"/>
+            </connections>
+        </tapGestureRecognizer>
+        <tapGestureRecognizer id="Ye7-e8-8pf" userLabel="Tap headBg">
+            <connections>
+                <action selector="clearHeadImageView:" destination="-1" id="Dtf-yT-H9H"/>
+                <outlet property="delegate" destination="-1" id="r1c-48-E8J"/>
+            </connections>
+        </tapGestureRecognizer>
+    </objects>
+    <resources>
+        <image name="head-default.png" width="79" height="79"/>
+    </resources>
+</document>

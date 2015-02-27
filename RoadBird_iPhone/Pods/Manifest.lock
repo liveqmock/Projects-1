@@ -1,0 +1,37 @@
+PODS:
+  - AFNetworking (2.2.3):
+    - AFNetworking/NSURLConnection (= 2.2.3)
+    - AFNetworking/NSURLSession (= 2.2.3)
+    - AFNetworking/Reachability (= 2.2.3)
+    - AFNetworking/Security (= 2.2.3)
+    - AFNetworking/Serialization (= 2.2.3)
+    - AFNetworking/UIKit (= 2.2.3)
+  - AFNetworking/NSURLConnection (2.2.3):
+    - AFNetworking/Reachability
+    - AFNetworking/Security
+    - AFNetworking/Serialization
+  - AFNetworking/NSURLSession (2.2.3):
+    - AFNetworking/NSURLConnection
+  - AFNetworking/Reachability (2.2.3)
+  - AFNetworking/Security (2.2.3)
+  - AFNetworking/Serialization (2.2.3)
+  - AFNetworking/UIKit (2.2.3):
+    - AFNetworking/NSURLConnection
+    - AFNetworking/NSURLSession
+  - JSBadgeView (1.3.2)
+  - MBProgressHUD (0.8)
+  - Reachability (3.0.0)
+
+DEPENDENCIES:
+  - AFNetworking (~> 2.0)
+  - JSBadgeView
+  - MBProgressHUD (~> 0.8)
+  - Reachability (~> 3.0.0)
+
+SPEC CHECKSUMS:
+  AFNetworking: ae513199cca79e9d7af2708ccabe2ed075550c42
+  JSBadgeView: 5ee19a07f20e92b169a8ae618113fc80f973be7d
+  MBProgressHUD: 2bbc6f470111daf7f3eaa4eb12b8cbf01c4c0622
+  Reachability: 500bd76bf6cd8ff2c6fb715fc5f44ef6e4c024f2
+
+COCOAPODS: 0.35.0

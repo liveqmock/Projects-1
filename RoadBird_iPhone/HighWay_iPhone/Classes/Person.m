@@ -1,0 +1,26 @@
+//
+//  Person.m
+//  HighWay_iPhone
+//
+//  Created by litong on 15-1-29.
+//  Copyright (c) 2015年 lt. All rights reserved.
+//
+
+#import "Person.h"
+
+@implementation Person
+
+// 清除个人信息
+-(void)clearMyInfo{
+    self.userName = nil;
+    self.myId = nil;
+    self.address = nil;
+    self.headImage = nil;
+    self.phoneNum = nil;
+    self.passwrod = nil;
+    
+    self.companyName = nil;
+    self.comPhone = nil;
+    self.companyPersonName = nil;
+}
+@end

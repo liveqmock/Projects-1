@@ -1,0 +1,26 @@
+//
+//  Person.h
+//  HighWay_iPhone
+//
+//  Created by litong on 15-1-29.
+//  Copyright (c) 2015年 lt. All rights reserved.
+//
+
+#import <Foundation/Foundation.h>
+
+@interface Person : NSObject
+
+@property(nonatomic,strong)UIImage* headImage;
+@property(nonatomic,strong)NSString* userName;
+@property(nonatomic,strong)NSString* passwrod;
+@property(nonatomic,strong)NSString* myId;
+@property(nonatomic,strong)NSString* phoneNum;
+@property(nonatomic,strong)NSString* address;
+
+@property BOOL isCompany;
+@property(nonatomic,strong)NSString* companyName;
+@property(nonatomic,strong)NSString* companyPersonName;
+@property(nonatomic,strong)NSString* comPhone;
+
+-(void)clearMyInfo;
+@end

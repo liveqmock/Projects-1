@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6250" systemVersion="13F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6244"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="MyVC">
+            <connections>
+                <outlet property="rescueBtn" destination="lJm-hw-dnk" id="jEt-d7-qci"/>
+                <outlet property="rescueDistance" destination="Jxs-ie-rry" id="Ttu-pL-fjh"/>
+                <outlet property="tableView" destination="eF5-kA-KZx" id="9CZ-Vi-1Sk"/>
+                <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="i5M-Pr-FkT">
+            <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <tableView clipsSubviews="YES" contentMode="scaleToFill" misplaced="YES" alwaysBounceVertical="YES" scrollEnabled="NO" style="grouped" rowHeight="44" sectionHeaderHeight="10" sectionFooterHeight="10" translatesAutoresizingMaskIntoConstraints="NO" id="eF5-kA-KZx">
+                    <rect key="frame" x="0.0" y="0.0" width="600" height="443"/>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                    <color key="separatorColor" red="0.89803921568627454" green="0.89803921568627454" blue="0.89803921568627454" alpha="1" colorSpace="calibratedRGB"/>
+                    <inset key="separatorInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
+                    <color key="sectionIndexBackgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                    <connections>
+                        <outlet property="dataSource" destination="-1" id="Xkp-Fg-gcb"/>
+                        <outlet property="delegate" destination="-1" id="Rnc-5p-Io3"/>
+                    </connections>
+                </tableView>
+                <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="lJm-hw-dnk">
+                    <rect key="frame" x="0.0" y="479" width="600" height="43"/>
+                    <color key="backgroundColor" red="1" green="0.9137254901960784" blue="0.9137254901960784" alpha="1" colorSpace="calibratedRGB"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="40" id="N0Q-4v-W5a"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" type="system" pointSize="18"/>
+                    <color key="tintColor" red="1" green="0.16078431372549018" blue="0.20000000000000001" alpha="1" colorSpace="calibratedRGB"/>
+                    <state key="normal" title="一键救援"/>
+                    <connections>
+                        <action selector="callRescuePhone:" destination="-1" eventType="touchDown" id="JtO-AZ-Age"/>
+                    </connections>
+                </button>
+            </subviews>
+            <color key="backgroundColor" red="0.92549019607843142" green="0.96078431372549022" blue="0.94509803921568625" alpha="1" colorSpace="calibratedRGB"/>
+            <constraints>
+                <constraint firstAttribute="trailing" secondItem="lJm-hw-dnk" secondAttribute="trailing" id="0Tf-nE-ald"/>
+                <constraint firstItem="eF5-kA-KZx" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="Ek8-tC-87Q"/>
+                <constraint firstAttribute="bottom" secondItem="lJm-hw-dnk" secondAttribute="bottom" constant="78" id="Jxs-ie-rry"/>
+                <constraint firstAttribute="trailing" secondItem="eF5-kA-KZx" secondAttribute="trailing" id="K7M-bS-6G5"/>
+                <constraint firstItem="lJm-hw-dnk" firstAttribute="top" secondItem="eF5-kA-KZx" secondAttribute="bottom" id="MYe-Fa-La7"/>
+                <constraint firstItem="lJm-hw-dnk" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="Upo-Q9-wan"/>
+                <constraint firstItem="eF5-kA-KZx" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="acE-z4-LOw"/>
+                <constraint firstItem="eF5-kA-KZx" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" constant="10" id="c6c-kO-aq0"/>
+                <constraint firstAttribute="trailing" secondItem="eF5-kA-KZx" secondAttribute="trailing" id="iLw-n6-uFd"/>
+            </constraints>
+            <point key="canvasLocation" x="140" y="154"/>
+        </view>
+    </objects>
+</document>

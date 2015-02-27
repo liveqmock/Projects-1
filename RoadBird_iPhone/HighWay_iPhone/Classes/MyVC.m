@@ -1,0 +1,280 @@
+//
+//  MoreVC.m
+//  HighWay_iPhone
+//
+//  Created by wanggp on 14-5-7.
+//  Copyright (c) 2014年 lt. All rights reserved.
+//
+
+#import "MyVC.h"
+#import "PhoneListVC.h"
+#import "AppDelegate.h"
+#import "AboutVC.h"
+#import "NewsVC.h"
+#import "OfflineMapCityListVC.h"
+#import "LoginVC.h"
+#import "UserLoginTableViewCell.h"
+#import "HighwayLifeVC.h"
+#import "UserInfoVC.h"
+#import "Person.h"
+#import "DisclaimerVC.h"
+
+#define HELPINDEXNUM 999
+
+@implementation MyVC
+
+- (void)viewDidLoad
+{
+    [super viewDidLoad];
+    self.rescueBtn.layer.borderWidth = 0.5;
+    self.rescueBtn.layer.borderColor = [self.rescueBtn.tintColor CGColor];
+    
+    if (SCREEN_HEIGHT==480) {
+        self.rescueBtn.hidden = YES;
+        self.rescueDistance.constant = 0;
+    }
+}
+
+
+
+
+
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    //初始化引导页
+    if ([[SqliteUtil sharedSqliteUtil] queryIndexInfo:@"More-Index"]) {
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(IndexViewGone) name:@"IndexViewGone" object:nil];
+        [self initIndexView:@"More-Index"];
+    }
+    if([CommonData sharedCommonData].isLogin){
+//       [self getAllScoreAndPopView];
+    }
+    
+    [self.tableView reloadData];
+}
+
+-(void)viewWillDisappear:(BOOL)animated
+{
+    [super viewWillDisappear:animated];
+    
+}
+
+- (IBAction)callRescuePhone:(id)sender
+{
+    [ ComFun alertWithMessageAndDelegateAndTitle:@"":MCPhoneNumber:self:@"取消":@"呼叫"];
+}
+
+
+//引导页消失
+-(void)IndexViewGone
+{
+    [ ComFun alertWithMessageAndDelegateAndTitle:@"":MCPhoneNumber:self:@"取消":@"呼叫"];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:@"IndexViewGone" object:nil];
+    [[SqliteUtil sharedSqliteUtil] updateInfo:@"More-Index" state:@"hide"];
+}
+
+//获取总积分并退出当前页面
+//-(void) getAllScoreAndPopView{
+//    //获取并设置总积分
+//    NSDictionary *param = @{@"userId":[CommonData sharedCommonData].me.myId};
+//    NSLog(@"[CommonData sharedCommonData] param:%@",param);
+//    [DataDAO getQueryScore:param withCompleted:^(id result){
+//        NSLog(@"[CommonData getQueryScore] result:%@",result);
+//        NSDictionary* dic = (NSDictionary*)result;
+//        [CommonData sharedCommonData].allScore = [dic objectForKey:@"totalScore"];
+//        NSLog(@"[CommonData sharedCommonData].allScore:%@",[CommonData sharedCommonData].allScore);
+//        [app.nav popViewControllerAnimated:YES];
+//    } withFailure:^(id error){
+//        NSLog(@"getQueryScore error2:%@",error);
+//    }];
+//}
+
+
+
+
+
+
+#pragma mark -
+#pragma mark Table delegation
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
+    if (indexPath.section==0) {
+        return 105;
+    }else{
+        return 44;
+    }
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section{
+    return 0;
+}
+
+
+// Return how many rows in the table
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+{
+    switch (section) {
+        case 0:
+            return 1;
+            break;
+        case 1:
+            return 2;
+            break;
+        default:
+            return 3;
+    }
+}
+
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView{
+    return 3;
+}
+
+// Return a cell for the ith row
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    if (indexPath.section==0) {
+       UserLoginTableViewCell* cell = [[[NSBundle mainBundle] loadNibNamed:@"UserLoginTableViewCell" owner:nil options:nil] lastObject];
+        if([CommonData sharedCommonData].isLogin){ //已登录
+            cell.nameLabel.text = [CommonData sharedCommonData].me.userName;
+            if ([CommonData sharedCommonData].me.headImage!=nil) { //头像
+                 cell.userHeadLogo.image = [CommonData sharedCommonData].me.headImage;
+            }
+            NSString *phoneString = [CommonData sharedCommonData].me.phoneNum;
+            
+            if ((phoneString != nil) && (![phoneString  isEqual: @""])) { //手机
+                cell.subLabel.text = [[NSString alloc] initWithFormat:@"电话 %@ %@ %@",[phoneString substringToIndex:3],[phoneString substringWithRange:NSMakeRange(3, 4)],[phoneString substringFromIndex:7]];
+            }else{
+                cell.subLabel.text = @"未绑定手机";
+            }
+            
+            cell.scoreLabel.text = [[NSString alloc] initWithFormat:@"  %@  ",[CommonData sharedCommonData].allScore];
+        
+        }else{ //未登录
+            cell.nameLabel.text = @"未登录";
+            cell.subLabel.text = @"点击登录";
+            cell.jifenLabel.hidden = YES;
+            cell.scoreLabel.hidden = YES;
+            cell.diamondImage.hidden = YES;
+        }
+       
+        return cell;
+    }
+    
+    else if (indexPath.section==1){
+        UITableViewCell* cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"cell"];
+        cell.textLabel.textColor = RGBCOLOR(102, 102, 102);
+        cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+        if (indexPath.row==0) {
+            cell.textLabel.text=@"高速生活";
+            cell.imageView.image=[UIImage imageNamed:@"highway-life"];
+        }
+        else if (indexPath.row==1){
+            cell.textLabel.text=@"常用电话";
+            cell.imageView.image=[UIImage imageNamed:@"tel"];
+        }
+        return cell;
+    }
+    
+    else{
+         UITableViewCell* cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"cell"];
+        cell.textLabel.textColor = RGBCOLOR(102, 102, 102);
+        cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+        if (indexPath.row==0) {
+            cell.textLabel.text=@"帮助";
+            cell.imageView.image=[UIImage imageNamed:@"help"];
+        }
+        else if (indexPath.row==1){
+            cell.textLabel.text=@"服务条款";
+            cell.imageView.image=[UIImage imageNamed:@"service-list"];
+        }
+        else{
+            cell.textLabel.text=@"关于";
+            cell.imageView.image=[UIImage imageNamed:@"about"];
+        }
+        return cell;
+    }
+
+}
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)newIndexPath
+{
+    if (newIndexPath.section==0) { //登录
+        if([CommonData sharedCommonData].isLogin){ //已登录
+            
+            UserInfoVC* userInfoVC = [[UserInfoVC alloc] init];
+            [app.nav pushViewController:userInfoVC animated:YES];
+            
+        }else{ //未登录
+            LoginVC* loginVC = [[LoginVC alloc] init];
+            [app.nav pushViewController:loginVC animated:YES];
+        }
+    
+        
+    }else if(newIndexPath.section==1){
+        
+        if (newIndexPath.row==0) { //高速生活
+            HighwayLifeVC* highwayLifeVC = [[HighwayLifeVC alloc] init];
+            [app.nav pushViewController:highwayLifeVC animated:YES];
+            
+        }else{ //常用电话
+            PhoneListVC *phoneListVC =[[PhoneListVC alloc] init];
+            [app.nav pushViewController:phoneListVC animated:YES];
+        }
+        
+    }else{
+        if (newIndexPath.row==0){ //帮助
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"温馨提示" message:@"确定开启操作指南？" delegate:self cancelButtonTitle:@"取消" otherButtonTitles:@"确定", nil];
+            alert.tag = HELPINDEXNUM;
+            [alert show];
+            
+        }else if (newIndexPath.row==1){ //服务条款
+            DisclaimerVC *disclainmerVC = [[DisclaimerVC alloc] init];
+            [app.nav pushViewController:disclainmerVC animated:YES];
+            
+        }else{ //关于
+            AboutVC *aboutVC = [[AboutVC alloc] init];
+            [app.nav pushViewController:aboutVC animated:YES];
+        }
+    }
+    
+    //取消选择效果
+    [tableView deselectRowAtIndexPath:newIndexPath animated:YES];
+}
+
+#pragma mark - UIAlertViewDelegate
+
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    if (alertView.tag == HELPINDEXNUM) { //开启操作指南
+        [alertView dismissWithClickedButtonIndex:0 animated:YES];
+        if(buttonIndex==1){
+            [[SqliteUtil sharedSqliteUtil] updateInfo:@"DirvingRouteDetailVC-Index" state:@"show"];
+            [[SqliteUtil sharedSqliteUtil] updateInfo:@"JourneyPlanning-Index" state:@"show"];
+            [[SqliteUtil sharedSqliteUtil] updateInfo:@"More-Index" state:@"show"];
+            [[SqliteUtil sharedSqliteUtil] updateInfo:@"RealTimeTraffic-Index" state:@"show"];
+            [[SqliteUtil sharedSqliteUtil] updateInfo:@"SelStation-Index" state:@"show"];
+            
+            //马上注册通知
+            [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(IndexViewGone) name:@"IndexViewGone" object:nil];
+            [self initIndexView:@"More-Index"]; //马上显示【更多页】的引导页
+
+        }else if(buttonIndex==0){
+            [[SqliteUtil sharedSqliteUtil] updateInfo:@"DirvingRouteDetailVC-Index" state:@"hide"];
+            [[SqliteUtil sharedSqliteUtil] updateInfo:@"JourneyPlanning-Index" state:@"hide"];
+            [[SqliteUtil sharedSqliteUtil] updateInfo:@"More-Index" state:@"hide"];
+            [[SqliteUtil sharedSqliteUtil] updateInfo:@"RealTimeTraffic-Index" state:@"hide"];
+            [[SqliteUtil sharedSqliteUtil] updateInfo:@"SelStation-Index" state:@"hide"];
+
+        }
+    }
+    else{ //一键救援
+        [alertView dismissWithClickedButtonIndex:0 animated:YES];
+        if(buttonIndex==1){ //ok
+            
+            [PhoneUtil makeCall:alertView.message];
+        }
+    }
+	
+}
+
+@end
