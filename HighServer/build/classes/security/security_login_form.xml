@@ -1,0 +1,101 @@
+<beans:beans xmlns="http://www.springframework.org/schema/security"
+	xmlns:beans="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans   
+    http://www.springframework.org/schema/beans/spring-beans-3.0.xsd   
+    http://www.springframework.org/schema/security   
+    http://www.springframework.org/schema/security/spring-security-3.0.xsd">
+	<!-- auto-config = true 则使用from-login. 如果不使用该属性 则默认为http-basic(没有session).    
+		access-denied-page:出错后跳转到的无权限访问页面;   
+	-->
+	<http auto-config="true"
+		access-denied-page="/frame/errorpage/powerless.jsp">
+		<!-- intercept-url:拦截器,可以设定哪些路径需要哪些权限来访问. filters=none 不使用过滤,也可以理解为忽略-->
+		<intercept-url pattern="/login.jsp" filters="none" />
+		<intercept-url pattern="/frame/common/**" filters="none" />
+		<intercept-url pattern="/frame/js/**" filters="none" />
+		<intercept-url pattern="/frame/theme/**" filters="none" />
+		<intercept-url pattern="/login-theme/**" filters="none" />
+		<intercept-url pattern="/login/changeCode/*" filters="none" />
+		<intercept-url pattern="/**/*.jpg" filters="none" />
+		<intercept-url pattern="/**/*.ico" filters="none" />
+		<intercept-url pattern="/**/*.png" filters="none" />
+		<intercept-url pattern="/**/*.gif" filters="none" />
+		<intercept-url pattern="/**/*.css" filters="none" />
+		<intercept-url pattern="/**/*.js" filters="none" />
+		<intercept-url pattern="/**" access="ROLE_USER" />
+		<intercept-url pattern="/forward.jsp" filters="none" />
+		<intercept-url pattern="/sys/userMgr/cutImage" filters="none" />
+		<intercept-url pattern="/index.html" filters="none" />
+		<intercept-url pattern="/attach/dowmloadAttach/**" filters="none" />
+		<intercept-url pattern="/attach/**" filters="none" />
+		<!-- <intercept-url pattern="/hps/**" filters="none" /> -->
+		<intercept-url pattern="/editorAttach/dowmloadAttach/**" filters="none" />
+		<intercept-url pattern="/editorAttach/**" filters="none" />
+
+		<!--error-if-maximum-exceeded="false"后登录的账号会挤掉第一次登录的账号；
+			error-if-maximum-exceeded="true" 禁止超过最大session数量的用户登录;   
+			session-fixation-protection="migrateSession" 创建新的session,并把用户信息复制到新session中.
+			session-registry-alias="sessionRegistry" It can also be useful to have a reference to the internal session registry for use in your own beans or an admin interface. You can expose the interal bean using the session-registry-alias attribute, giving it a name that you can use elsewhere in your configuration. 
+		-->
+		<session-management
+			session-fixation-protection="migrateSession">
+			<!--concurrency-control max-sessions="10"
+				expired-url="/frame/errorpage/expried.jsp"
+				error-if-maximum-exceeded="true"
+				session-registry-alias="sessionRegistry" /去掉max-sessions属性，控制了一个账户最多只能登陆10次 mengxw-->
+			<concurrency-control
+				expired-url="/frame/errorpage/expried.jsp"
+				
+				session-registry-alias="sessionRegistry" />
+		</session-management>
+
+		<!-- login-page:默认指定的登录页面. authentication-failure-url:出错后跳转页面. default-target-url:成功登陆后跳转页面 -->
+		<form-login login-page="/login.jsp"
+			authentication-failure-url="/login.jsp?login_error=1"
+			default-target-url="/index.jsp" always-use-default-target="true" />
+		<!-- logout-success-url:成功注销后跳转到的页面; -->
+		<logout logout-success-url="/login.jsp" />
+
+		<!-- 增加一个自定义的filter，放在FILTER_SECURITY_INTERCEPTOR之前，
+			实现用户、角色、权限、资源的数据库管理。  -->
+		<custom-filter ref="nsFilterSecurityInterceptor"
+			before="FILTER_SECURITY_INTERCEPTOR" />
+	</http>
+
+	<beans:bean id="springBeanManager"
+		class="com.newsoft.common.spring.SpringBeanManager">
+	</beans:bean>
+
+	<!-- 一个自定义的filter，必须包含authenticationManager,
+		accessDecisionManager,securityMetadataSource三个属性。  -->
+	<beans:bean id="nsFilterSecurityInterceptor"
+		class="com.newsoft.security.NSFilterSecurityInterceptor">
+		<beans:property name="authenticationManager"
+			ref="authenticationManager" />
+		<beans:property name="accessDecisionManager"
+			ref="nsAccessDecisionManager" />
+		<beans:property name="securityMetadataSource"
+			ref="nsSecurityMetadataSource" />
+	</beans:bean>
+
+	<!-- 验证配置 ， 认证管理器，实现用户认证的入口，主要实现UserDetailsService接口即可 -->
+	<authentication-manager alias="authenticationManager">
+		<authentication-provider
+			user-service-ref="userDetailServiceImpl">
+			<password-encoder hash="md5">
+				<!-- <salt-source user-property="username"/>  -->
+			</password-encoder>
+		</authentication-provider>
+	</authentication-manager>
+
+	<!-- 访问决策器，决定某个用户具有的角色，是否有足够的权限去访问某个资源。 -->
+	<beans:bean id="nsAccessDecisionManager"
+		class="com.newsoft.security.NSAccessDecisionManager">
+	</beans:bean>
+
+	<!-- 资源源数据定义，将所有的资源和权限对应关系建立起来，即定义某一资源可以被哪些角色去访问。 -->
+	<beans:bean id="nsSecurityMetadataSource"
+		class="com.newsoft.security.NSInvocationSecurityMetadataSourceService">
+	</beans:bean>
+</beans:beans>	

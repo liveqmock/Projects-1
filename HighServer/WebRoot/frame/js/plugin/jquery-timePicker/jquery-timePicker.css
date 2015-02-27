@@ -1,0 +1,29 @@
+div.time-picker {
+	background: none repeat scroll 0 0 #FFFFFF;
+	border: 1px solid #000000;
+	height: 100px;
+	overflow: auto;
+	position: absolute;
+	width: 8em;
+	z-index: 99;
+}
+
+div.time-picker-12hours {
+	width: 6em;
+}
+
+div.time-picker ul {
+	list-style-type: none;
+	margin: 0;
+	padding: 0;
+}
+
+div.time-picker li {
+	cursor: pointer;
+	padding: 1px;
+}
+
+div.time-picker li.selected {
+	background: none repeat scroll 0 0 #316AC5;
+	color: #FFFFFF;
+}

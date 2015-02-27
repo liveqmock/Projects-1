@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE  mapper  PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"          
+"http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+<mapper namespace="com.newsoft.common.log.FrameLogSystemDAO">
+
+	<insert id="addSystemLog"
+		parameterType="com.newsoft.common.log.LogSystem">
+		insert into
+		FRAME_LOG_SYSTEM(LogID,LogThread,OperateModule,LogLevel,LogDate,LogDes)
+		values(#{logId},#{logThread},#{operateModule},#{logLevel},#{logDate},#{logDes})
+	</insert>
+
+	<delete id="deleteSystemLog" parameterType="string">
+		delete from FRAME_LOG_SYSTEM where LogID = #{logId}
+	</delete>
+
+
+	<select id="getSystemLogByID"
+		resultType="com.newsoft.common.log.LogSystem">
+		select * from FRAME_LOG_SYSTEM where LogID = #{logId}
+	</select>
+
+	<select id="getSystemLogs"
+		resultType="com.newsoft.common.log.LogSystem">
+		select * from FRAME_LOG_SYSTEM
+		<if test="logStartTime!=null and logEndTime == null"><![CDATA[ where LogTime>=logStartTime]]></if>
+		<if test="logEndTime!=null and logStartTime == null"><![CDATA[ where LogTime<=logEndTime]]></if>
+		<if test="logEndTime!=null and logStartTime != null"><![CDATA[ where LogTime>=logStartTime and LogTime<=logEndTime]]></if>
+		order by LogDate desc
+	</select>
+
+	<select id="countSystemLogs" resultType="int">
+		select count(*) from FRAME_LOG_SYSTEM
+		<if test="logStartTime!=null and logEndTime == null"><![CDATA[ where LogTime>=logStartTime]]></if>
+		<if test="logEndTime!=null and logStartTime == null"><![CDATA[ where LogTime<=logEndTime]]></if>
+		<if test="logEndTime!=null and logStartTime != null"><![CDATA[ where LogTime>=logStartTime and LogTime<=logEndTime]]></if>
+	</select>
+
+</mapper>

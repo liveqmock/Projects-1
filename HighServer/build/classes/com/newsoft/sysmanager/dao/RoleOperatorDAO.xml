@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"          
+	"http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+
+<mapper namespace="com.newsoft.sysmanager.dao.RoleOperatorDAO">
+
+	<!-- 获取所有角色操作权限关联 -->
+	<select id="getAllRoleOperatorRelation"
+		resultType="com.newsoft.sysmanager.po.RoleOperator">
+		select * from FRAME_ORGSTRUC_ROLE_OPERATOR
+	</select>
+
+	<!-- 根据角色ID获取角色操作权限关联 -->
+	<select id="getRoleOperatorByRoleId"
+		resultType="com.newsoft.sysmanager.po.RoleOperator">
+		select * from FRAME_ORGSTRUC_ROLE_OPERATOR where roleId =
+		#{roleId}
+	</select>
+
+	<!-- 根据操作ID获取角色操作权限关联 -->
+	<select id="getRoleOperatorByOperatorId"
+		resultType="com.newsoft.sysmanager.po.RoleOperator">
+		select * from FRAME_ORGSTRUC_ROLE_OPERATOR where OperatorId =
+		#{operatorId}
+	</select>
+
+	<!-- 根据角色ID删除角色操作权限关联 -->
+	<delete id="deleteRoleOperatorByRoleId" parameterType="string">
+		<![CDATA[ 
+		delete from FRAME_ORGSTRUC_ROLE_OPERATOR where roleId = #{roleId}
+	]]>
+	</delete>
+	<!-- 根据操作ID删除角色操作权限关联 -->
+	<delete id="deleteRoleOperatorByOperatorId"
+		parameterType="string">
+		<![CDATA[ 
+		delete from FRAME_ORGSTRUC_ROLE_OPERATOR where operatorId = #{operatorId}
+	]]>
+	</delete>
+
+	<!-- 插入新的授权资源-->
+	<insert id="addRoleOperator"
+		parameterType="com.newsoft.sysmanager.po.RoleOperator">
+		<![CDATA[ 
+		insert into FRAME_ORGSTRUC_ROLE_OPERATOR(RoleID,OperatorId) 
+		values(#{roleId},#{operatorId})
+	]]>
+	</insert>
+
+	<!-- 根据用户ID获取角色操作关联-->
+	<select id="getRoleOperatorByUserId"
+		resultType="com.newsoft.sysmanager.po.RoleOperator">
+		select RO.* from FRAME_ORGSTRUC_ROLE_OPERATOR RO inner join
+		FRAME_ORGSTRUC_ROLE R on R.roleId = RO.roleId inner join
+		FRAME_ORGSTRUC_USER_ROLE UR on UR.roleId = R.roleId where
+		UR.userId = #{userId}
+	</select>
+	
+	<!-- 删除角色操作权限关联 -->
+	<delete id="deleteRoleOperator"
+		parameterType="com.newsoft.sysmanager.po.RoleOperator">
+		<![CDATA[ 
+		delete from FRAME_ORGSTRUC_ROLE_OPERATOR where operatorId = #{operatorId} and roleId = #{roleId} 
+	]]>
+	</delete>
+</mapper>

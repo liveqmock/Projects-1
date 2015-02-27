@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"          
+	"http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+
+<mapper namespace="com.newsoft.sysmanager.dao.RoleMgrDAO">
+	<resultMap type="com.newsoft.sysmanager.vo.RoleVo" id="RoleRM">
+		<id property="roleId" column="RoleID" />
+		<result property="roleName" column="RoleName" />
+		<result property="roleType" column="RoleType" />
+		<result property="orgId" column="OrgID" />
+		<result property="memo" column="Memo" />
+		<result property="orgName" column="OrgName" />
+	</resultMap>
+	<!-- 获取所有角色列表 -->
+	<select id="getAllRoles" resultMap="RoleRM">
+		select * from FRAME_ORGSTRUC_ROLE
+	</select>
+
+	<!-- 根据用户Id获取角色列表 -->
+	<select id="getRoleListByUserId" resultMap="RoleRM"
+		parameterType="string">
+		<![CDATA[ 
+		select  R.RoleID,R.roleName as roleName,R.RoleType,R.OrgID,R.Memo
+		from FRAME_ORGSTRUC_ROLE R 
+			left join FRAME_ORGSTRUC_USER_ROLE UR on R.RoleID=UR.RoleID
+		where UR.UserID=#{userId}
+	]]>
+	</select>
+
+	<!-- 根据组织（公司）ID获取角色列表 -->
+	<select id="getRoleListByOrgId" resultMap="RoleRM"
+		parameterType="com.newsoft.sysmanager.po.Role">
+		<![CDATA[ 
+		select R.RoleID,R.roleName as roleName,R.RoleType,R.OrgID,R.Memo
+		from FRAME_ORGSTRUC_ROLE R
+	]]>
+	</select>
+	<!-- 根据公司ID获取角色列表的count获取器 -->
+	<select id="countRoleByOrgId" resultType="int"
+		parameterType="com.newsoft.sysmanager.po.Role">
+		<![CDATA[ 
+		select count(*) from FRAME_ORGSTRUC_ROLE R
+	]]>
+	</select>
+
+	<!-- 根据角色Id获取角色 -->
+	<select id="getRoleByRoleId" resultMap="RoleRM" parameterType="string">
+		<![CDATA[ 
+		select R.* from FRAME_ORGSTRUC_ROLE R
+		where R.RoleId=#{roleId}
+	]]>
+	</select>
+
+	<!-- 新增角色 -->
+	<insert id="addRole" parameterType="com.newsoft.sysmanager.po.Role">
+		<![CDATA[ 
+		insert into FRAME_ORGSTRUC_ROLE(RoleID,RoleName,RoleType,OrgID,Memo) 
+		values(#{roleId},#{roleName},#{roleType},#{orgId},#{memo})
+	]]>
+	</insert>
+
+	<!-- 更新角色 -->
+	<update id="updateRole" parameterType="com.newsoft.sysmanager.po.Role">
+		<![CDATA[ 
+		update FRAME_ORGSTRUC_ROLE
+		set RoleName=#{roleName},RoleType=#{roleType},OrgID=#{orgId},Memo=#{memo}
+		where RoleID=#{roleId}
+	]]>
+	</update>
+
+	<!-- 删除角色 -->
+	<delete id="deleteRoleById" parameterType="string">
+		<![CDATA[ 
+		delete from FRAME_ORGSTRUC_ROLE
+		where RoleId = #{roleId}
+	]]>
+	</delete>
+
+	<!-- 根据角色名称的关键字搜索角色 -->
+	<select id="searchRoleByNameKeyWord" resultMap="RoleRM"
+		parameterType="map">
+		<![CDATA[ 
+		select R.RoleID,R.roleName as roleName,R.RoleType,R.OrgID,R.Memo from FRAME_ORGSTRUC_ROLE R
+		where R.RoleName like #{roleName} 
+	]]>
+	</select>
+
+	<!-- 根据操作URL搜索角色 -->
+	<select id="getRolesByUrl" resultMap="RoleRM" parameterType="string">
+		<![CDATA[ 
+		select distinct R.RoleID,R.roleName as roleName,R.RoleType,R.OrgID,R.Memo from FRAME_ORGSTRUC_ROLE R, 
+		FRAME_ORGSTRUC_ROLE_OPERATOR ro, FRAME_ORGSTRUC_OPERATOR o		
+		where ro.OperatorID=ro.OperatorID and ro.OperatorID=o.OperatorID
+		and o.URLMapping like #{url, jdbcType=VARCHAR}
+	]]>
+	</select>
+	
+	<select id="getRoleAndOrgNameListByUserId" resultMap="RoleRM" parameterType="string">
+		<![CDATA[ 
+		select  R.RoleID,R.roleName as roleName,R.RoleType,R.OrgID,R.Memo
+		from FRAME_ORGSTRUC_ROLE R 
+			left join FRAME_ORGSTRUC_USER_ROLE UR on R.RoleID=UR.RoleID
+		where UR.UserID=#{userId, jdbcType=VARCHAR}
+	    ]]>
+	</select>
+</mapper>
