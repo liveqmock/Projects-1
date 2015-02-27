@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <color name="transparent">#0000</color>
+    <color name="white">#fff</color>
+    <color name="red">#FF0000</color>
+    <color name="view_bgcolor">#ECF5F1</color>
+    <color name="rescueButton_bgcolor">#FFE9E9</color>
+    <color name="headerbar_bgcolor">#D3ECE0</color>
+    <color name="headerbar_font">#11B264</color>
+    <color name="black">#000</color>
+    <color name="gray">#C0C0C0</color>
+    <color name="divider">#e5e5e5</color>
+    <color name="lightgray">#CCCCCC</color>
+    <color name="word">#666666</color>
+    
+</resources>

@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+    <com.baidu.mapapi.map.MapView
+        android:id="@+id/bmapView"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:clickable="true" />
+
+    <ImageView
+        android:id="@+id/imgLocation"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_marginBottom="30dp"
+        android:layout_marginLeft="18dp"
+        android:src="@drawable/location" />
+
+    <ImageView
+        android:id="@+id/imgZoomOut"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/imgLocation"
+        android:layout_alignLeft="@+id/imgLocation"
+        android:layout_marginBottom="45dp"
+        android:src="@drawable/zoom_out" />
+
+    <ImageView
+        android:id="@+id/imgZoomIn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/imgZoomOut"
+        android:layout_alignLeft="@+id/imgZoomOut"
+        android:layout_marginBottom="30dp"
+        android:src="@drawable/zoom_in" />
+    
+    <ImageView
+        android:id="@+id/imgMessage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="13dp"
+        android:layout_marginLeft="15dp"
+        android:src="@drawable/button_message_select" />
+    
+    <ImageView
+        android:id="@+id/imgFunMore"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginTop="13dp"
+        android:layout_marginRight="15dp"
+        android:src="@drawable/button_funmor_select" />
+
+    <Button
+        android:id="@+id/HighWayBtn"
+        android:layout_toRightOf="@+id/imgMessage"
+        android:layout_toLeftOf="@+id/imgFunMore"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_width="fill_parent"
+        android:layout_height="100dp"
+        android:layout_alignBottom="@+id/imgMessage"
+        android:layout_alignTop="@+id/imgMessage"
+        android:layout_centerHorizontal="true"
+        android:background="@drawable/realtimetraffic_button"
+        android:text="搜路段"
+        android:textSize="18sp" 
+        android:textColor="#11b264"/>
+
+</RelativeLayout>

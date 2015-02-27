@@ -1,0 +1,46 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@color/view_bgcolor"
+    android:orientation="vertical" 
+    android:focusable="true"  
+   	android:focusableInTouchMode="true">
+
+    <include
+        android:id="@+id/header_bar"
+        android:layout_width="wrap_content"
+        android:layout_height="45dp"
+        android:layout_alignParentTop="true"
+        layout="@layout/common_selstation_header_bar" />
+
+    <GridView
+        android:id="@+id/cityGridView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/header_bar"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
+        android:layout_marginTop="15dp"
+        android:gravity="center_horizontal"
+        android:verticalSpacing="1dp"
+        android:horizontalSpacing="1dp"
+        android:numColumns="3" >
+    </GridView>
+
+    <ListView
+        android:id="@+id/stationListView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_below="@+id/cityGridView"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
+        android:layout_marginTop="15dp"
+        android:background="@drawable/border"
+        android:cacheColorHint="#00000000"
+        android:clickable="false"
+        android:divider="@color/divider"
+        android:dividerHeight="1px" >
+    </ListView>
+
+</RelativeLayout>

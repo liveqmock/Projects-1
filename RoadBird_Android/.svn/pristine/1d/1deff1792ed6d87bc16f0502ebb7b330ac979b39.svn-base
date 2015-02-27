@@ -1,0 +1,23 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical"
+    android:background="#ffffff" >
+
+    <include
+        android:id="@+id/header_bar"
+        android:layout_width="wrap_content"
+        android:layout_height="45dp"
+        layout="@layout/common_header_bar" />
+
+    <ListView
+        android:id="@+id/queryRecordListView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:divider="@color/divider"
+        android:dividerHeight="1px"
+        android:cacheColorHint="@color/transparent"
+        android:clickable="false" >
+    </ListView>
+
+</LinearLayout>

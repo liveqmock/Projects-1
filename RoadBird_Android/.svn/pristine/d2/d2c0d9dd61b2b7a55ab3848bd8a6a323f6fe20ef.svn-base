@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="105dp"
+    android:background="@drawable/shape_bg"
+    android:orientation="vertical" >
+
+    <TextView
+        android:id="@+id/typeTextView"
+        android:layout_width="match_parent"
+        android:layout_height="58dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:gravity="center_vertical|left"
+        android:drawableRight="@drawable/enter_icon"
+        android:textColor="@color/headerbar_font"
+        android:textSize="20sp" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:background="@color/lightgray" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="46dp"
+        android:gravity="center" >
+
+        <TextView
+            android:id="@+id/moneyTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:drawableTop="@drawable/money"
+            android:gravity="center"
+            android:textColor="#848484" />
+
+        <View
+            android:layout_width="0.5dp"
+            android:layout_height="match_parent"
+            android:background="@color/lightgray" />
+
+        <TextView
+            android:id="@+id/timeTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:drawableTop="@drawable/time"
+            android:gravity="center"
+            android:textColor="#848484" />
+
+        <View
+            android:layout_width="0.5dp"
+            android:layout_height="match_parent"
+            android:background="@color/lightgray" />
+
+        <TextView
+            android:id="@+id/kmTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:drawableTop="@drawable/kilometre"
+            android:gravity="center"
+            android:textColor="#848484" />
+    </LinearLayout>
+
+</LinearLayout>

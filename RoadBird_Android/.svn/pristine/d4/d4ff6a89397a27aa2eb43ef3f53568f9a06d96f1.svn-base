@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.ltkj.highway"
+    android:versionCode="1"
+    android:versionName="1.0" >
+
+    <uses-sdk
+        android:minSdkVersion="11"
+        android:targetSdkVersion="19" />
+
+    <uses-permission android:name="android.permission.GET_ACCOUNTS" />
+    <uses-permission android:name="android.permission.USE_CREDENTIALS" />
+    <uses-permission android:name="android.permission.MANAGE_ACCOUNTS" />
+    <uses-permission android:name="android.permission.AUTHENTICATE_ACCOUNTS" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="com.android.launcher.permission.READ_SETTINGS" />
+    <uses-permission android:name="android.permission.BROADCAST_STICKY" />
+    <uses-permission android:name="android.permission.WRITE_SETTINGS" />
+
+    <!-- 这个权限用于进行网络定位 -->
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" >
+    </uses-permission>
+    <!-- 这个权限用于访问GPS定位 -->
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" >
+    </uses-permission>
+    <!-- 用于访问wifi网络信息，wifi信息会用于进行网络定位 -->
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" >
+    </uses-permission>
+    <!-- 获取运营商信息，用于支持提供运营商信息相关的接口 -->
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" >
+    </uses-permission>
+    <!-- 这个权限用于获取wifi的获取权限，wifi信息会用来进行网络定位 -->
+    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" >
+    </uses-permission>
+    <!-- 用于读取手机当前的状态 -->
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" >
+    </uses-permission>
+    <!-- 写入扩展存储，向扩展卡写入数据，用于写入离线定位数据 -->
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" >
+    </uses-permission>
+    <!-- 访问网络，网络定位需要上网 -->
+    <uses-permission android:name="android.permission.INTERNET" />
+    <!-- SD卡读取权限，用户写入离线定位数据 -->
+    <uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS" >
+    </uses-permission>
+    <!-- 允许应用读取低级别的系统日志文件 -->
+    <uses-permission android:name="android.permission.READ_LOGS" >
+    </uses-permission>
+    <!-- 拨打电话权限 -->
+    <uses-permission android:name="android.permission.CALL_PHONE" />
+
+    <application
+        android:name="com.ltkj.highway.common.HighwayApp"
+        android:allowBackup="false"
+        android:hardwareAccelerated="true"
+        android:icon="@drawable/applogo"
+        android:label="@string/app_name"
+        android:largeHeap="true"
+        android:theme="@style/AppTheme" >
+        <meta-data
+            android:name="com.baidu.lbsapi.API_KEY"
+            android:value="IMzomtI8zeaETmqdC061hXVU" />
+
+        <service
+            android:name="com.baidu.location.f"
+            android:enabled="true"
+            android:process=":remote" >
+        </service>
+
+        <activity
+            android:name="com.ltkj.highway.SplashActivity"
+            android:screenOrientation="portrait" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name="com.ltkj.highway.MainActivity"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name="com.ltkj.highway.more.PhoneListActivity"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name="com.ltkj.highway.more.AboutActivity"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name="com.ltkj.highway.journey.SelStationActivity"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name="com.ltkj.highway.news.NewsActivity"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name="com.ltkj.highway.news.NewsInfoActivity"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name="com.ltkj.highway.news.ServiceActivity"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name="com.ltkj.highway.journey.SelStationByMapActivity"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name="com.ltkj.highway.highwaylist.HighWayActivity"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name="com.ltkj.highway.highwaylist.HighWayInfoActivity"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name="com.ltkj.highway.highwaylist.HighWayListAtMapActivity"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name="com.ltkj.highway.journey.QueryDirvingRouteResultActivity"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name="com.ltkj.highway.journey.DrivingRouteDetailActivity"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name="com.ltkj.highway.journey.DrivingRouteDetailMapActivity"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name="com.ltkj.highway.journey.QueryPathRecordListActivity"
+            android:screenOrientation="portrait" >
+        </activity>
+    </application>
+
+</manifest>

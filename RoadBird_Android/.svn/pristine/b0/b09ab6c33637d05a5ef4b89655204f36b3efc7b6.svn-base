@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">广东高速行</string>
+    <string name="tab_road_str">实况</string>
+    <string name="tab_journey_str">行程</string>
+    <string name="tab_more_str">更多</string>
+    <string name="return_value">返回</string>
+    <string name="news_accident_str">交通事故</string>
+    <string name="news_fix_str">道路施工</string>
+    <string name="confirm">确定</string>
+
+</resources>

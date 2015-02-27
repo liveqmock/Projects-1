@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@color/view_bgcolor"
+    android:orientation="vertical" >
+
+    <include
+        android:id="@+id/header_bar"
+        android:layout_width="wrap_content"
+        android:layout_height="45dp"
+        layout="@layout/common_header_bar" />
+    
+    <ScrollView  
+        android:layout_width="fill_parent"
+    	android:layout_height="fill_parent"
+    	android:orientation="vertical"
+        >
+	    <LinearLayout
+	        android:layout_width="fill_parent"
+	        android:layout_height="wrap_content"
+	        android:orientation="vertical" >
+	
+	        <ImageView
+	            android:layout_width="80dp"
+	            android:layout_height="80dp"
+	            android:layout_marginTop="30dp"
+	            android:layout_gravity="center"
+	            android:src="@drawable/applogo" />
+	
+	        <TextView
+	            android:layout_width="match_parent"
+	            android:layout_height="wrap_content"
+	            android:gravity="center"
+	            android:layout_marginTop="15dp"
+	            android:textColor="#ababab"
+	            android:text="广东高速出行信息服务APP" />
+	
+	        <ListView
+	            android:id="@+id/infoList"
+	            android:background="@drawable/border"
+	            android:layout_width="fill_parent"
+	            android:layout_height="130dp"
+	            android:layout_marginTop="20dp"
+	       		android:divider="@color/divider"
+	      		android:dividerHeight="1px"
+	            android:headerDividersEnabled="false" >
+	        </ListView>
+	
+	        <ListView
+	            android:id="@+id/checkList"
+	            android:background="@drawable/border"
+	            android:layout_width="fill_parent"
+	            android:layout_height="45dp"
+	            android:layout_marginTop="20dp"
+	            android:divider="@color/divider"
+	        	android:dividerHeight="1px"
+	            android:headerDividersEnabled="false" >
+	        </ListView>
+	
+	        <LinearLayout
+	            android:layout_width="match_parent"
+	            android:layout_height="wrap_content"
+	            android:layout_gravity="bottom"
+	            android:layout_marginBottom="10dp"
+	            android:layout_marginTop="60dp"
+	            android:gravity="center"
+	            android:orientation="horizontal" >
+	
+	            <ImageView
+	                android:layout_width="wrap_content"
+	                android:layout_height="wrap_content"
+	                android:layout_marginRight="15dp"
+	                android:src="@drawable/jt_logo" />
+	
+	            <LinearLayout
+	                android:layout_width="wrap_content"
+	                android:layout_height="wrap_content"
+	                android:orientation="vertical" >
+	
+	                <TextView
+	                    android:layout_width="wrap_content"
+	                    android:layout_height="wrap_content"
+	                    android:textColor="@color/word"
+	                    android:text="广东省交通集团有限公司"
+	                    android:textSize="17sp" />
+	
+	                <TextView
+	                    android:layout_width="wrap_content"
+	                    android:layout_height="wrap_content"
+	                    android:textColor="@color/word"
+	                    android:text="广东利通信息科技投资有限公司"
+	                    android:textSize="17sp" />
+	            </LinearLayout>
+	        </LinearLayout>
+	
+	        <TextView
+	            android:layout_width="fill_parent"
+	            android:layout_height="wrap_content"
+	            android:layout_marginBottom="20dp"
+	            android:gravity="center"
+	            android:textColor="#b8b8b8"
+	            android:textSize="17sp"
+	            android:text="广东利通  版权所有" />
+	    </LinearLayout>
+	</ScrollView >
+</LinearLayout>

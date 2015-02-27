@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:background="@drawable/road_bg"
+    android:gravity="center">
+    
+     <TextView
+        android:id="@+id/stationName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/white" 
+        android:background="@drawable/dirvingroutedetail_station"
+        android:layout_gravity="center"
+        android:gravity="center"/>
+    
+    <LinearLayout
+        android:id="@+id/detailLayout"
+        android:layout_width="wrap_content"
+    	android:layout_height="wrap_content"
+    	android:orientation="horizontal"
+    	android:gravity="center"
+        >
+        
+	        <LinearLayout
+	        android:layout_width="wrap_content"
+	        android:layout_height="match_parent"
+	        android:gravity="center"
+	        android:orientation="vertical"
+	        android:layout_marginRight="10dp"
+	        >
+	        
+	        <Button
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:background="@drawable/accident_icon"
+	            android:id="@+id/accidentIcon"
+	            android:visibility="invisible"
+	            />
+	        
+	        <Button
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:background="@drawable/accident_icon"
+	            android:visibility="invisible"
+	            />
+	        
+	        
+	    </LinearLayout>
+	    
+	    <LinearLayout
+	        android:id="@+id/layout"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:layout_gravity="center"
+	        android:background="@drawable/road_green"
+	        android:orientation="vertical"
+	        android:gravity="center"
+	        >
+	        
+	        
+	     	<TextView
+	     	    android:id="@+id/speed"
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:layout_marginTop="45dp"
+	            android:textColor="@color/headerbar_font"
+	            android:text="100"
+	            />
+	        
+	        <TextView
+	            android:id="@+id/km"
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:textColor="@color/headerbar_font"
+	            android:text="km/h"
+	            />
+	        
+	    </LinearLayout>
+	    
+	    <LinearLayout
+	        android:layout_width="wrap_content"
+	        android:layout_height="match_parent"
+	        android:gravity="center"
+	        android:orientation="vertical"
+	        android:layout_marginLeft="10dp"
+	        >
+	        
+	        <Button
+	            android:layout_marginTop="10dp"
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:background="@drawable/fix_icon"
+	            android:id="@+id/fixIcon"
+	            android:visibility="invisible"
+	            />
+	        
+	        <Button
+	            android:layout_marginTop="10dp"
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:background="@drawable/service_icon"
+	            android:id="@+id/servicetIcon"
+	            android:visibility="invisible"
+	            />
+	        
+	    </LinearLayout>
+        
+    </LinearLayout>
+    
+    
+</LinearLayout>

@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<HorizontalScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/white"
+    android:gravity="center" >
+
+<RelativeLayout
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="20dp"
+    android:layout_marginTop="30dp"
+    android:gravity="center"
+    android:orientation="horizontal" >
+   
+	<Button
+	    android:id="@+id/accidentBtn"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_alignParentLeft="true"
+		android:background="@drawable/accident"
+		android:layout_marginLeft="30dp"
+	/>
+	
+
+	<Button
+	    android:id="@+id/fixBtn"
+	    android:layout_width="wrap_content"
+	    android:layout_height="wrap_content"
+	    android:layout_toRightOf="@+id/accidentBtn"
+	    android:background="@drawable/fix"
+	    android:layout_marginLeft="20dp" />
+
+	<Button
+	    android:id="@+id/tollBtn"
+	    android:layout_width="wrap_content"
+	    android:layout_height="wrap_content"
+	    android:layout_toRightOf="@+id/fixBtn"
+	    android:background="@drawable/toll"
+	    android:layout_marginLeft="20dp" />
+
+	<Button
+	    android:id="@+id/serviceBtn"
+	    android:layout_width="wrap_content"
+	    android:layout_height="wrap_content"
+	    android:layout_toRightOf="@+id/tollBtn"
+	    android:background="@drawable/service" 
+	    android:layout_marginLeft="20dp"/>
+	
+	<Button
+	    android:id="@+id/allRoadBtn"
+	    android:layout_width="wrap_content"
+	    android:layout_height="wrap_content"
+	    android:layout_toRightOf="@+id/serviceBtn"
+	    android:background="@drawable/allroad"
+	    android:layout_marginLeft="20dp"
+	    android:layout_marginRight="20dp"/>
+	
+	
+
+</RelativeLayout>
+</HorizontalScrollView >

@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+	android:layout_height="fill_parent"
+	android:layout_centerInParent="true"
+	android:gravity="center_horizontal"
+	android:orientation="horizontal"
+	android:background="@color/white"
+ 	android:padding="4dp"
+    >
+    
+	 <ImageView
+	     android:id="@+id/selCityImageView"
+	     android:layout_width="wrap_content"
+	     android:layout_height="22dp"
+	     android:layout_gravity="center_horizontal"
+	     android:src="@drawable/gps_sel" />
+
+	 <TextView
+	     android:id="@+id/cityNameTextView"
+	     android:layout_width="wrap_content"
+	     android:layout_height="wrap_content"
+	     android:layout_gravity="center_horizontal"
+	     android:text=""
+	     android:textColor="@color/word"
+	     android:textSize="18sp" />
+ 
+ 
+</LinearLayout>
+
+

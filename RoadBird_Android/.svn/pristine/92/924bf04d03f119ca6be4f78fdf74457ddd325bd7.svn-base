@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+    <com.ltkj.highway.widget.CustomViewPager
+        android:id="@+id/id_viewpager"
+        android:layout_width="fill_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1" />
+
+    <RadioGroup
+        android:id="@+id/rg_tab"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:background="@drawable/tab_bg"
+        android:gravity="center"
+        android:orientation="horizontal" >
+
+        <RadioButton
+            android:id="@+id/realTimeTrafficRadioBtn"
+            style="@style/main_tab"
+            android:drawableTop="@drawable/tab_journey_selector"
+            android:text="@string/tab_road_str" />
+
+        <RadioButton
+            android:id="@+id/journeyPlanningRadioBtn"
+            style="@style/main_tab"
+            android:drawableTop="@drawable/tab_road_selector"
+            android:text="@string/tab_journey_str" />
+
+        <RadioButton
+            android:id="@+id/moreRadioBtn"
+            style="@style/main_tab"
+            android:drawableTop="@drawable/tab_more_selector"
+            android:text="@string/tab_more_str" />
+    </RadioGroup>
+
+</LinearLayout>

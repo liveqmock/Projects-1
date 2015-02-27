@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#f0f7f4" >
+
+    <ListView
+        android:id="@+id/morelistView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_marginTop="40dip"
+        android:background="#ffffff"
+        android:divider="@color/divider"
+        android:dividerHeight="1px"
+        android:cacheColorHint="#00000000"
+        android:clickable="false" >
+    </ListView>
+
+    <Button
+        android:id="@+id/rescueButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="35dp"
+        android:background="@color/rescueButton_bgcolor"
+        android:minHeight="44dp"
+        android:text="一键救援"
+        android:textColor="@color/red"
+        android:textSize="22sp" />
+    
+    <View
+        android:layout_width="fill_parent"
+        android:layout_height="1px"
+        android:layout_alignTop="@+id/rescueButton"
+        android:background="@color/red"
+        />
+    
+     <View
+        android:layout_width="fill_parent"
+        android:layout_height="1px"
+        android:layout_alignBottom="@+id/rescueButton"
+        android:background="@color/red"
+        />
+
+</RelativeLayout>
