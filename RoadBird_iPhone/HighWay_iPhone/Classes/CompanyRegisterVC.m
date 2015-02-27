@@ -108,6 +108,11 @@
         [CommonData sharedCommonData].me.phoneNum = self.companyPhone.text;
         [CommonData sharedCommonData].me.myId = [dic objectForKey:@"userId"];
         [CommonData sharedCommonData].me.isCompany = YES;
+        if([CommonData sharedCommonData].allScore == nil){
+            NSLog(@"allScore is null ");
+            [CommonData sharedCommonData].allScore = @"0";
+        }
+        
         [self dismissViewControllerAnimated:YES completion:^{
             [app.nav popViewControllerAnimated:YES];
         }];

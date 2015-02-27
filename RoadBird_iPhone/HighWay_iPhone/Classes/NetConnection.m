@@ -29,13 +29,12 @@
                         success:(void (^)(AFHTTPRequestOperation *operation, id responseObject))success
                         failure:(void (^)(AFHTTPRequestOperation *operation, NSError *error))failure
 {
-    NSLog(@"asynGet begin");
     // 封装头
     [self.requestSerializer setValue:XAPPToken forHTTPHeaderField:@"X-APP-Token"];
     [self.requestSerializer setValue:[CommonData sharedCommonData].adId forHTTPHeaderField:@"X-APP-DeviceId"];
     [self.requestSerializer setValue:@"" forHTTPHeaderField:@"X-APP-UserId"];
-    [self GET:URLString parameters:parameters success:success failure:failure];
     
+    [self GET:URLString parameters:parameters success:success failure:failure];
 }
 
 
@@ -47,7 +46,6 @@
 {
     // 封装头
     [self.requestSerializer setValue:XAPPToken forHTTPHeaderField:@"X-APP-Token"];
-    
     [self.requestSerializer setValue:[CommonData sharedCommonData].adId forHTTPHeaderField:@"X-APP-DeviceId"];
     [self.requestSerializer setValue:@"" forHTTPHeaderField:@"X-APP-UserId"];
     

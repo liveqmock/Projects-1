@@ -8,6 +8,10 @@
 
 /* Begin PBXBuildFile section */
 		08FDB63B62E55868EED91718 /* UIWebView+AFNetworking.m in Sources */ = {isa = PBXBuildFile; fileRef = 3B3CC2B3CA0A137E14C6BE28 /* UIWebView+AFNetworking.m */; };
+		0A96CE181A8C850500F715A2 /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0A96CE171A8C850500F715A2 /* MobileCoreServices.framework */; };
+		0A96CE1A1A8C851000F715A2 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0A96CE191A8C851000F715A2 /* SystemConfiguration.framework */; };
+		0A96CE1B1A8C857600F715A2 /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0A96CE171A8C850500F715A2 /* MobileCoreServices.framework */; };
+		0A96CE1C1A8C858000F715A2 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0A96CE191A8C851000F715A2 /* SystemConfiguration.framework */; };
 		1A7A71145D098E32C510C344 /* AFURLResponseSerialization.m in Sources */ = {isa = PBXBuildFile; fileRef = 652F468AA33738041644E4FF /* AFURLResponseSerialization.m */; };
 		1A7C44B80C304236A58E95B3 /* AFNetworkReachabilityManager.m in Sources */ = {isa = PBXBuildFile; fileRef = BD74805D95CE0E851DFE67BF /* AFNetworkReachabilityManager.m */; };
 		207EE9146699DFF919643BBE /* AFHTTPRequestOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = B01100C41A38BD1CB14E128B /* AFHTTPRequestOperation.m */; };
@@ -102,6 +106,8 @@
 /* Begin PBXFileReference section */
 		026476180628F0FF2E5FC45E /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = Pods.debug.xcconfig; sourceTree = "<group>"; };
 		08788FE80022139CD3D41BA6 /* Reachability.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = Reachability.h; sourceTree = "<group>"; };
+		0A96CE171A8C850500F715A2 /* MobileCoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MobileCoreServices.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS8.1.sdk/System/Library/Frameworks/MobileCoreServices.framework; sourceTree = DEVELOPER_DIR; };
+		0A96CE191A8C851000F715A2 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS8.1.sdk/System/Library/Frameworks/SystemConfiguration.framework; sourceTree = DEVELOPER_DIR; };
 		0B6916C3B82F04A3E90374DA /* UIImageView+AFNetworking.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = "UIImageView+AFNetworking.m"; path = "UIKit+AFNetworking/UIImageView+AFNetworking.m"; sourceTree = "<group>"; };
 		0C4F4898735F01381B49CFF3 /* Pods-AFNetworking-prefix.pch */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "Pods-AFNetworking-prefix.pch"; sourceTree = "<group>"; };
 		104F8E2066E6322211CF3712 /* JSBadgeView.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = JSBadgeView.m; path = JSBadgeView/JSBadgeView.m; sourceTree = "<group>"; };
@@ -184,6 +190,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0A96CE1A1A8C851000F715A2 /* SystemConfiguration.framework in Frameworks */,
+				0A96CE181A8C850500F715A2 /* MobileCoreServices.framework in Frameworks */,
 				45C28DCC478B872EA28D575E /* Foundation.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -201,6 +209,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0A96CE1C1A8C858000F715A2 /* SystemConfiguration.framework in Frameworks */,
+				0A96CE1B1A8C857600F715A2 /* MobileCoreServices.framework in Frameworks */,
 				87A4C300EE05ACE48B889C01 /* CoreGraphics.framework in Frameworks */,
 				A3A6D1136B1E1D831432A909 /* Foundation.framework in Frameworks */,
 				A5046F457F9B4AFEAF6E56A5 /* MobileCoreServices.framework in Frameworks */,
@@ -449,6 +459,8 @@
 		DC7D658A0112CA0F66278011 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				0A96CE191A8C851000F715A2 /* SystemConfiguration.framework */,
+				0A96CE171A8C850500F715A2 /* MobileCoreServices.framework */,
 				E06B47A2E114EB883AF42B3B /* iOS */,
 			);
 			name = Frameworks;

@@ -58,42 +58,36 @@
 
 // 新闻
 - (IBAction)clickNews:(id)sender {
-    [CommonData sharedCommonData].HighwayLifeType = 0;
     HighwayLifeInfoVC* infoVC = [[HighwayLifeInfoVC alloc] initWithTitle:@"新闻"];
     [app.nav pushViewController:infoVC animated:YES];
 }
 
 // 食
 - (IBAction)clickEat:(id)sender {
-    [CommonData sharedCommonData].HighwayLifeType = 1;
     HighwayLifeInfoVC* infoVC = [[HighwayLifeInfoVC alloc] initWithTitle:@"食"];
     [app.nav pushViewController:infoVC animated:YES];
 }
 
 // 住
 - (IBAction)clickLive:(id)sender {
-    [CommonData sharedCommonData].HighwayLifeType = 2;
     HighwayLifeInfoVC* infoVC = [[HighwayLifeInfoVC alloc] initWithTitle:@"住"];
     [app.nav pushViewController:infoVC animated:YES];
 }
 
 // 法规
 - (IBAction)clickLaw:(id)sender {
-    [CommonData sharedCommonData].HighwayLifeType = 3;
     HighwayLifeInfoVC* infoVC = [[HighwayLifeInfoVC alloc] initWithTitle:@"法规"];
     [app.nav pushViewController:infoVC animated:YES];
 }
 
 // 玩
 - (IBAction)clickFun:(id)sender {
-    [CommonData sharedCommonData].HighwayLifeType = 4;
     HighwayLifeInfoVC* infoVC = [[HighwayLifeInfoVC alloc] initWithTitle:@"玩"];
     [app.nav pushViewController:infoVC animated:YES];
 }
 
 // 惠
 - (IBAction)clickDiscounts:(id)sender {
-    [CommonData sharedCommonData].HighwayLifeType = 5;
     HighwayLifeInfoVC* infoVC = [[HighwayLifeInfoVC alloc] initWithTitle:@"惠"];
     [app.nav pushViewController:infoVC animated:YES];
 }

@@ -23,7 +23,7 @@
 //    return _dataDAO;
 //}
 
-// 
+//
 +(void)getTrafficinfo:(NSDictionary *)param withCompleted:(void(^)(id))completedBlock withFailure:(void(^)(id))failureBlock
 {
     
@@ -47,7 +47,7 @@
                 else if(responseCode==5)
                 {
                     errorMessage=@"无权限访问!";
-
+                    
                 }
                 else if(responseCode==-1)
                 {
@@ -71,13 +71,13 @@
 +(void)getRoadPlan:(NSDictionary *)param withCompleted:(void(^)(id))completedBlock withFailure:(void(^)(id))failureBlock
 {
     [[NetConnection sharedClient] asynGet:roadplan parameters:param success:^(AFHTTPRequestOperation *operation, id responseObject) {
-         NSString *errorMessage=@"查询路径规划失败!";
+        NSString *errorMessage=@"查询路径规划失败!";
         NSDictionary *json =responseObject;
         if(json){
             int responseCode= [[json valueForKeyPath:@"responseCode"] intValue] ;
             if(responseCode==0)
             {
-               
+                
                 completedBlock(json);
             }
             else
@@ -141,7 +141,7 @@
                 {
                     errorMessage=@"连接服务器失败!";
                 }
-
+                
                 failureBlock(errorMessage);
             }
         }
@@ -185,7 +185,7 @@
                 {
                     errorMessage=@"连接服务器失败!";
                 }
-
+                
                 failureBlock(errorMessage);
             }
         }
@@ -230,7 +230,7 @@
                 {
                     errorMessage=@"连接服务器失败!";
                 }
-
+                
                 failureBlock(errorMessage);
             }
         }
@@ -297,8 +297,8 @@
     } failure:^(AFHTTPRequestOperation *operation, NSError *error){
         NSLog(@"postNormalRegister：%@",@"出错");
         failureBlock([error localizedDescription]);
-
-}];
+        
+    }];
 }
 
 // 企业用户注册
@@ -380,7 +380,7 @@
         failureBlock([error localizedDescription]);
         
     }];
-
+    
 }
 
 // 修改用户信息
@@ -404,83 +404,27 @@
 }
 // 修改用户信息(图片上传)
 +(void)postChangeUserImageInfo:(NSDictionary *)param withCompleted:(void(^)(id))completedBlock withFailure:(void(^)(id))failureBlock{
+
+   
+    AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
     
-    /*
-     此段代码如果需要修改，可以调整的位置
-     
-     1. 把upload.php改成网站开发人员告知的地址
-     2. 把file改成网站开发人员告知的字段名
-     */
-    // 1. httpClient->url
-    
-    // 2. 上传请求POST
-    
-//    AFHTTPClient *_httpClient;
-//    NSOperationQueue *_queue;
-//    NSURLRequest *request = [_httpClient multipartFormRequestWithMethod:@"POST" path:@"upload.php" parameters:nil constructingBodyWithBlock:^(id<AFMultipartFormData> formData) {
-//        // 在此位置生成一个要上传的数据体
-//        // form对应的是html文件中的表单
-//        
-//        
-//        UIImage *image = [UIImage imageNamed:@"头像1"];
-//        NSData *data = UIImagePNGRepresentation(image);
-//        
-//        // 在网络开发中，上传文件时，是文件不允许被覆盖，文件重名
-//        // 要解决此问题，
-//        // 可以在上传时使用当前的系统事件作为文件名
-//        NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
-//        // 设置时间格式
-//        formatter.dateFormat = @"yyyyMMddHHmmss";
-//        NSString *str = [formatter stringFromDate:[NSDate date]];
-//        NSString *fileName = [NSString stringWithFormat:@"%@.png", str];
-//        
-//        
-//        /*
-//         此方法参数
-//         1. 要上传的[二进制数据]
-//         2. 对应网站上[upload.php中]处理文件的[字段"file"]
-//         3. 要保存在服务器上的[文件名]
-//         4. 上传文件的[mimeType]
-//         */
-//        [formData appendPartWithFileData:data name:@"file" fileName:fileName mimeType:@"image/png"];
-//    }];
-//    
-//    // 3. operation包装的urlconnetion
-//    AFHTTPRequestOperation *op = [[AFHTTPRequestOperation alloc] initWithRequest:request];
-//    
-//    [op setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
-//        NSLog(@"上传完成");
-//    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-//        NSLog(@"上传失败->%@", error);
-//    }];
-//    
-//    //执行
-//    [_httpClient.operationQueue addOperation:op];
-    
-    AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
+    [manager.requestSerializer setValue:XAPPToken forHTTPHeaderField:@"X-APP-Token"];
+    [manager.requestSerializer setValue:[CommonData sharedCommonData].adId forHTTPHeaderField:@"X-APP-DeviceId"];
+    [manager.requestSerializer setValue:@"" forHTTPHeaderField:@"X-APP-UserId"];
     
     NSData *imageData = UIImageJPEGRepresentation([CommonData sharedCommonData].me.headImage, 1.0);
     
-    [manager.requestSerializer setValue:XAPPToken forHTTPHeaderField:@"X-APP-Token"];
-    
-    [manager POST:@"http://128.8.39.244:8080/hps_web/hps/auth/changeUserImage" parameters:param constructingBodyWithBlock:^(id<AFMultipartFormData> formData) {
-        
-        NSString *fileName = [NSString stringWithFormat:@"%@.png", [param objectForKey:@"fileName"]];
-        
-        /*
-         此方法参数
-         1. 要上传的[二进制数据]
-         2. 对应网站上[upload.php中]处理文件的[字段"file"]
-         3. 要保存在服务器上的[文件名]
-         4. 上传文件的[mimeType]
-         */
-        [formData appendPartWithFileData:imageData name:@"file" fileName:fileName mimeType:@"image/png"];
-//        [formData appendPartWithFileData:imageData name:@"attachment" fileName:@"myimage.jpg" mimeType:@"image/jpeg"];
-    } success:^(NSURLSessionDataTask *task, id responseObject) {
-        NSLog(@"Success %@", responseObject);
-    } failure:^(NSURLSessionDataTask *task, NSError *error) {
-        NSLog(@"Failure %@, %@", error, [task.response description]);
+    NSString *urlForImage = [BaseURL stringByAppendingString:changeuserimage];
+    NSLog(@"urlForImage: %@", urlForImage);
+    [manager POST:urlForImage parameters:param constructingBodyWithBlock:^(id<AFMultipartFormData> formData) {
+        [formData appendPartWithFileData:imageData name:@"picAttach" fileName:[param objectForKey:@"image"] mimeType:@"image/png"];
+    } success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        NSLog(@"Success: %@", responseObject);
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        NSLog(@"Error: %@", error);
     }];
+    
+   
     
 }
 

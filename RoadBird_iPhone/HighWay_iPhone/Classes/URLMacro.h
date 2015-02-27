@@ -25,7 +25,7 @@
 #define XAPPToken @"AT123456789"
 
 
-//查询道路交通事件信息 
+//查询道路交通事件信息
 #define  trafficinfo @"trafficinfo"
 // 查询规划路径方案
 #define roadplan @"roadplan"
@@ -59,7 +59,7 @@
 //#define changeuserinfo @"changeuserinfo"
 #define changeuserinfo @"auth/changeUserInfo"
 //头像上传
-#define changeuserimage @"auth/changeUserImage"
+#define changeuserimage @"/auth/changeUserImage"
 // 修改用户密码
 //#define changepassword @"changepassword"
 #define changepassword @"auth/changePassWord"

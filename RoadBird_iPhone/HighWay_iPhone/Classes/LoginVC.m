@@ -31,7 +31,7 @@
     
     self.LoginBtn.layer.borderWidth=0.5;
     self.LoginBtn.layer.borderColor=[NAV_GREEN_FONT_COLOR CGColor];
- 
+    
     [self.view addGestureRecognizer:bgTap]; //点击背景的手势
     
     [self.waitBgView setFrame:CGRectMake(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT)];
@@ -90,7 +90,7 @@
             [CommonData sharedCommonData].me.passwrod = self.passwordTxt.text;
             [CommonData sharedCommonData].me.phoneNum = [[dic objectForKey:@"userInfo"] objectForKey:@"phone"];
             [CommonData sharedCommonData].me.comPhone = [[dic objectForKey:@"userInfo"] objectForKey:@"comPhone"];
-//            [CommonData sharedCommonData].me.headImage = [[dic objectForKey:@"userInfo"] objectForKey:@"image"];
+            //            [CommonData sharedCommonData].me.headImage = [[dic objectForKey:@"userInfo"] objectForKey:@"image"];
             NSString *image=[[dic objectForKey:@"userInfo"] objectForKey:@"image"];
             if([NSString isEmpty:image]){
                 image =[[NSBundle mainBundle] pathForResource:@"head-default.png" ofType:nil];
@@ -100,7 +100,7 @@
             [CommonData sharedCommonData].me.companyPersonName = [[dic objectForKey:@"userInfo"] objectForKey:@"comPerson"];
             [CommonData sharedCommonData].me.myId = [dic objectForKey:@"userId"];
             //[app.nav popViewControllerAnimated:YES];
-
+            
         }
         [self getAllScoreAndPopView];
     } withFailure:^(id error){
@@ -134,7 +134,7 @@
         CGAffineTransform pTransform = CGAffineTransformMakeTranslation(0, 0);
         self.view.transform = pTransform;
     } completion:nil];
-
+    
 }
 
 #pragma mark - TextFieldDelegate
@@ -159,10 +159,10 @@
     [self.view addSubview:self.waitBgView]; //等待背景
     ShareType type = ShareTypeQQSpace;
     id<ISSAuthOptions> options = [ShareSDK authOptionsWithAutoAuth:YES
-                        allowCallback:YES
-                        authViewStyle:SSAuthViewStyleFullScreenPopup
-                         viewDelegate:nil
-              authManagerViewDelegate:nil];
+                                                     allowCallback:YES
+                                                     authViewStyle:SSAuthViewStyleFullScreenPopup
+                                                      viewDelegate:nil
+                                           authManagerViewDelegate:nil];
     
     [ShareSDK getUserInfoWithType:type
                       authOptions:options
@@ -194,11 +194,11 @@
 //                                                     authViewStyle:SSAuthViewStyleFullScreenPopup
 //                                                      viewDelegate:nil
 //                                           authManagerViewDelegate:nil];
-//    
+//
 //    [ShareSDK getUserInfoWithType:type
 //                      authOptions:options
 //                           result:^(BOOL result,id<ISSPlatformUser>userInfo,id<ICMErrorInfo>error){
-//                               
+//
 //                           }];
 //    [ShareSDK cancelAuthWithType:ShareTypeSinaWeibo];
 //
@@ -233,9 +233,9 @@
                                    NSLog(@"新浪微博授权失败！！");
                                    [self.waitBgView removeFromSuperview];
                                }
-
+                               
                            }];
-
+    
 }
 
 // 第三方登录信息传送到后台

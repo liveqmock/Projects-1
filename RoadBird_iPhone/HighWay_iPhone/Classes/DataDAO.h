@@ -7,9 +7,6 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "NetConnection.h"
-#import "AFHTTPRequestOperationManager.h"
-
 
 
 @interface DataDAO : NSObject

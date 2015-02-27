@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		0A48DAD81A8B662C007873F0 /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0A48DAD71A8B662C007873F0 /* MobileCoreServices.framework */; };
+		0A96CE161A8C823E00F715A2 /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0A96CE151A8C823E00F715A2 /* MobileCoreServices.framework */; };
 		5F029664191A1B3D0055A325 /* BaseVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 5F029663191A1B3D0055A325 /* BaseVC.m */; };
 		5F029669191A234D0055A325 /* RealTimeTrafficVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5F029667191A234D0055A325 /* RealTimeTrafficVC.xib */; };
 		5F2AFB2E196B9A5B004C8934 /* DirvingRouteDetailMapVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5F2AFB2C196B9A5B004C8934 /* DirvingRouteDetailMapVC.xib */; };
@@ -469,12 +469,10 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		0A48DAD71A8B662C007873F0 /* MobileCoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MobileCoreServices.framework; path = System/Library/Frameworks/MobileCoreServices.framework; sourceTree = SDKROOT; };
-		0A8BEE9D1A8C3CDD00560568 /* BaseVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BaseVC.h; sourceTree = "<group>"; };
-		0AC7BF5F1A89E4CD00C05496 /* Score.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Score.h; sourceTree = "<group>"; };
+		0A96CE151A8C823E00F715A2 /* MobileCoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MobileCoreServices.framework; path = System/Library/Frameworks/MobileCoreServices.framework; sourceTree = SDKROOT; };
 		28BACF59443168D4C15B676A /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
 		33D4081448424C179CBEE5D7 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
-		5F029662191A1B3D0055A325 /* MBProgressHUD.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MBProgressHUD.h; path = ../../Pods/MBProgressHUD/MBProgressHUD.h; sourceTree = "<group>"; };
+		5F029662191A1B3D0055A325 /* BaseVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BaseVC.h; sourceTree = "<group>"; };
 		5F029663191A1B3D0055A325 /* BaseVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BaseVC.m; sourceTree = "<group>"; };
 		5F029665191A234D0055A325 /* RealTimeTrafficVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RealTimeTrafficVC.h; sourceTree = "<group>"; };
 		5F029667191A234D0055A325 /* RealTimeTrafficVC.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RealTimeTrafficVC.xib; sourceTree = "<group>"; };
@@ -494,14 +492,14 @@
 		5F87ED3019179E8700F4DB3D /* HighWay_iPhone-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "HighWay_iPhone-Info.plist"; sourceTree = "<group>"; };
 		5F87ED3219179E8700F4DB3D /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		5F87ED3419179E8700F4DB3D /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
-		5F87ED3619179E8700F4DB3D /* NetConnection.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = NetConnection.h; path = Classes/NetConnection.h; sourceTree = "<group>"; };
+		5F87ED3619179E8700F4DB3D /* HighWay_iPhone-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "HighWay_iPhone-Prefix.pch"; sourceTree = "<group>"; };
 		5F87ED3719179E8700F4DB3D /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = AppDelegate.h; path = ../AppDelegate.h; sourceTree = "<group>"; };
 		5F87ED4019179E8700F4DB3D /* HighWay_iPhoneTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = HighWay_iPhoneTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		5F87ED4119179E8700F4DB3D /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
 		5F87ED4919179E8700F4DB3D /* HighWay_iPhoneTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "HighWay_iPhoneTests-Info.plist"; sourceTree = "<group>"; };
 		5F87ED4B19179E8700F4DB3D /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		5F87ED4D19179E8700F4DB3D /* HighWay_iPhoneTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = HighWay_iPhoneTests.m; sourceTree = "<group>"; };
-		5F87ED5D1917A10500F4DB3D /* AFHTTPRequestOperationManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AFHTTPRequestOperationManager.h; path = ../../Pods/AFNetworking/AFNetworking/AFHTTPRequestOperationManager.h; sourceTree = "<group>"; };
+		5F87ED5D1917A10500F4DB3D /* NetConnection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NetConnection.h; sourceTree = "<group>"; };
 		5F87ED5E1917A10500F4DB3D /* NetConnection.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NetConnection.m; sourceTree = "<group>"; };
 		5F87ED601917A11100F4DB3D /* CommonData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CommonData.h; sourceTree = "<group>"; };
 		5F87ED611917A11100F4DB3D /* CommonData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CommonData.m; sourceTree = "<group>"; };
@@ -1115,8 +1113,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0A96CE161A8C823E00F715A2 /* MobileCoreServices.framework in Frameworks */,
 				9D2E20C31A392CB400531E4D /* SystemConfiguration.framework in Frameworks */,
-				0A48DAD81A8B662C007873F0 /* MobileCoreServices.framework in Frameworks */,
 				9D4157A41A79C2060075FD37 /* ShareSDK.framework in Frameworks */,
 				9D475D491A7B13C300916DFB /* ShareSDKCoreService.framework in Frameworks */,
 				5FB918011A71EC6600258045 /* libPods-AFNetworking.a in Frameworks */,
@@ -1177,14 +1175,6 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		0AC7BF5E1A89E42000C05496 /* Score */ = {
-			isa = PBXGroup;
-			children = (
-				0AC7BF5F1A89E4CD00C05496 /* Score.h */,
-			);
-			name = Score;
-			sourceTree = "<group>";
-		};
 		5F31720E195186CA009A605A /* FileUtil */ = {
 			isa = PBXGroup;
 			children = (
@@ -1240,7 +1230,7 @@
 		5F87ED2719179E8700F4DB3D /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				0A48DAD71A8B662C007873F0 /* MobileCoreServices.framework */,
+				0A96CE151A8C823E00F715A2 /* MobileCoreServices.framework */,
 				9D4157A31A79C2060075FD37 /* ShareSDK.framework */,
 				5FB917FD1A71EC6600258045 /* libPods-AFNetworking.a */,
 				5FB917FE1A71EC6600258045 /* libPods-JSBadgeView.a */,
@@ -1283,7 +1273,7 @@
 				5F87ED3019179E8700F4DB3D /* HighWay_iPhone-Info.plist */,
 				5F87ED3119179E8700F4DB3D /* InfoPlist.strings */,
 				5F87ED3419179E8700F4DB3D /* main.m */,
-				5F87ED3619179E8700F4DB3D /* NetConnection.h */,
+				5F87ED3619179E8700F4DB3D /* HighWay_iPhone-Prefix.pch */,
 			);
 			name = "Supporting Files";
 			path = HighWay_iPhone;
@@ -1362,11 +1352,9 @@
 		5F87ED5C1917A09900F4DB3D /* Common */ = {
 			isa = PBXGroup;
 			children = (
-				0A8BEE9D1A8C3CDD00560568 /* BaseVC.h */,
-				0AC7BF5E1A89E42000C05496 /* Score */,
 				5FA15E7F1936CD4500DBC876 /* ComFun.h */,
 				5FA15E801936CD4C00DBC876 /* ComFun.m */,
-				5F029662191A1B3D0055A325 /* MBProgressHUD.h */,
+				5F029662191A1B3D0055A325 /* BaseVC.h */,
 				5F029663191A1B3D0055A325 /* BaseVC.m */,
 				5F87ED601917A11100F4DB3D /* CommonData.h */,
 				5F87ED611917A11100F4DB3D /* CommonData.m */,
@@ -1525,7 +1513,7 @@
 		5F9FC0F2191B58E400B44B95 /* Networking */ = {
 			isa = PBXGroup;
 			children = (
-				5F87ED5D1917A10500F4DB3D /* AFHTTPRequestOperationManager.h */,
+				5F87ED5D1917A10500F4DB3D /* NetConnection.h */,
 				5F87ED5E1917A10500F4DB3D /* NetConnection.m */,
 			);
 			name = Networking;
@@ -3017,12 +3005,14 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				LIBRARY_SEARCH_PATHS = "$(SRCROOT)/HighWay_iPhone/Vender/BaiduMap_IOSSDK_v2.6.0_Lib/Release$(EFFECTIVE_PLATFORM_NAME)";
+				New_Setting = "";
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_LDFLAGS = "-ObjC";
 				PROVISIONING_PROFILE = "2155b4c7-90a7-4ee2-bbbf-eec08f7b1f24";
 				SDKROOT = iphoneos;
+				USER_HEADER_SEARCH_PATHS = "${SRCROOT}/**";
 				VALID_ARCHS = "arm64 armv7 armv7s";
 			};
 			name = Debug;
@@ -3053,12 +3043,14 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				LIBRARY_SEARCH_PATHS = "$(SRCROOT)/HighWay_iPhone/Vender/BaiduMap_IOSSDK_v2.6.0_Lib/Release$(EFFECTIVE_PLATFORM_NAME)";
+				New_Setting = "";
 				ONLY_ACTIVE_ARCH = NO;
 				OTHER_LDFLAGS = "-ObjC";
 				PROVISIONING_PROFILE = "2155b4c7-90a7-4ee2-bbbf-eec08f7b1f24";
 				SDKROOT = iphoneos;
+				USER_HEADER_SEARCH_PATHS = "${SRCROOT}/**";
 				VALIDATE_PRODUCT = YES;
 				VALID_ARCHS = "arm64 armv7 armv7s";
 			};
@@ -3087,7 +3079,7 @@
 				GCC_PREFIX_HEADER = "HighWay_iPhone/HighWay_iPhone-Prefix.pch";
 				HEADER_SEARCH_PATHS = (
 					"\"${PODS_ROOT}/Headers/Public\"",
-					"\"${PODS_ROOT}/Headers/Public/AFNetworking\"",
+					"\"${PODS_ROOT}/Headers/Public/AFNetworking\"/**",
 					"\"${PODS_ROOT}/Headers/Public/JSBadgeView\"",
 					"\"${PODS_ROOT}/Headers/Public/MBProgressHUD\"",
 					"\"${PODS_ROOT}/Headers/Public/Reachability\"",
@@ -3120,6 +3112,7 @@
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
+				USER_HEADER_SEARCH_PATHS = "${SRCROOT}/**";
 				VALID_ARCHS = "armv7 arm64 armv7s";
 				WRAPPER_EXTENSION = app;
 			};
@@ -3148,7 +3141,7 @@
 				GCC_PREFIX_HEADER = "HighWay_iPhone/HighWay_iPhone-Prefix.pch";
 				HEADER_SEARCH_PATHS = (
 					"\"${PODS_ROOT}/Headers/Public\"",
-					"\"${PODS_ROOT}/Headers/Public/AFNetworking\"",
+					"\"${PODS_ROOT}/Headers/Public/AFNetworking\"/**",
 					"\"${PODS_ROOT}/Headers/Public/JSBadgeView\"",
 					"\"${PODS_ROOT}/Headers/Public/MBProgressHUD\"",
 					"\"${PODS_ROOT}/Headers/Public/Reachability\"",
@@ -3181,6 +3174,7 @@
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
+				USER_HEADER_SEARCH_PATHS = "${SRCROOT}/**";
 				VALID_ARCHS = "armv7 arm64 armv7s";
 				WRAPPER_EXTENSION = app;
 			};

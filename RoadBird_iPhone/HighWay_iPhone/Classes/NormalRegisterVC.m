@@ -117,6 +117,10 @@
         [CommonData sharedCommonData].me.passwrod = self.passwordTextField.text;
         [CommonData sharedCommonData].me.myId = [dic objectForKey:@"userId"];
         [CommonData sharedCommonData].me.isCompany = NO;
+        if([CommonData sharedCommonData].allScore == nil){
+            NSLog(@"allScore is null ");
+            [CommonData sharedCommonData].allScore = @"0";
+        }
         [self dismissViewControllerAnimated:YES completion:^{
             [app.nav popViewControllerAnimated:YES];
         }];

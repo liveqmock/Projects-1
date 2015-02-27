@@ -36,7 +36,7 @@
     
     self.logoutBtn.layer.borderColor = [RGBCOLOR(254, 68, 66) CGColor];
     self.logoutBtn.layer.borderWidth = 0.5f;
-   
+    
     UIBarButtonItem *item = [[UIBarButtonItem alloc] initWithTitle:@"保存" style:UIBarButtonItemStylePlain target:self action:@selector(editInfo)];
     self.navigationItem.rightBarButtonItem = item;
     
@@ -100,21 +100,15 @@
                 break;
         }
     }
-//    [[[UIAlertView alloc] initWithTitle:@"提示" message:@"修改用户信息成功！" delegate:self cancelButtonTitle:@"知道了" otherButtonTitles: nil] show];
+    //    [[[UIAlertView alloc] initWithTitle:@"提示" message:@"修改用户信息成功！" delegate:self cancelButtonTitle:@"知道了" otherButtonTitles: nil] show];
     
     // 提交后台修改用户信息
     int type;
     NSDictionary *info, *info2;
-    NSLog(@"[CommonData sharedCommonData].me.userName： %@",[CommonData sharedCommonData].me.userName);
-    NSLog(@"[CommonData sharedCommonData].me.headImage： %@",[CommonData sharedCommonData].me.headImage);
-    NSLog(@"[CommonData sharedCommonData].me.phoneNum： %@",[CommonData sharedCommonData].me.phoneNum);
-    NSLog(@"[CommonData sharedCommonData].me.companyName： %@",[CommonData sharedCommonData].me.companyName);
-    NSLog(@"[CommonData sharedCommonData].me.comPhone： %@",[CommonData sharedCommonData].me.comPhone);
-    NSLog(@"[CommonData sharedCommonData].me.companyPersonName： %@",[CommonData sharedCommonData].me.companyPersonName);
     if ([CommonData sharedCommonData].me.isCompany) { //企业用户
         type=1;
         
-
+        
         info = @{
                  @"phone":[CommonData sharedCommonData].me.phoneNum,
                  @"comPhone":[CommonData sharedCommonData].me.comPhone,
@@ -126,8 +120,7 @@
     }
     
     //info2 = @{@"image":[CommonData sharedCommonData].me.headImage};
-    NSLog(@"info： %@",info);
-   
+    
     NSDictionary *param = @{@"userId":[CommonData sharedCommonData].me.myId,
                             @"type":[[NSString alloc] initWithFormat:@"%d",type],
                             @"info":info};
@@ -139,7 +132,7 @@
     NSString *str = [formatter stringFromDate:[NSDate date]];
     NSString *fileName = [NSString stringWithFormat:@"%@.png", str];
     NSDictionary *param2 = @{@"userId":[CommonData sharedCommonData].me.myId,
-                            @"fileName":fileName};
+                             @"image":fileName};
     //头像上传
     [DataDAO postChangeUserImageInfo:param2 withCompleted:^(id result){
         NSLog(@"上传头像成功！");
@@ -148,12 +141,12 @@
         [[[UIAlertView alloc] initWithTitle:@"提示" message:@"后台同步头像失败！" delegate:self cancelButtonTitle:@"知道了" otherButtonTitles: nil] show];
     }];
     
-//    [DataDAO postChangeUserInfo:param withCompleted:^(id result){
-//        NSLog(@"修改用户信息成功！");
-//    } withFailure:^(id error){
-//        NSLog(@"postChangeUserInfo： %@",error);
-//        [[[UIAlertView alloc] initWithTitle:@"提示" message:@"后台同步用户信息失败！" delegate:self cancelButtonTitle:@"知道了" otherButtonTitles: nil] show];
-//    }];
+    //    [DataDAO postChangeUserInfo:param withCompleted:^(id result){
+    //        NSLog(@"修改用户信息成功！");
+    //    } withFailure:^(id error){
+    //        NSLog(@"postChangeUserInfo： %@",error);
+    //        [[[UIAlertView alloc] initWithTitle:@"提示" message:@"后台同步用户信息失败！" delegate:self cancelButtonTitle:@"知道了" otherButtonTitles: nil] show];
+    //    }];
 }
 
 #pragma mark - IBoutlet
@@ -174,7 +167,7 @@
     //第三方取消授权
     [ShareSDK cancelAuthWithType:ShareTypeSinaWeibo];
     [ShareSDK cancelAuthWithType:ShareTypeQQSpace];
-//    [ShareSDK cancelAuthWithType:ShareTypeWeixiSession];
+    //    [ShareSDK cancelAuthWithType:ShareTypeWeixiSession];
     [app.nav popViewControllerAnimated:YES];
 }
 
@@ -212,7 +205,7 @@
         default:
             break;
     }
-
+    
 }
 
 #pragma mark - ImagePicker Delegate
@@ -269,7 +262,7 @@
         if([CommonData sharedCommonData].me.isCompany){ //企业用户
             return 4;
         }else{
-             return 3;
+            return 3;
         }
     }else{
         return 1;
@@ -315,7 +308,7 @@
                 [cellAry addObject:userInfoTableViewCell]; //保持只有3个cell
                 cellCount++;
             }
-
+            
         }
         else{ //企业用户
             switch (indexPath.row) {
@@ -330,7 +323,7 @@
                         userInfoTableViewCell.detail.text = [CommonData sharedCommonData].me.phoneNum;
                     }
                 }
-                 break;
+                    break;
                 case 2:
                     userInfoTableViewCell.title.text = @"企业";
                     if ([CommonData sharedCommonData].me.companyName!=nil) {
@@ -354,14 +347,14 @@
         }
         
         if ([userInfoTableViewCell.detail.text isEqualToString:@""]) { //某些信息没有填写完整
-             userInfoTableViewCell.detail.placeholder = @"滑动填写";
+            userInfoTableViewCell.detail.placeholder = @"滑动填写";
         }
         return userInfoTableViewCell;
-    
+        
     }else{
         
         ScoreShopTableViewCell* scoreShopTableViewCell = [[[NSBundle mainBundle] loadNibNamed:@"ScoreShopTableViewCell" owner:nil options:nil]lastObject];
-//        cell.scoreLabel.text = [[NSString alloc] initWithFormat:@"  %@  ",[CommonData sharedCommonData].allScore];
+        //        cell.scoreLabel.text = [[NSString alloc] initWithFormat:@"  %@  ",[CommonData sharedCommonData].allScore];
         scoreShopTableViewCell.scoreLabel.text = [[NSString alloc] initWithFormat:@" %@ ", [CommonData sharedCommonData].allScore];
         return scoreShopTableViewCell;
     }
@@ -383,11 +376,11 @@
 // 滑动修改
 - (NSArray *)tableView:(UITableView *)tableView editActionsForRowAtIndexPath:(NSIndexPath *)indexPath {
     UITableViewRowAction *changeRowAction = [UITableViewRowAction rowActionWithStyle:UITableViewRowActionStyleDefault title:@"修改" handler:^(UITableViewRowAction *action,NSIndexPath *indexPath)
-    {
-        UserInfoTableViewCell *cell = [cellAry objectAtIndex:indexPath.row];
-        cell.detail.enabled = YES;
-        [cell.detail becomeFirstResponder];
-    }];
+                                             {
+                                                 UserInfoTableViewCell *cell = [cellAry objectAtIndex:indexPath.row];
+                                                 cell.detail.enabled = YES;
+                                                 [cell.detail becomeFirstResponder];
+                                             }];
     changeRowAction.backgroundColor = RGBCOLOR(38, 178, 98);
     return @[changeRowAction];
 }

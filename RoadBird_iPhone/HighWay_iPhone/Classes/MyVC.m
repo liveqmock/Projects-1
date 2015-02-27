@@ -35,10 +35,6 @@
     }
 }
 
-
-
-
-
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
@@ -47,10 +43,6 @@
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(IndexViewGone) name:@"IndexViewGone" object:nil];
         [self initIndexView:@"More-Index"];
     }
-    if([CommonData sharedCommonData].isLogin){
-//       [self getAllScoreAndPopView];
-    }
-    
     [self.tableView reloadData];
 }
 
@@ -73,25 +65,6 @@
     [[NSNotificationCenter defaultCenter] removeObserver:self name:@"IndexViewGone" object:nil];
     [[SqliteUtil sharedSqliteUtil] updateInfo:@"More-Index" state:@"hide"];
 }
-
-//获取总积分并退出当前页面
-//-(void) getAllScoreAndPopView{
-//    //获取并设置总积分
-//    NSDictionary *param = @{@"userId":[CommonData sharedCommonData].me.myId};
-//    NSLog(@"[CommonData sharedCommonData] param:%@",param);
-//    [DataDAO getQueryScore:param withCompleted:^(id result){
-//        NSLog(@"[CommonData getQueryScore] result:%@",result);
-//        NSDictionary* dic = (NSDictionary*)result;
-//        [CommonData sharedCommonData].allScore = [dic objectForKey:@"totalScore"];
-//        NSLog(@"[CommonData sharedCommonData].allScore:%@",[CommonData sharedCommonData].allScore);
-//        [app.nav popViewControllerAnimated:YES];
-//    } withFailure:^(id error){
-//        NSLog(@"getQueryScore error2:%@",error);
-//    }];
-//}
-
-
-
 
 
 
@@ -140,8 +113,7 @@
                  cell.userHeadLogo.image = [CommonData sharedCommonData].me.headImage;
             }
             NSString *phoneString = [CommonData sharedCommonData].me.phoneNum;
-            
-            if ((phoneString != nil) && (![phoneString  isEqual: @""])) { //手机
+            if (phoneString!=nil) { //手机
                 cell.subLabel.text = [[NSString alloc] initWithFormat:@"电话 %@ %@ %@",[phoneString substringToIndex:3],[phoneString substringWithRange:NSMakeRange(3, 4)],[phoneString substringFromIndex:7]];
             }else{
                 cell.subLabel.text = @"未绑定手机";
