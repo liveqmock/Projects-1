@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"          
+	"http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+
+<mapper namespace="com.newsoft.sysmanager.dao.UserRoleDAO">
+	<resultMap type="com.newsoft.sysmanager.po.UserRole"
+		id="UserRoleRM">
+		<result property="userId" column="UserID" />
+		<result property="roleId" column="RoleID" />
+	</resultMap>
+
+	<!-- 获取所有用户角色关联 -->
+	<select id="getAllUserRoleRelations" resultMap="UserRoleRM">
+		select * from FRAME_ORGSTRUC_USER_ROLE
+	</select>
+
+	<!-- 插入用户角色关联 -->
+	<insert id="insertUserRoleRelation"
+		parameterType="com.newsoft.sysmanager.po.UserRole">
+		<![CDATA[ 
+		insert into FRAME_ORGSTRUC_USER_ROLE(UserID,RoleID) values(#{userId},#{roleId})
+	]]>
+	</insert>
+
+	<!-- 根据用户ID删除用户角色关联关系 -->
+	<delete id="deleteUserRoleRelationByUserId"
+		parameterType="string">
+		<![CDATA[ 
+		delete from FRAME_ORGSTRUC_USER_ROLE where UserID = #{value}
+	]]>
+	</delete>
+
+	<!-- 根据根据角色id删除用户角色关联关系-->
+	<delete id="deleteUserRoleRelationByRoleId"
+		parameterType="string">
+		<![CDATA[ 
+		delete from FRAME_ORGSTRUC_USER_ROLE where RoleID = #{roleId}
+	]]>
+	</delete>
+
+	<!-- 根据用户id及角色id删除关联关系 -->
+	<delete id="deleteUserRoleRelationByUserIdAndRoleId"
+		parameterType="com.newsoft.sysmanager.po.UserRole">
+		<![CDATA[ 
+		delete from FRAME_ORGSTRUC_USER_ROLE where UserID=#{userId} and RoleID = #{roleId}
+	]]>
+	</delete>
+
+	<!-- 根据用户的ID获得用户角色关联的列表 -->
+	<select id="getUserRoleRelationByUserId" parameterType="string"
+		resultType="com.newsoft.sysmanager.po.UserRole">
+		<![CDATA[ 
+		select * from FRAME_ORGSTRUC_USER_ROLE where UserID = #{userId}
+	]]>
+	</select>
+
+	<!-- 根据角色ID获得用户角色关联的列表 -->
+	<select id="getUserRoleRelationByRoleId" parameterType="string"
+		resultType="com.newsoft.sysmanager.po.UserRole">
+		<![CDATA[ 
+		select * from FRAME_ORGSTRUC_USER_ROLE where RoleID = #{roleId}
+	]]>
+	</select>
+
+</mapper>

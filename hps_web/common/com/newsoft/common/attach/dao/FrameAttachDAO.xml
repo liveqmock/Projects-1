@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE  mapper  PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"          
+"http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+<mapper namespace="com.newsoft.common.attach.dao.FrameAttachDAO">
+	<insert id="addAttach">
+		insert into
+		FRAME_ATTACH(AttachID,FileName,FileSize,ContentType,Content,CreateTime,FileType,FileDir)
+		values(#{attachId},#{fileName},#{fileSize},#{contentType},#{content},#{createTime},#{fileType},#{fileDir})
+	</insert>
+
+	<insert id="addAttachRelation">
+		insert into FRAME_ATTACH_RELATION(ObjectID,AttachID,AttachType)
+		values(#{objectId},#{attachId},#{attachType})
+	</insert>
+
+	<delete id="deleteAttachById">
+		delete from FRAME_ATTACH where AttachID = #{attachId}
+	</delete>
+
+	<delete id="deleteAttachRelation">
+		delete from FRAME_ATTACH_RELATION where ObjectID = #{objectId}
+		and AttachID = #{attachId}
+	</delete>
+
+	<delete id="deleteAttachRelationByObjId">
+		delete from FRAME_ATTACH_RELATION where ObjectID = #{objectId}
+	</delete>
+
+	<select id="getAttachById"
+		resultType="com.newsoft.common.attach.po.Attach">
+		select * from FRAME_ATTACH where AttachID = #{attachId}
+	</select>
+
+	<select id="getDirtyAttachListByObjectId"
+		resultType="com.newsoft.common.attach.po.Attach">
+		select * from FRAME_ATTACH a where a.AttachID not in(select
+		AttachID from FRAME_ATTACH_RELATION)
+	</select>
+
+	<select id="getAttachRelationListByAttachId"
+		resultType="com.newsoft.common.attach.po.AttachRelation">
+		select * from FRAME_ATTACH_RELATION where AttachID = #{attachId}
+	</select>
+
+	<select id="getAttachListByObjectId"
+		resultType="com.newsoft.common.attach.po.Attach">
+		select a.* from FRAME_ATTACH a,FRAME_ATTACH_RELATION b where
+		a.AttachID = b.AttachID and b.ObjectID = #{objectId}
+	</select>
+
+</mapper>

@@ -1,0 +1,139 @@
+/*!!
+Epoch DHTML JavaScript Calendar - Version 2.0.2
+�������İ�
+CSS Style File
+(c) 2006-2007 MeanFreePath
+Free for NON-COMMERCIAL use - see website for details and updates
+http://www.meanfreepath.com/javascript_calendar/index.html
+!!*/
+
+table.calendar {
+	font-family: Arial, sans-serif;
+	font-size: 8pt;
+	/*border-collapse: collapse;
+	background-color: white;
+	border: solid #999999 1px;
+	background-color: white;*/
+	width: 199px;
+	height:auto;
+	z-index:10000;
+	text-align: center;
+	/*prevent user from selecting text in Mozilla & Safari - check calendar constructor for IE code)*/
+	-moz-user-select: none;
+    /*-khtml-user-select: none;*/
+}
+iframe.back{
+	position:absolute;
+	width:199px;
+	height:188px;
+	z-index:9999;
+}
+table.calendar a {
+}
+table.calendar a:hover {
+}
+
+table.calendar select{
+	width:40px;
+}
+table.calendar div.mainheading select{
+	width:60px;
+}
+table.calendar input, table.calendar select {
+	font-size: 10px; margin:2px;
+}
+table.calendar td, table.calendar th {
+	border: 0;
+	font-size: 11px;
+	text-align: center;
+}
+div.mainheading {
+	margin:0 0 3px 0;
+	height:23px;
+}
+div.mainheading span,
+div.mainheading select{
+	float:left;margin:3px 3px 0;
+}
+table.calendar .closebtn {
+	margin:0 3px;padding:0 0 0 10px;cursor:pointer;
+}
+table.calendar .closeicon {
+	position:absolute;margin:-17px 0 0 -9px;*margin:-17px 0 0 -7px;
+}
+table.calendar .closetext {
+	white-space:nowrap;padding:3px 10px 2px;*padding:3px 0 0;
+}
+/*all styles related to the main calendar grid*/
+table.cells {
+	/*border-collapse: collapse;
+	border: solid #468 1px;*/
+	cursor: default;
+	empty-cells: show;
+	margin: 0 6px 0 6px;
+}
+/*the day headings*/
+table.cells th {
+	/*border: solid #468 1px;*/
+	text-align: left;
+	font-weight: bold;
+	color: #0054E3;
+	width: 22px;
+}
+table.cells th.wkhead {
+	/*border-right: double #468 3px;*/
+	cursor: default;
+	width: 22px;
+}
+/*The date cells*/
+table.cells td {
+	/*border: solid #468 1px;
+	vertical-align: top;
+	text-align: left;
+	font-weight: bold;
+	height: 20px; /*IE doesn't like ems*/
+}
+table.cells td.wkhead {
+	text-align: center;
+	/*border-right: double #468 3px;*/
+	color: #0054E3;
+}
+table.cells td.noselect {
+	/*background-color: #999999;*/
+	color: #BBBBBB;
+	text-decoration: line-through;
+	cursor: default;
+}
+table.cells td.hlday {
+	cursor:pointer;
+}
+table.cells td.wkday {
+	cursor:pointer;
+}
+table.cells td.wkend {
+	margin-left:5px;
+	cursor:pointer;
+}
+table.cells td.curdate {
+	font-weight: 900;
+	text-decoration:underline;
+}
+table.cells td.cell_selected {
+	/*background-color: #6789ff;*/
+	color: black;
+}
+table.cells td.notmnth {
+	color: #999;
+	cursor:pointer;
+}
+table.cells td.notallowed {
+	color: #ccc;
+	font-style: italic;
+}
+table.cells td.hover {
+	font-weight:bold;
+}
+table.cells td div {
+	padding: 1px;
+	margin: 0;
+}

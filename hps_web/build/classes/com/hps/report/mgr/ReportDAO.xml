@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"          
+	"http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+
+<mapper namespace="com.hps.report.mgr.ReportDAO">
+	<resultMap type="com.hps.report.mgr.ReportVo" id="ReportVoRM">
+		        <result property="id" column="ID" />
+	            <result property="userid" column="UserId" />
+	            <result property="xcode" column="XCode" />
+	            <result property="ycode" column="YCode" />
+	            <result property="occtime" column="occtime" />
+	            <result property="type" column="Type" />
+	    	</resultMap>
+	
+	<select id="getReportList" resultMap="ReportVoRM">
+		select * from report where 1=1
+	</select>
+	
+	<select id="getReportListByXY" resultMap="ReportVoRM" >
+		select * from report where ( #{xup}>xcode and xcode>#{xlow} and #{yup}>ycode and ycode>#{ylow} and occtime>#{occtime} )
+	</select>
+	
+	<select id="countReport" resultType="int"
+		parameterType="string">
+		<![CDATA[ 
+		select count(*) from report where 1=1
+	    ]]>
+	</select>
+	
+	<select id="getReportById" resultMap="ReportVoRM"
+		parameterType="string">
+		<![CDATA[ 
+		select * from report
+		where id=#{id}
+	    ]]>
+	</select>
+
+	<insert id="addReport" parameterType="com.hps.report.mgr.ReportVo">
+		<![CDATA[ 
+		insert into report(
+   	    ID
+       , UserId
+       , XCode
+       , YCode
+       , occtime
+       , Type
+   		) 
+		values(
+			 #{id}, 
+    			 #{userid}, 
+    			 #{xcode}, 
+    			 #{ycode}, 
+    			 #{occtime}, 
+    			 #{type}
+			)
+	    ]]>
+	</insert>
+	
+	<update id="updateReport" parameterType="com.hps.report.mgr.ReportVo">
+		<![CDATA[ 
+		update report
+		set 
+    	ID=#{id}
+         , UserId=#{userid}
+         , XCode=#{xcode}
+         , YCode=#{ycode}
+         , occtime=#{occtime}
+         , Type=#{type}
+    	where id = #{id}
+	]]>
+	</update>
+
+	<delete id="deleteReportById" parameterType="string">
+		<![CDATA[ 
+		delete from report
+		where id = #{id}
+	]]>
+	</delete>
+</mapper>

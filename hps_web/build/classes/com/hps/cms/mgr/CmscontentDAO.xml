@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"          
+	"http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+
+<mapper namespace="com.hps.cms.mgr.CmscontentDAO">
+	<resultMap type="com.hps.cms.mgr.Cmscontent" id="CmscontentRM">
+		<result property="id" column="ID" />
+		<result property="categoryid" column="CATEGORYID" />
+		<result property="title" column="TITLE" />
+		<result property="content" column="CONTENT" />
+		<result property="authorid" column="AUTHORID" />
+		<result property="authorname" column="AUTHORNAME" />
+		<result property="cratetime" column="CRATETIME" />
+	</resultMap>
+
+	<select id="getCmscontentList" resultMap="CmscontentRM">
+		select * from
+		cmscontent where 1=1
+	</select>
+
+	<select id="countCmscontent" resultType="int" parameterType="string">
+		<![CDATA[ 
+		select count(*) from cmscontent where 1=1
+	    ]]>
+	</select>
+
+	<select id="getCmscontentById" resultMap="CmscontentRM"
+		parameterType="string">
+		<![CDATA[ 
+		select * from cmscontent
+		where id=#{id}
+	    ]]>
+	</select>
+
+	<insert id="addCmscontent" parameterType="com.hps.cms.mgr.Cmscontent">
+		<![CDATA[ 
+		insert into cmscontent(
+   	    ID
+       , CATEGORYID
+       , TITLE
+       , CONTENT
+       , AUTHORID
+       , AUTHORNAME
+       , CRATETIME
+   		) 
+		values(
+			 #{id}, 
+    			 #{categoryid}, 
+    			 #{title}, 
+    			 #{content}, 
+    			 #{authorid}, 
+    			 #{authorname}, 
+    			 #{cratetime}
+			)
+	    ]]>
+	</insert>
+
+	<update id="updateCmscontent" parameterType="com.hps.cms.mgr.Cmscontent">
+		<![CDATA[ 
+		update cmscontent
+		set CATEGORYID=#{categoryid}
+         , TITLE=#{title}
+         , CONTENT=#{content}
+    	where id = #{id}
+	]]>
+	</update>
+
+	<delete id="deleteCmscontentById" parameterType="string">
+		<![CDATA[ 
+		delete from cmscontent
+		where id = #{id}
+	]]>
+	</delete>
+</mapper>

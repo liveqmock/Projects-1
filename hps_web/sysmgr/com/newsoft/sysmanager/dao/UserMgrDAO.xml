@@ -1,0 +1,231 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"          
+	"http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+
+<mapper namespace="com.newsoft.sysmanager.dao.UserMgrDAO">
+	<resultMap type="com.newsoft.sysmanager.vo.UserVo" id="UserRM">
+		<id property="userId" column="UserID" />
+		<result property="account" column="Account" />
+		<result property="pwd" column="Pwd" />
+		<result property="userName" column="UserName" />
+		<result property="sex" column="Sex" />
+		<result property="position" column="Position" />
+		<result property="mobile" column="Mobile" />
+		<result property="telephone" column="Telephone" />
+		<result property="email" column="Email" />
+		<result property="defaultOrgId" column="DefaultOrgId" />
+		<result property="memo" column="Memo" />
+		<result property="extend" column="Extend" />
+		<result property="fileId" column="fileId" />
+		<result property="point" column="point" />
+		<result property="type" column="type" />
+		<result property="weixin" column="weixin" />
+		<result property="weibo" column="weibo" />
+		<result property="qq" column="qq" />
+		<result property="createTime" column="createTime" />
+		<result property="contactPerson" column="contactPerson" />
+		<result property="contactOrgName" column="contactOrgName" />
+		
+	</resultMap>
+
+	<!-- 获取所有用户 -->
+	<select id="getAllUsers" resultMap="UserRM">
+		select * from FRAME_ORGSTRUC_USER order by lastModifyTime desc
+	</select>
+
+	<!-- 根据所属组织ID查询用户列表 -->
+	<select id="getUserListByOrgUnitId" resultMap="UserRM" parameterType="string">
+		SELECT u.*
+			FROM FRAME_ORGSTRUC_USER u
+	</select>
+	
+
+	<!-- 根据所属组织ID查询用户列表，分页显示用 -->
+	<select id="getUserListByOrgUnitId4Grid" resultMap="UserRM" parameterType="string">
+		SELECT u.*
+		      FROM FRAME_ORGSTRUC_USER u order by lastModifyTime desc
+	</select>
+	
+		<!-- 根据所属组织ID查询用户数量 -->
+	<select id="countUser" resultType="int" parameterType="string">
+		SELECT count(*) cnt
+		      FROM FRAME_ORGSTRUC_USER u
+	</select>
+	
+	
+	
+	<!-- 查询需要审核的用户 -->
+	<select id="getApproveUserList" resultMap="UserRM" parameterType="string">
+		SELECT * FROM FRAME_ORGSTRUC_USER where UserState = 0
+	</select>
+	
+	<!--  -->
+	<select id="countApproveUser" resultType="int" parameterType="string">
+		SELECT count(*) cnt
+		      FROM FRAME_ORGSTRUC_USER u where UserState = 0 
+	</select>
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	<select id="countUserBymobile" resultType="int" parameterType="string">
+		SELECT count(*) cnt
+		      FROM FRAME_ORGSTRUC_USER where Mobile = #{mobile}
+	</select>
+
+	<select id="countUserByEmail" resultType="int" parameterType="string">
+		SELECT count(*) cnt
+		      FROM FRAME_ORGSTRUC_USER where Email = #{email}
+	</select>
+	
+	<select id="countUserByAccout" resultType="int" parameterType="string">
+		SELECT count(*) cnt
+		      FROM FRAME_ORGSTRUC_USER where Account=#{account}
+	</select>
+
+	<!-- 根据ID查询用户 -->
+	<select id="getUserByUserId" resultMap="UserRM" parameterType="string">
+		select * from FRAME_ORGSTRUC_USER where UserID=#{userId}
+	</select>
+	<!-- 根据用户账号查询用户 -->
+	<select id="getUserByAccount" resultMap="UserRM" parameterType="string">
+		select * from FRAME_ORGSTRUC_USER where Account=#{account}
+	</select>
+	<!-- 根据手机查询用户 -->
+	<select id="getUserByMobile" resultMap="UserRM" parameterType="string">
+		select * from FRAME_ORGSTRUC_USER where Mobile=#{mobile}
+	</select>
+	<!-- 根据邮箱查询用户 -->
+	<select id="getUserByEmail" resultMap="UserRM" parameterType="string">
+		select * from FRAME_ORGSTRUC_USER where Email=#{email}
+	</select>
+	<!-- 根据用户微信查询用户 -->
+	<select id="getUserByWeiXin" resultMap="UserRM" parameterType="string">
+		select * from FRAME_ORGSTRUC_USER where weixin=#{weixin}
+	</select>
+	<!-- 添加新用户 -->
+	<insert id="addUser" parameterType="com.newsoft.sysmanager.po.User">
+		insert into FRAME_ORGSTRUC_USER${suffix}(UserID,Account,Pwd,UserName,UserState,Sex,Position,Mobile,Telephone,Email,defaultOrgId,Memo,lastModifyTime,fileId,point,type,weixin,weibo,qq,createTime,contactOrgName,contactPerson)
+		values(
+			#{userId, jdbcType=VARCHAR},
+			#{account, jdbcType=VARCHAR},
+			#{pwd, jdbcType=VARCHAR},
+			#{userName, jdbcType=VARCHAR},
+			#{userState, jdbcType=BOOLEAN},
+			#{sex, jdbcType=BOOLEAN},
+			#{position, jdbcType=VARCHAR},
+			#{mobile, jdbcType=VARCHAR},
+			#{telephone, jdbcType=VARCHAR},
+			#{email, jdbcType=VARCHAR},
+			#{defaultOrgId, jdbcType=VARCHAR},
+			#{memo, jdbcType=VARCHAR},
+			#{lastModifyTime, jdbcType=TIMESTAMP},
+			#{fileId, jdbcType=VARCHAR},
+			#{point},
+			#{type, jdbcType=INTEGER},
+			#{weixin, jdbcType=VARCHAR},
+			#{weibo, jdbcType=VARCHAR},
+			#{qq, jdbcType=VARCHAR},
+			#{createTime, jdbcType=VARCHAR},
+			#{contactOrgName, jdbcType=VARCHAR},
+			#{contactPerson, jdbcType=VARCHAR})
+	</insert>
+
+	<!-- 更新用户 -->
+	<update id="updateUser" parameterType="com.newsoft.sysmanager.po.User">
+		update FRAME_ORGSTRUC_USER 
+		<set>
+			Account=#{account},
+		<if test="pwd!=null">
+			Pwd=#{pwd},
+		</if>
+		<if test="weixin!=null">
+			weixin=#{weixin},
+		</if>
+		<if test="qq!=null">
+			qq=#{qq},
+		</if>
+		<if test="weibo!=null">
+			weibo=#{weibo},
+		</if>
+		<if test="fileId!=null">
+			fileId=#{fileId},
+		</if>
+		<if test="point!=null">
+			point=#{point},
+		</if>
+		<if test="contactOrgName!=null">
+			contactOrgName=#{contactOrgName},
+		</if>
+		<if test="fileId!=null">
+			contactPerson=#{contactPerson},
+		</if>
+			UserName=#{userName, jdbcType=VARCHAR},
+			UserState = #{userState, jdbcType=BOOLEAN},
+			Sex=#{sex, jdbcType=BOOLEAN},
+			Position=#{position, jdbcType=VARCHAR},
+			Mobile=#{mobile, jdbcType=VARCHAR},
+			Telephone=#{telephone, jdbcType=VARCHAR},
+			Email=#{email, jdbcType=VARCHAR},
+			DefaultOrgId=#{defaultOrgId, jdbcType=VARCHAR},
+			Memo=#{memo, jdbcType=VARCHAR},
+			lastModifyTime=#{lastModifyTime, jdbcType=TIMESTAMP}
+		</set>
+		where UserID=#{userId, jdbcType=VARCHAR}
+	</update>
+	
+	<update id="updateUserPoint" parameterType="com.newsoft.sysmanager.po.User">
+		update FRAME_ORGSTRUC_USER set point = #{point}
+		where UserID=#{userId, jdbcType=VARCHAR}
+	</update>
+	
+	<update id="updateUserState" parameterType="string">
+		update FRAME_ORGSTRUC_USER set point = #{point}
+		where UserID=#{userId, jdbcType=VARCHAR}
+	</update>
+	
+	
+	<!-- 更新用户默认登录公司 -->
+	<update id="updateUserDefaultOrgId">
+		update FRAME_ORGSTRUC_USER set UserState = 
+			DefaultOrgId=#{defaultOrgId, jdbcType=VARCHAR}
+		where UserID=#{userId, jdbcType=VARCHAR}
+	</update>
+	
+	<!-- 删除用户，备份到历史表 -->
+	<delete id="deleteUserById" parameterType="string">		
+		delete from FRAME_ORGSTRUC_USER where UserID = #{userId}
+	</delete>
+
+	<!-- 根据用户姓名关键字和所在组织机构搜索用户 -->
+	<select id="searchUserByUserNameKeyWord" resultMap="UserRM">
+		select p.* from(
+		select distinct U.* from FRAME_ORGSTRUC_USER U
+		where 1=1
+		<if test="userName!=null"> and userName like #{userName}</if>
+		) p
+		order by account
+	</select>
+
+	<!-- 根据角色id获取该角色包含的用户 -->
+	<select id="getUserListByRoleId" resultMap="UserRM" parameterType="string"> 
+		select U.* from FRAME_ORGSTRUC_USER U
+			inner join FRAME_ORGSTRUC_USER_ROLE UR on U.UserID=UR.UserID 
+		where UR.RoleID=#{roleId} order by rand()
+	</select>
+	
+	<!-- 根据角色id获取该角色包含的用户 -->
+	<select id="countUserListByRoleId" resultType="int" parameterType="string"> 
+		select count(*) from FRAME_ORGSTRUC_USER U
+			inner join FRAME_ORGSTRUC_USER_ROLE UR on U.UserID=UR.UserID 
+		where UR.RoleID=#{roleId}
+	</select>
+	
+</mapper>

@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"          
+	"http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+
+<mapper namespace="com.hps.product.mgr.ProductDAO">
+	<resultMap type="com.hps.product.mgr.Product" id="ProductRM">
+		        <result property="id" column="ID" />
+	            <result property="title" column="TITLE" />
+	            <result property="protype" column="PROTYPE" />
+	            <result property="fileid" column="fileId" />
+	            <result property="score" column="Score" />
+	            <result property="creator" column="Creator" />
+	            <result property="creatorname" column="CreatorName" />
+	            <result property="createtime" column="CreateTime" />
+	    	</resultMap>
+	
+	<select id="getProductList" resultMap="ProductRM">
+		select * from product where 1=1
+	</select>
+	
+	<select id="countProduct" resultType="int"
+		parameterType="string">
+		<![CDATA[ 
+		select count(*) from product where 1=1
+	    ]]>
+	</select>
+	
+	<select id="getProductById" resultMap="ProductRM"
+		parameterType="string">
+		<![CDATA[ 
+		select * from product
+		where id=#{id}
+	    ]]>
+	</select>
+
+	<insert id="addProduct" parameterType="com.hps.product.mgr.Product">
+		<![CDATA[ 
+		insert into product(
+   	    ID
+       , TITLE
+       , PROTYPE
+       , fileId
+       , Score
+       , Creator
+       , CreatorName
+       , CreateTime
+   		) 
+		values(
+			 #{id}, 
+    			 #{title}, 
+    			 #{protype}, 
+    			 #{fileid}, 
+    			 #{score}, 
+    			 #{creator}, 
+    			 #{creatorname}, 
+    			 #{createtime}
+			)
+	    ]]>
+	</insert>
+	
+	<update id="updateProduct" parameterType="com.hps.product.mgr.Product">
+		<![CDATA[ 
+		update product
+		set 
+    	ID=#{id}
+         , TITLE=#{title}
+         , PROTYPE=#{protype}
+         , fileId=#{fileid}
+         , Score=#{score}
+         , Creator=#{creator}
+         , CreatorName=#{creatorname}
+         , CreateTime=#{createtime}
+    	where id = #{id}
+	]]>
+	</update>
+
+	<delete id="deleteProductById" parameterType="string">
+		<![CDATA[ 
+		delete from product
+		where id = #{id}
+	]]>
+	</delete>
+</mapper>

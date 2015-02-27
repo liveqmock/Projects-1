@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"          
+	"http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+
+<mapper namespace="com.hps.buyerInfo.mgr.BuyerinfoDAO">
+	<resultMap type="com.hps.buyerInfo.mgr.Buyerinfo" id="BuyerinfoRM">
+		        <result property="id" column="ID" />
+	            <result property="userid" column="userId" />
+	            <result property="goodsid" column="goodsId" />
+	            <result property="realname" column="realName" />
+	            <result property="address" column="address" />
+	            <result property="phone" column="phone" />
+	            <result property="postcode" column="postCode" />
+	    	</resultMap>
+	
+	<select id="getBuyerinfoList" resultMap="BuyerinfoRM">
+		select * from buyerinfo where 1=1
+	</select>
+	
+	<select id="countBuyerinfo" resultType="int"
+		parameterType="string">
+		<![CDATA[ 
+		select count(*) from buyerinfo where 1=1
+	    ]]>
+	</select>
+	
+	<select id="getBuyerinfoById" resultMap="BuyerinfoRM"
+		parameterType="string">
+		<![CDATA[ 
+		select * from buyerinfo
+		where id=#{id}
+	    ]]>
+	</select>
+	
+	<select id="getAllInfoById" resultMap="BuyerinfoRM"
+		parameterType="string">
+		<![CDATA[ 
+		select b.ID,b.userId,b.goodsId,b.realName,b.address,b.phone,b.postCode,g.type,g.score,a.fileName as imageName,a.FileDir as imagePath 
+		from buyerinfo b left join goods g on b.goodsId=g.ID left join frame_attach a on g.image=a.AttachId where b.userId=#{id} order by b.ID
+	    ]]>
+	</select>
+
+	<insert id="addBuyerinfo" parameterType="com.hps.buyerInfo.mgr.Buyerinfo">
+		<![CDATA[ 
+		insert into buyerinfo(
+   	    ID
+       , userId
+       , goodsId
+       , realName
+       , address
+       , phone
+       , postCode
+   		) 
+		values(
+			 #{id}, 
+    			 #{userid}, 
+    			 #{goodsid}, 
+    			 #{realname}, 
+    			 #{address}, 
+    			 #{phone}, 
+    			 #{postcode}
+			)
+	    ]]>
+	</insert>
+	
+	<update id="updateBuyerinfo" parameterType="com.hps.buyerInfo.mgr.Buyerinfo">
+		<![CDATA[ 
+		update buyerinfo
+		set 
+    	ID=#{id}
+         , userId=#{userid}
+         , goodsId=#{goodsid}
+         , realName=#{realname}
+         , address=#{address}
+         , phone=#{phone}
+         , postCode=#{postcode}
+    	where id = #{id}
+	]]>
+	</update>
+
+	<delete id="deleteBuyerinfoById" parameterType="string">
+		<![CDATA[ 
+		delete from buyerinfo
+		where id = #{id}
+	]]>
+	</delete>
+</mapper>

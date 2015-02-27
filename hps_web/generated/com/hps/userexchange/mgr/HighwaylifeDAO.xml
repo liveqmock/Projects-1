@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"          
+	"http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+
+<mapper namespace="com.hps.userexchange.mgr.HighwaylifeDAO">
+	<resultMap type="com.hps.userexchange.mgr.Highwaylife" id="HighwaylifeRM">
+		        <result property="id" column="ID" />
+	            <result property="type" column="Type" />
+	            <result property="title" column="Title" />
+	            <result property="userid" column="UserId" />
+	            <result property="createtime" column="CreateTime" />
+	            <result property="detail" column="Detail" />
+	    	</resultMap>
+	
+	<select id="getHighwaylifeList" resultMap="HighwaylifeRM">
+		select * from highwaylife where 1=1
+	</select>
+	
+	<select id="countHighwaylife" resultType="int"
+		parameterType="string">
+		<![CDATA[ 
+		select count(*) from highwaylife where 1=1
+	    ]]>
+	</select>
+	
+	<select id="getHighwaylifeById" resultMap="HighwaylifeRM"
+		parameterType="string">
+		<![CDATA[ 
+		select * from highwaylife
+		where id=#{id}
+	    ]]>
+	</select>
+
+	<insert id="addHighwaylife" parameterType="com.hps.userexchange.mgr.Highwaylife">
+		<![CDATA[ 
+		insert into highwaylife(
+   	    ID
+       , Type
+       , Title
+       , UserId
+       , CreateTime
+       , Detail
+   		) 
+		values(
+			 #{id}, 
+    			 #{type}, 
+    			 #{title}, 
+    			 #{userid}, 
+    			 #{createtime}, 
+    			 #{detail}
+			)
+	    ]]>
+	</insert>
+	
+	<update id="updateHighwaylife" parameterType="com.hps.userexchange.mgr.Highwaylife">
+		<![CDATA[ 
+		update highwaylife
+		set 
+    	ID=#{id}
+         , Type=#{type}
+         , Title=#{title}
+         , UserId=#{userid}
+         , CreateTime=#{createtime}
+         , Detail=#{detail}
+    	where id = #{id}
+	]]>
+	</update>
+
+	<delete id="deleteHighwaylifeById" parameterType="string">
+		<![CDATA[ 
+		delete from highwaylife
+		where id = #{id}
+	]]>
+	</delete>
+</mapper>

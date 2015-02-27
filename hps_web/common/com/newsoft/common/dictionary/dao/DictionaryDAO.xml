@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE  mapper  PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"          
+"http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+<mapper namespace="com.newsoft.common.dictionary.dao.DictionaryDAO">
+
+	<!-- 根据类别Id获取字典类型列表 -->
+	<select id="getDictionaryTypeByKindId"
+		resultType="com.newsoft.common.dictionary.po.DictionaryType">
+		select * from FRAME_DICTIONARY_TYPE where kindId=#{kindId}
+		order by sortIndex
+	</select>
+
+	<!-- 根据类别Id统计字典类型数量 -->
+	<select id="countDictionaryTypeByKindId"
+		resultType="com.newsoft.common.dictionary.po.DictionaryType">
+		select count(*) from FRAME_DICTIONARY_TYPE where
+		kindId=#{kindId}
+	</select>
+
+	<!-- 根据父类别Id获取字典类别列表 -->
+	<select id="getDictionaryKindByParentId"
+		resultType="com.newsoft.common.dictionary.po.DictionaryKind">
+		select * from FRAME_DICTIONARY_KIND where parentId =
+		#{parentId}
+	</select>
+
+	<!-- 新增一个字典类别 -->
+	<insert id="addDictionaryKind">
+		insert into FRAME_DICTIONARY_KIND(kindName,kindDes,parentId)
+		values (#{kindName},#{kindDes},#{parentId})
+	</insert>
+
+	<!-- 更新一个字典类别 -->
+	<update id="updateDictionaryKind">
+		update FRAME_DICTIONARY_KIND set
+		kindName=#{kindName},kindDes=#{kindDes},parentId=#{parentId}
+		where kindId = #{kindId}
+	</update>
+
+	<!-- 删除一个字典类别 -->
+	<delete id="deleteDictionaryKindById">
+		delete FRAME_DICTIONARY_KIND where kindId = #{kindId}
+	</delete>
+
+	<!-- 新增一个字典类型 -->
+	<insert id="addDictionaryType">
+		insert into
+		FRAME_DICTIONARY_TYPE(typeId,kindId,typeName,typeDes,sortIndex)
+		values (#{typeId},#{kindId},#{typeName},#{typeDes},(select a.sortindex from (SELECT
+		(case when max(sortIndex) is null then -1 else max(sortIndex) end)+1 sortindex FROM FRAME_DICTIONARY_TYPE where
+		kindId=#{kindId})a))
+	</insert>
+
+	<!-- 更新一个字典类型 -->
+	<update id="updateDictionaryType">
+		update FRAME_DICTIONARY_TYPE set
+		typeName=#{typeName},typeDes=#{typeDes},sortIndex=#{sortIndex}
+		where typeId =#{typeId} and kindId = #{kindId}
+	</update>
+
+	<!-- 删除一个字典类型 -->
+	<delete id="deleteDictionaryTypeById">
+		delete FRAME_DICTIONARY_TYPE where typeId = #{typeId}
+	</delete>
+
+	<!-- 根据字典类别Id删除字典类型 -->
+	<delete id="deleteDictionaryTypeByKindId">
+		delete FRAME_DICTIONARY_TYPE where kindId = #{kindId}
+	</delete>
+
+	<!-- 根据主键字典类型 -->
+	<select id="getDictionaryTypeByPK"
+		resultType="com.newsoft.common.dictionary.po.DictionaryType">
+		select * from FRAME_DICTIONARY_TYPE where typeId = #{typeId}
+		and kindId = #{kindId}
+	</select>
+
+
+	<!-- 获取排序号在当前排序号之前的字典类型-->
+	<select id="getPrvDictionaryType"
+		resultType="com.newsoft.common.dictionary.po.DictionaryType">
+		<![CDATA[ 
+			select po.* from FRAME_DICTIONARY_TYPE po where (po.kindId=#{kindId}) and (po.sortIndex <${sortIndex}) order by po.sortIndex desc
+		]]>
+	</select>
+	<!-- 获取排序号在当前排序号之后的字典类型 -->
+	<select id="getNextDictionaryType"
+		resultType="com.newsoft.common.dictionary.po.DictionaryType">
+		<![CDATA[ 
+			select po.* from FRAME_DICTIONARY_TYPE po where (po.kindId=#{kindId}) and (po.sortIndex >${sortIndex}) order by po.sortIndex asc
+		]]>
+	</select>
+</mapper>

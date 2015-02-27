@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"          
+	"http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+
+<mapper namespace="com.hps.goods.mgr.GoodsDAO">
+	<resultMap type="com.hps.goods.mgr.Goods" id="GoodsRM">
+		        <result property="id" column="ID" />
+	            <result property="image" column="Image" />
+	            <result property="largeimage" column="largeImage" />
+	            <result property="title" column="Title" />
+	            <result property="score" column="Score" />
+	            <result property="type" column="Type" />
+	            <result property="detail" column="Detail" />
+	    	</resultMap>
+	
+	<select id="getGoodsList" resultMap="GoodsRM">
+		select * from goods where 1=1
+	</select>
+	
+	<select id="getGoodsImageList" resultMap="GoodsRM">
+		select g.id,g.title,g.score,g.type,g.detail,g.Image,g.largeImage,a.fileName as imageName,a.FileDir as imagePath,b.fileName as largeImageName,b.FileDir as largeImagePath from goods g left join frame_attach a on g.image=a.AttachId
+		left join frame_attach b on g.largeImage=b.AttachId order by g.id
+	</select>
+	
+	<select id="countGoods" resultType="int"
+		parameterType="string">
+		<![CDATA[ 
+		select count(*) from goods where 1=1
+	    ]]>
+	</select>
+	
+	<select id="getGoodsById" resultMap="GoodsRM"
+		parameterType="string">
+		<![CDATA[ 
+		select * from goods
+		where id=#{id}
+	    ]]>
+	</select>
+
+	<insert id="addGoods" parameterType="com.hps.goods.mgr.Goods">
+		<![CDATA[ 
+		insert into goods(
+   	    ID
+       , Image
+       , largeImage
+       , Title
+       , Score
+       , Type
+       , Detail
+   		) 
+		values(
+			 #{id}, 
+    			 #{image}, 
+    			 #{largeimage}, 
+    			 #{title}, 
+    			 #{score}, 
+    			 #{type}, 
+    			 #{detail}
+			)
+	    ]]>
+	</insert>
+	
+	<update id="updateGoods" parameterType="com.hps.goods.mgr.Goods">
+		<![CDATA[ 
+		update goods
+		set 
+    	ID=#{id}
+         , Image=#{image}
+         , largeImage=#{largeimage}
+         , Title=#{title}
+         , Score=#{score}
+         , Type=#{type}
+         , Detail=#{detail}
+    	where id = #{id}
+	]]>
+	</update>
+
+	<delete id="deleteGoodsById" parameterType="string">
+		<![CDATA[ 
+		delete from goods
+		where id = #{id}
+	]]>
+	</delete>
+</mapper>

@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="GBK"?>
+<operatorDefine>
+	<systemName systemName="高速出行服务系统">
+		<modelName modleName="用户管理">
+			<operator operatorId="Frame_User_Manager" operatorName="查询用户"
+				urlmapping="/sys/userMgr,/sys/userMgr/viewUserFormPage">
+			</operator>
+			<operator operatorId="Frame_User_Add" operatorName="添加用户"
+				urlmapping="/sys/userMgr/addUserFormPage">
+			</operator>
+			<operator operatorId="Frame_User_Edit" operatorName="编辑用户"
+				urlmapping="/sys/userMgr/editUserFormPage">
+			</operator>
+			<operator operatorId="Frame_User_Delete" operatorName="删除用户"
+				urlmapping="/sys/userMgr/deleteUser">
+			</operator>
+			<operator operatorId="User_Approve" operatorName="企业用户开通审核"
+				urlmapping="/hps/userMgr">
+			</operator>
+		</modelName>
+		
+		<modelName modleName="角色管理">
+			<operator operatorId="Frame_Role_Manager" operatorName="查询角色"
+				urlmapping="/sys/roleMgr,/sys/roleMgr/viewRoleFormPage">
+			</operator>
+			<operator operatorId="Frame_Role_Add" operatorName="添加角色"
+				urlmapping="/sys/roleMgr/addRoleFormPage">
+			</operator>
+			<operator operatorId="Frame_Role_Edit" operatorName="编辑角色"
+				urlmapping="/sys/roleMgr/editRoleFormPage">
+			</operator>
+			<operator operatorId="Frame_Role_Delete" operatorName="删除角色"
+				urlmapping="/sys/roleMgr/deleteRole">
+			</operator>
+			<operator operatorId="Frame_Role_Permission" operatorName="分配权限"
+				urlmapping="/sys/roleMgr/authorizePage">
+			</operator>
+		</modelName>
+
+		<modelName modleName="日志管理">
+			<operator operatorId="Frame_LogManager" operatorName="日志管理">
+			</operator>
+			<operator operatorId="Frame_DeleteLog" operatorName="删除日志">
+			</operator>
+		</modelName>
+
+		<modelName modleName="系统管理">
+			<operator operatorId="DicMgr" operatorName="字典管理"></operator>
+			<operator operatorId="Level_Mgr" operatorName="积分等级管理"
+				urlmapping="/scorelevel/main">
+			</operator>
+			<operator operatorId="Report_Mgr" operatorName="爆料管理"
+				urlmapping="/report/main">
+			</operator>
+		</modelName>
+		
+		<modelName modleName="内容管理">
+			<operator operatorId="CMS_Mgr"
+				operatorName="文章管理" urlmapping="/cmscontent/main">
+			</operator>
+			<operator operatorId="CMS_Mgr_Add"
+				operatorName="增加文章" urlmapping="/cmscontent/main">
+			</operator>
+			<operator operatorId="CMS_Mgr_Edit"
+				operatorName="编辑文章" urlmapping="/cmscontent/main">
+			</operator>
+			<operator operatorId="CMS_Mgr_Delete"
+				operatorName="删除文章" urlmapping="/cmscontent/main">
+			</operator>
+		</modelName>
+
+		<modelName modleName="积分商城">
+			<operator operatorId="Score_Product" operatorName="查看积分商品"
+				urlmapping="/product/main">
+			</operator>
+			<operator operatorId="ScoreProduct_Add" operatorName="添加商品"
+				urlmapping="/product/add_form">
+			</operator>
+			<operator operatorId="ScoreProduct_Edit" operatorName="编辑商品"
+				urlmapping="/product/edit_form">
+			</operator>
+			<operator operatorId="ScoreProduct_Delete" operatorName="删除商品"
+				urlmapping="/product/delete">
+			</operator>
+		</modelName>
+		<modelName modleName="积分兑换">
+			<operator operatorId="User_Exchange" operatorName="用户积分兑换"
+				urlmapping="/userexchnage/main">
+			</operator>
+			<operator operatorId="User_Exchange_Handle" operatorName="处理积分兑换">
+			</operator>
+		</modelName>
+	</systemName>
+</operatorDefine>

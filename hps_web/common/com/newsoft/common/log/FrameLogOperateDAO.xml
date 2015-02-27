@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE  mapper  PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"          
+"http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+<mapper namespace="com.newsoft.common.log.FrameLogOperateDAO">
+
+	<!-- <insert id="addOperateLog"
+		parameterType="com.newsoft.common.log.po.LogOperate">
+		insert into
+		FRAME_LOG_OPERATE(LogID,UserID,UserName,OperateModule,OperateType,LogDate,LogDes)
+		values(#{logId},#{userId},#{userName},#{operateModule},#{operateType},#{logDate},#{logDes})
+		</insert> -->
+
+	<delete id="deleteOperateLog" parameterType="string">
+		delete from FRAME_LOG_OPERATE where LogID = #{logId}
+	</delete>
+	<select id="getOperateLogByID"
+		resultType="com.newsoft.common.log.LogOperate">
+		select * from FRAME_LOG_OPERATE where LogID = #{logId}
+	</select>
+	<select id="getOperateLogs"
+		resultType="com.newsoft.common.log.LogOperate">
+		select * from FRAME_LOG_OPERATE order by LogDate desc
+
+	</select>
+
+	<select id="countOperateLogs" resultType="int">
+		select count(*) from FRAME_LOG_OPERATE
+
+	</select>
+</mapper>
